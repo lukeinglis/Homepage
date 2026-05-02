@@ -23,10 +23,31 @@ const friday: DayConfig = {
     { id: "notes" },
   ],
   quickLinks: [
-    { name: "Email", url: "https://mail.google.com", icon: "📧" },
+    { name: "Gmail", url: "https://mail.google.com", icon: "📧" },
     { name: "Calendar", url: "https://calendar.google.com", icon: "📅" },
-    { name: "Music", url: "https://open.spotify.com", icon: "🎵" },
-    { name: "News", url: "https://news.ycombinator.com", icon: "📰" },
+    { name: "LinkedIn", url: "https://www.linkedin.com", icon: "💼" },
+    { name: "DraftKings", url: "https://sportsbook.draftkings.com", icon: "🎲" },
+  ],
+  linkSections: [
+    {
+      title: "Socials",
+      icon: "👤",
+      links: [
+        { name: "Twitter/X", url: "https://x.com/home", icon: "𝕏" },
+        { name: "Instagram", url: "https://www.instagram.com/", icon: "📷" },
+        { name: "Reddit", url: "https://www.reddit.com/", icon: "🤖" },
+        { name: "YouTube", url: "https://www.youtube.com/", icon: "📺" },
+      ],
+    },
+    {
+      title: "Email & Professional",
+      icon: "📧",
+      links: [
+        { name: "Gmail", url: "https://mail.google.com" },
+        { name: "Yahoo Mail", url: "https://mail.yahoo.com" },
+        { name: "LinkedIn", url: "https://www.linkedin.com" },
+      ],
+    },
   ],
   focusText: "Wind-down day. Close open loops and plan for next week.",
 };

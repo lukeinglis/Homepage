@@ -23,10 +23,31 @@ const thursday: DayConfig = {
     { id: "notes" },
   ],
   quickLinks: [
-    { name: "GitHub", url: "https://github.com", icon: "💻" },
-    { name: "Stack Overflow", url: "https://stackoverflow.com", icon: "🔍" },
-    { name: "Figma", url: "https://figma.com", icon: "🎨" },
-    { name: "Slack", url: "https://slack.com", icon: "💬" },
+    { name: "Gmail", url: "https://mail.google.com", icon: "📧" },
+    { name: "Calendar", url: "https://calendar.google.com", icon: "📅" },
+    { name: "LinkedIn", url: "https://www.linkedin.com", icon: "💼" },
+    { name: "DraftKings", url: "https://sportsbook.draftkings.com", icon: "🎲" },
+  ],
+  linkSections: [
+    {
+      title: "Socials",
+      icon: "👤",
+      links: [
+        { name: "Twitter/X", url: "https://x.com/home", icon: "𝕏" },
+        { name: "Instagram", url: "https://www.instagram.com/", icon: "📷" },
+        { name: "Reddit", url: "https://www.reddit.com/", icon: "🤖" },
+        { name: "YouTube", url: "https://www.youtube.com/", icon: "📺" },
+      ],
+    },
+    {
+      title: "Email & Professional",
+      icon: "📧",
+      links: [
+        { name: "Gmail", url: "https://mail.google.com" },
+        { name: "Yahoo Mail", url: "https://mail.yahoo.com" },
+        { name: "LinkedIn", url: "https://www.linkedin.com" },
+      ],
+    },
   ],
   focusText: "Energy day. Channel your momentum into creative solutions.",
 };

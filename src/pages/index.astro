@@ -7,6 +7,7 @@ import { QuickLinksWidget } from "../components/QuickLinksWidget";
 import { WeatherWidget } from "../components/WeatherWidget";
 import { QuoteWidget } from "../components/QuoteWidget";
 import { NotesWidget } from "../components/NotesWidget";
+import { CalendarWidget } from "../components/CalendarWidget";
 
 const config = getDayConfig();
 const greeting = getGreeting();
@@ -30,7 +31,11 @@ const timeOfDay = getTimeOfDay();
       </WidgetWrapper>
 
       <WidgetWrapper name="quickLinks" client:load>
-        <QuickLinksWidget links={config.quickLinks} />
+        <QuickLinksWidget links={config.quickLinks} linkSections={config.linkSections} />
+      </WidgetWrapper>
+
+      <WidgetWrapper name="calendar" client:load>
+        <CalendarWidget />
       </WidgetWrapper>
 
       <WidgetWrapper name="quote" client:idle>
