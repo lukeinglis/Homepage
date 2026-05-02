@@ -1,0 +1,15 @@
+{
+  "id": 1,
+  "timestamp": "2026-05-02 17:11:42.413712",
+  "hypothesis": "Port categorized links from old site and add calendar widget with ICS proxy",
+  "change_summary": "Added LinkSection type, populated 7 day configs with ~24 categorized links (Socials, Sports, Betting, Fantasy, Professional), built CalendarWidget with ical.js and Vercel API proxy, localStorage caching with 15min TTL, 2 new test files (148 lines)",
+  "issue_number": 3,
+  "pr_number": 4,
+  "score_before": null,
+  "score_after": null,
+  "delta": null,
+  "verdict": "keep",
+  "cost_usd": null,
+  "notes": "ceo:keep score_delta=+0.0000 precheck=override_operational agents_spawned=R,S,B pr_status=open_for_review hypothesis_type=code execution_artifacts=na e2e=pass backlog_cleared=partial",
+  "research_citations": []
+}

@@ -1,14 +1,31 @@
 {
   "project_name": "personal-website",
-  "generated_at": "2026-05-02 18:30:22.731242+00:00",
-  "mode": "unknown",
-  "experiments_kept": [],
+  "generated_at": "2026-05-02 21:11:55.195638+00:00",
+  "mode": "improve",
+  "experiments_kept": [
+    {
+      "id": 1,
+      "timestamp": "2026-05-02 17:11:42.413712",
+      "hypothesis": "Port categorized links from old site and add calendar widget with ICS proxy",
+      "change_summary": "Added LinkSection type, populated 7 day configs with ~24 categorized links (Socials, Sports, Betting, Fantasy, Professional), built CalendarWidget with ical.js and Vercel API proxy, localStorage caching with 15min TTL, 2 new test files (148 lines)",
+      "issue_number": 3,
+      "pr_number": 4,
+      "score_before": null,
+      "score_after": null,
+      "delta": null,
+      "verdict": "keep",
+      "cost_usd": null,
+      "notes": "ceo:keep score_delta=+0.0000 precheck=override_operational agents_spawned=R,S,B pr_status=open_for_review hypothesis_type=code execution_artifacts=na e2e=pass backlog_cleared=partial",
+      "research_citations": []
+    }
+  ],
   "experiments_reverted": [],
   "experiments_errored": [],
   "backlog_remaining": [
     "**Enable GitHub Pages in repository settings**: Go to the repository's Settings > Pages > Source and select \"GitHub Actions\". The deploy workflow will be committed in Phase 1 but Pages must be manually enabled for deploys to work.",
     "**Default weather location**: The code uses browser geolocation with a fallback to London (51.51, -0.13). Update `src/config/defaults.ts` with your preferred default location coordinates.",
-    "**Personalize quick links**: Phase 2 and 6 populate quick links with sensible defaults (common productivity tools, news sites, etc.). Edit each day's config file in `src/config/days/` to reflect your actual bookmarks."
+    "**Personalize quick links**: Phase 2 and 6 populate quick links with sensible defaults (common productivity tools, news sites, etc.). Edit each day's config file in `src/config/days/` to reflect your actual bookmarks.",
+    "Add content-aware calendar adaptation: use calendar events to influence which link sections are shown (e.g., sports links promoted on game days, professional links promoted on meeting-heavy days). Stretch goal from Issue #2."
   ],
   "guard_violations": [],
   "needs_human_input": [],

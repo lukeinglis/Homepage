@@ -1,251 +1,245 @@
-# Research: Personal Homepage, Day-Aware Adaptive Dashboard
+# Research: Issues #1 (Personalized Links) and #2 (Calendar Widget)
 
 ## Project Summary
 
-A browser start page that adapts its theme, greeting, widgets, and quick links based on the day of the week. Must be fully static (GitHub Pages), TypeScript, mobile-first, with isolated widgets and declarative per-day configuration. Five required widgets for v1: clock, weather, quick links, quotes, notes/scratchpad.
+Static Astro 6 site with Preact, deployed to Vercel. Personal dashboard with day-specific themes, greetings, widgets (clock, weather, quickLinks, quote, notes), and per-day quick links. Currently has only 4 generic quick links per day. Old site had 30+ categorized links across socials, sports, betting, fantasy, professional, and finance sections.
 
-## Similar Projects
+---
 
-### Directly Relevant
+## Issue #1: Port Personalized Links
 
-| Project | Stars | Key Takeaway |
-|---------|-------|-------------|
-| [Bento](https://github.com/migueravila/Bento) | ~2.1k | Minimalist, hackable startpage. Config-driven via `config.js`. Three layouts (bento grid, lists, buttons). Good UX reference but no day-awareness. |
-| [Catppuccin Startpage](https://github.com/pivoshenko/catppuccin-startpage) | ~1k+ | GitHub Pages native. Local fonts/icons for performance. Palette-driven theming. Closest aesthetic match to what we want. |
-| [Hiccup](https://awesome-selfhosted.net/tags/personal-dashboards.html) | - | Static startpage with PWA support, localStorage caching, built-in search. Good reference for offline/localStorage patterns. |
-| [Bento-next (Vue 3 fork)](https://github.com/Kevin-2483/Bento-custom) | - | Vue 3 rewrite of Bento with GitHub Pages deploy. Shows SPA-on-Pages is viable. |
+### Old Site Link Structure
 
-### Heavier-Weight (Architecture Reference Only)
+The old site used JSON config files (`old-site-reference/config/`):
+- `sites.json`: Master site catalog with 6 sections (socials, sports_news, sports_betting, fantasy_sports, professional, finances), ~30 links total
+- `day-0.json` through `day-7.json`: Per-day overrides selecting subsets of links from the master catalog
+- `day-template.json`: Empty template for unused days
 
-| Project | Stars | Relevance |
-|---------|-------|-----------|
-| [Homepage](https://github.com/gethomepage/homepage) | ~20k | YAML-configured widget system. Widget registry pattern worth studying, but too server-oriented for our needs. |
-| [Glance](https://github.com/glanceapp/glance) | ~25k | Go backend, YAML config. Feed aggregation widget patterns are useful reference. |
-| [Dashy](https://dashy.to/) | ~18k | 50+ widget types, Docker-based. Widget isolation patterns and theme system are instructive. |
+Each link had: `name/label`, `url`, `type` (link or iframe), `icon` (Lucide name or emoji), `color`, `hover`, `extra` (Tailwind classes).
 
-### Key Patterns Observed Across Projects
-
-1. **Config-driven**: All successful startpages use a single config file (JS/JSON/YAML) for customization.
-2. **Widget isolation**: Widgets as self-contained components, never sharing DOM state directly.
-3. **Local-first**: localStorage for persistence, no backend required.
-4. **Theme via CSS variables**: Every project uses CSS custom properties for theming.
-
-## Recommended Tech Stack
-
-### Framework: Astro (strong recommendation)
-
-Astro is the clear winner for this project. Here's why:
-
-| Criterion | Astro | SvelteKit | Next.js |
-|-----------|-------|-----------|---------|
-| Static output (GitHub Pages) | Native, zero config | Requires adapter-static | Requires export config, ships extra JS |
-| Zero JS by default | Yes (islands architecture) | No, ships JS for client nav | No, ships React runtime |
-| Widget isolation | Built-in via islands, each hydrates independently | Manual, all components share one runtime | Manual, React context leaks between components |
-| Progressive hydration | `client:idle`, `client:visible`, `client:load` directives | Not built-in | Not built-in |
-| TypeScript | First-class support | First-class support | First-class support |
-| Bundle size | Smallest (only interactive widget JS ships) | Small (Svelte compiles away) | Largest (React runtime + hydration) |
-| GitHub Pages deploy | Official action (`withastro/action@v6`) | Manual workflow needed | Manual workflow needed |
-| Multi-framework widgets | Yes (React, Svelte, Solid, Vue in same project) | Svelte only | React only |
-| Lighthouse score potential | Highest (83% less JS than Next.js in benchmarks) | High | Moderate |
-
-**Decision rationale**: The spec demands fast first paint, progressive hydration, widget isolation, and static hosting. Astro's islands architecture was literally designed for this exact pattern: static HTML shell with independently-hydrating interactive islands.
-
-### TypeScript Configuration
-
-- Astro has built-in TypeScript support, `strict` mode recommended
-- Day configs can be typed with TypeScript interfaces for compile-time validation
-
-### Build & Deploy
-
-- **Build**: `astro build` outputs to `dist/` as pure static HTML/CSS/JS
-- **Deploy**: GitHub Actions with `withastro/action@v6`, zero config
-- **Dev**: `astro dev` with hot reload
-
-### Styling
-
-- **CSS custom properties** for day-theming (7 theme objects, applied via `data-day` attribute on `<html>`)
-- **Scoped styles** via Astro's built-in scoped CSS (no CSS-in-JS library needed)
-- No CSS framework required; utility classes optional
-
-## Architecture Patterns
-
-### Day-Config System
-
-```
-config/
-  days/
-    monday.ts    # { theme, greeting, widgets, quickLinks, focusMode }
-    tuesday.ts
-    ...
-  widgets.ts     # widget registry: ID -> component mapping
-  defaults.ts    # fallback values
+The old day configs used a **sections with target IDs** pattern:
+```json
+{
+  "sections": [
+    { "target": "quick", "title": "Quick Access", "links": [...] },
+    { "target": "social", "title": "Social Media", "links": [...] }
+  ]
+}
 ```
 
-Each day config is a typed TypeScript object:
+Day 7 (Sunday/home) was the most populated: all 6 sections from sites.json. Weekday configs (day-1 through day-5) were sparser: typically just Quick Access + Social Media. Day 0 was an include directive pointing to another file.
+
+### Current Site Structure
+
+TypeScript configs at `src/config/days/*.ts`. Each implements `DayConfig` with a flat `quickLinks: QuickLink[]` array. The `QuickLink` interface is minimal: `{ name, url, icon? }`.
+
+The widget system is **hardcoded in `index.astro`**: widgets are manually imported and rendered in order, wrapped in `WidgetWrapper` error boundaries. The `WidgetSlot` array in DayConfig (`widgets: [{ id: "clock" }, ...]`) is defined but **not used for dynamic rendering**. All 7 days define the same 5 widgets.
+
+### Gap Analysis
+
+| Feature | Old Site | Current Site |
+|---------|----------|--------------|
+| Links per day | 10-20+ across multiple sections | 4 flat links |
+| Organization | Named sections (Socials, Sports, Finance) | Single array |
+| Unique link count | ~30 | ~12 (duplicated across days) |
+| Styling | Per-link Tailwind classes | None (theme-driven) |
+| Embedded content | iframe support for KenPom, ETR, etc. | Not supported |
+
+### Recommended Approach
+
+**Option A (Minimal): Expand `quickLinks` array per day.** Keep the flat array but populate with all relevant links per day. Simple, no type changes needed.
+
+**Option B (Sections): Add `linkSections` to DayConfig.** New interface:
+```typescript
+interface LinkSection {
+  title: string;
+  icon?: string;
+  links: QuickLink[];
+}
+```
+Add `linkSections?: LinkSection[]` to DayConfig alongside the existing `quickLinks`. The QuickLinksWidget renders sections with headers. `quickLinks` stays as the fallback/primary set.
+
+**Recommendation: Option B.** The old site used sections for good reason: 30+ links without categories is unusable. This is a small type change with a proportional UI update to QuickLinksWidget. The `quickLinks` field can remain as the "featured" top row, with `linkSections` providing the categorized expansion below.
+
+### Links to Port (from sites.json and issue #1)
+
+**Socials** (4): Twitter/X, Instagram, Reddit, YouTube
+**Sports News** (3): Auburn On3, Auburn Message Board, Chelsea FC
+**Sports Betting** (5): DraftKings, Action Network, KenPom, ETR, Fantasy Labs
+**Fantasy Sports** (5): ESPN Fantasy Baseball, Yahoo FF x3, Sleeper
+**Professional** (3): Gmail, Yahoo Mail, LinkedIn
+**Finances** (4): Bank placeholders (need real URLs from user)
+
+Total: ~24 links to distribute across 7 day configs.
+
+**Day mapping based on old site patterns and issue #1 guidance:**
+- **Weekdays (Mon-Fri)**: Quick Access top row (Gmail, Calendar, LinkedIn, DraftKings). Socials section. Sports section compressed or hidden.
+- **Weekends (Sat-Sun)**: Sports/betting/fantasy prominent. Socials always present. Professional secondary.
+- **All days**: Socials always available.
+
+---
+
+## Issue #2: Calendar Widget with ICS Support
+
+### ICS Parsing Library: ical.js
+
+| Library | Browser | RFC 5545 | RRULE | Deps | Status |
+|---------|---------|----------|-------|------|--------|
+| **ical.js** (kewisch) | Native | Full | Full | Zero | v2.2.1, Mozilla-backed |
+| node-ical | Node only | Full | Full | Many | Server-only |
+| cal-parser | Yes | Partial | Limited | Few | Low maturity |
+| tsdav | Yes | N/A | N/A | Some | CalDAV client, not parser |
+
+**ical.js** (`npm install ical.js`) is the clear winner:
+- Designed for the web, zero dependencies
+- Parses RFC 5545 (iCalendar), RFC 7265 (jCal)
+- Full RRULE, RDATE, EXDATE recurrence expansion via `RecurExpansion` class
+- Browser import: `import ICAL from "ical.js"` or via unpkg CDN
+- TypeScript types available
+- Timezone support via optional `ical.timezones.js` addon (adds bundle size; skip if events have embedded VTIMEZONE data, which most do)
+- Current version: v2.2.1
+
+### CORS: The Core Problem
+
+Calendar providers (iCloud, Google) do not send `Access-Control-Allow-Origin` headers on ICS feed responses. Browser `fetch()` calls from a different origin are blocked by CORS policy. This is by design: calendar feeds are intended for server-side consumption (Outlook, Apple Calendar apps), not browser JavaScript.
+
+**There is no frontend-only workaround.** A server-side proxy is required.
+
+### Proxy Options (ranked by fit)
+
+**1. Vercel API Route / Serverless Function (Best fit)**
+
+The site already deploys to Vercel. Two sub-options:
+
+**1a. Standalone `api/` directory (recommended).** Create `api/calendar-proxy.ts` at the project root. Vercel auto-deploys files in `api/` as serverless functions, independent of Astro. Keeps Astro fully static (`output: 'static'`). No adapter change needed.
 
 ```typescript
-interface DayConfig {
-  theme: {
-    primary: string;
-    secondary: string;
-    accent: string;
-    background: string;
-    surface: string;
-    text: string;
-    fontFamily?: string;
-  };
-  greeting: {
-    morning: string;   // before 12:00
-    afternoon: string; // 12:00-17:00
-    evening: string;   // after 17:00
-  };
-  widgets: Array<{ id: string; props?: Record<string, unknown> }>;
-  quickLinks: Array<{ name: string; url: string; icon?: string }>;
-  focusMode: string;
+// api/calendar-proxy.ts
+export default async function handler(req, res) {
+  const { url } = req.body;
+  const response = await fetch(url.replace('webcal://', 'https://'));
+  const text = await response.text();
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Content-Type', 'text/calendar');
+  res.status(200).send(text);
 }
 ```
 
-### Widget Architecture (Astro Islands)
+**1b. Astro SSR with Vercel adapter.** Switch to `output: 'hybrid'`, add `@astrojs/vercel`. Astro pages can be server-rendered. More powerful but changes the deployment model.
 
-Each widget is an isolated Astro island:
+**Recommendation: 1a.** Keep Astro static. The proxy is a single file, 15 lines of code.
 
-```astro
-<!-- In the page layout -->
-<ClockWidget client:load theme={dayConfig.theme} />
-<WeatherWidget client:idle location={config.location} />
-<QuickLinks client:load links={dayConfig.quickLinks} />
-<QuoteWidget client:idle />
-<NotesWidget client:visible />
+**2. Cloudflare Worker (Good alternative)**
+
+Separate deployment. Cloudflare free tier: 100K requests/day. Well-documented CORS proxy pattern. Adds operational complexity (separate deploy, separate domain/subdomain).
+
+**3. Vercel Edge Function**
+
+Similar to option 1 but runs on the edge (V8 runtime, no Node.js APIs). Faster cold starts. Use `export const config = { runtime: 'edge' }`. Good fit if the proxy is simple (it is).
+
+### Security Considerations for the Proxy
+
+- Accept ICS URLs via POST body, not query string (avoids logging auth tokens in server logs)
+- Allowlist domains: only proxy requests to known calendar providers (iCloud, Google, etc.)
+- Rate limit: prevent abuse if the proxy URL is discovered
+- iCloud public calendar URLs contain authentication tokens in the URL path; treat them as secrets
+
+### Architecture for Calendar Widget
+
+```
+User Config (ICS URLs in site config or env vars)
+  → CalendarWidget (Preact component)
+    → fetch('/api/calendar-proxy', { method: 'POST', body: { url } })
+      → Vercel serverless function fetches ICS from provider
+      → Returns ICS text with CORS headers
+    → ICAL.parse(icsText) via ical.js
+    → Filter to today's events
+    → Render event list sorted by time
+    → (Future) Expose event context for content-aware adaptation
 ```
 
-Hydration strategy per widget:
-- **Clock**: `client:load` (must be interactive immediately, updates every second)
-- **Weather**: `client:idle` (can wait for browser idle, fetches API data)
-- **Quick Links**: `client:load` (above the fold, primary interaction target)
-- **Quote**: `client:idle` (decorative, not urgent)
-- **Notes/Scratchpad**: `client:visible` (likely below fold, localStorage I/O)
+### Calendar Config Structure
 
-### Widget Isolation / Error Boundaries
-
-Astro does not have built-in error boundaries for islands. Recommended approach:
-
-1. Each widget wrapped in a try/catch at the component level
-2. A `<WidgetErrorFallback>` component shown when a widget fails
-3. Widget failures logged to console but never propagate to parent
-4. Implementation: wrap each island in an error boundary component (if using React islands) or use Svelte's `{#await}` / `onError` patterns
-
-### Theme Switching
-
-The `data-day` attribute approach on `<html>`:
-
-```css
-[data-day="monday"] {
-  --color-primary: #4A90D9;
-  --color-background: #F0F4F8;
-  /* ... */
+Add to `src/config/types.ts`:
+```typescript
+interface CalendarSource {
+  name: string;       // "Work", "Personal", "Auburn Football"
+  url: string;        // ICS/webcal URL
+  color?: string;     // hex color for event dots
 }
-[data-day="friday"] {
-  --color-primary: #E8A838;
-  --color-background: #FFF8F0;
-  /* ... */
+
+interface CalendarConfig {
+  sources: CalendarSource[];
+  refreshMinutes?: number; // default 15
 }
 ```
 
-JavaScript on page load:
-```javascript
-const days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
-document.documentElement.setAttribute('data-day', days[new Date().getDay()]);
+Calendar sources are global (not per-day), so add to a new `src/config/calendar.ts` or to `defaults.ts`.
+
+### Caching Strategy
+
+- **localStorage cache** with configurable TTL (default 15 min)
+- Cache key: hash of ICS URL
+- On page load: render cached data immediately, fetch fresh data in background
+- Stale-while-revalidate pattern for seamless UX
+- Manual refresh button in the widget UI
+
+### iCloud-Specific Notes
+
+- Public calendar URL format: `webcal://p##-caldav.icloud.com/published/2/...`
+- The `webcal://` scheme is just `https://` with a different protocol prefix; the proxy should normalize it
+- Must enable "Public Calendar" sharing in iCloud settings per calendar
+- Family and Birthday calendars **cannot** be exported via ICS (Apple limitation)
+- Apple periodically changes server configs; URLs may need re-sharing
+
+### Content-Aware Adaptation (Stretch Goal)
+
+Issue #2 describes using calendar data to influence the dashboard. Recommended approach for later implementation:
+
+**Rule-based matching:**
+```typescript
+interface CalendarRule {
+  match: RegExp | string;  // match against event title
+  promote?: string[];      // link section IDs to promote
+  suppress?: string[];     // link section IDs to hide
+}
 ```
 
-This runs before any framework hydration, so the correct theme is applied on first paint (no flash of wrong theme).
+Examples: If event title matches "Auburn", promote sports sections. If 3+ meetings today, suppress betting/social sections.
 
-### Accessibility
+This is a Phase 2 concern. MVP should display events only.
 
-- All 7 day themes must pass WCAG AA contrast ratios (4.5:1 for normal text, 3:1 for large text)
-- Use `oklch()` color space for perceptually uniform theme generation
-- Keyboard navigation for all interactive elements
-- `prefers-reduced-motion` respected for any animations
-- `prefers-color-scheme` could optionally override day theme for dark mode users
+---
 
-## External APIs
+## Backlog Assessment
 
-### Weather: Open-Meteo (strong recommendation)
+Current backlog items from `.factory/strategy/backlog.md`:
+1. "Enable GitHub Pages in repository settings" : **Obsolete.** Site is on Vercel now, not GitHub Pages.
+2. "Default weather location" : **Done** (defaults.ts has London fallback).
+3. "Personalize quick links" : **This is Issue #1.** Actionable.
+4. "Port personalized links from old site" and "add calendar widget" : **These are Issues #1 and #2.** Actionable, the focus of this research.
 
-[Open-Meteo](https://open-meteo.com/) is the ideal choice:
+---
 
-- **No API key required**: Works from browser JavaScript immediately
-- **Free for non-commercial use**: Perfect for a personal homepage
-- **CORS-enabled**: Can be called directly from client-side JS
-- **Geocoding API**: Separate endpoint for location lookup by name
-- **WMO weather codes**: Standardized codes for weather conditions (mappable to icons)
-- **High accuracy**: Sources data from national weather services globally
+## Recommended Implementation Order
 
-Example request:
-```
-https://api.open-meteo.com/v1/forecast?latitude=42.36&longitude=-71.06&current_weather=true
-```
+1. **Issue #1 first**: Port links, add `LinkSection` type, update QuickLinksWidget. No external dependencies, no proxy needed, immediate user value.
+2. **Issue #2 second**: Add `ical.js` dependency, create Vercel API proxy, build CalendarWidget. Depends on having the link sections in place if content-aware adaptation is desired later.
 
-Response includes: temperature, wind speed, wind direction, weather code, and time.
+## Complexity Assessment
 
-**Geolocation strategy**:
-1. Try browser `navigator.geolocation` API (requires user permission)
-2. Fall back to config-defined default coordinates
-3. Cache last-known coordinates in localStorage
-
-### Quotes: Static Embedded List (recommended for v1)
-
-For v1, embed a curated list of ~50-100 quotes directly in the source:
-
-- **Why not an external API?** ZenQuotes, Quotable, and similar APIs have had reliability issues. For a start page that loads every time you open a browser tab, depending on an external API for decorative content is fragile.
-- **Approach**: A `quotes.ts` file with an array of `{ text, author }` objects. Select based on day-of-year (`new Date().getDay()` for weekly rotation, or hash of date for daily).
-- **Stretch**: Add [ZenQuotes.io](https://zenquotes.io/) (`/api/today` endpoint, no auth) as an optional external source with the static list as fallback.
-
-### No-Auth API Summary
-
-| API | Auth | CORS | Reliability | Use |
-|-----|------|------|-------------|-----|
-| [Open-Meteo](https://open-meteo.com/) | None | Yes | High | Weather (v1) |
-| [ZenQuotes](https://zenquotes.io/) | None | Limited | Medium | Quotes (stretch) |
-| Static embedded | N/A | N/A | Perfect | Quotes (v1) |
-
-## Potential Pitfalls
-
-1. **Theme flash on load**: If day detection runs after first paint, users see a flash of default theme. Mitigation: inline a `<script>` in `<head>` that sets `data-day` before any rendering.
-
-2. **Weather widget CORS**: Some weather APIs block browser requests. Open-Meteo explicitly supports CORS, so this is avoided with the recommended API.
-
-3. **Geolocation permission fatigue**: Browser geolocation prompts on every new tab open would be annoying. Mitigation: cache coordinates in localStorage, only prompt once.
-
-4. **localStorage quota**: Notes/scratchpad could theoretically fill localStorage (~5MB limit). Mitigation: warn users at 80% capacity, trim oldest data.
-
-5. **Widget error cascade**: One broken widget (e.g., weather API down) could break the whole page. Mitigation: error boundaries per widget, graceful degradation UI.
-
-6. **Accessibility across 7 themes**: Maintaining WCAG AA contrast across 7 different color schemes is non-trivial. Mitigation: build contrast checking into the eval script; use a constrained palette system.
-
-7. **GitHub Pages SPA routing**: GitHub Pages doesn't support SPA routing natively. Not an issue for Astro static output (each page is a real HTML file), but worth noting if adding client-side navigation later.
-
-8. **Timezone edge cases**: Day-of-week detection should use the user's local timezone (which `new Date().getDay()` does by default). No server-side timezone logic needed.
-
-## MVP Scope (First Cycle)
-
-Aligned with the spec's backlog:
-
-1. **Scaffold**: Astro project, TypeScript strict, GitHub Actions deploy to Pages
-2. **Day system**: Config loader, 7 day configs with themes, layout that swaps by day
-3. **Core widgets**: Clock, weather (Open-Meteo), quick links
-4. **All 7 day configs**: Distinct themes, greetings, quick links (sensible defaults)
-5. **Notes widget**: Scratchpad with localStorage persistence
-6. **Quote widget**: Static rotating list, day-based selection
-7. **README**: Document widget creation and day config editing
+- **Issue #1**: Low complexity. Type change + config population + widget UI update. ~3 files changed, ~7 files with new link data. No new dependencies.
+- **Issue #2 (MVP)**: Medium complexity. New npm dependency (ical.js), new serverless function (api/calendar-proxy.ts), new widget component, new config type, localStorage caching logic. ~6-8 new/changed files.
+- **Issue #2 (Content-aware)**: High complexity. Rule engine, integration between calendar data and link sections, dynamic layout changes. Defer to separate cycle.
 
 ## References
 
-- [Astro Islands Architecture](https://docs.astro.build/en/concepts/islands/)
-- [Astro GitHub Pages Deploy](https://docs.astro.build/en/guides/deploy/github/)
-- [Open-Meteo Weather API](https://open-meteo.com/)
-- [Bento Startpage](https://github.com/migueravila/Bento)
-- [Catppuccin Startpage](https://github.com/pivoshenko/catppuccin-startpage)
-- [CSS Custom Properties Theming Guide](https://blog.logrocket.com/create-better-themes-with-css-variables/)
-- [Astro Islands State Sharing](https://frontendatscale.com/blog/islands-architecture-state/)
-- [Homepage Widget Tutorial](https://gethomepage.dev/widgets/authoring/tutorial/)
-- [Astro vs SvelteKit 2026](https://www.pkgpulse.com/blog/astro-vs-sveltekit-2026)
+- [ical.js GitHub](https://github.com/mozilla-comm/ical.js/)
+- [ical.js docs](https://kewisch.github.io/ical.js/)
+- [Cloudflare Workers CORS proxy docs](https://developers.cloudflare.com/workers/examples/cors-header-proxy/)
+- [Vercel CORS guide](https://vercel.com/kb/guide/how-to-enable-cors)
+- [Vercel Functions docs](https://vercel.com/docs/functions)
+- [gabanz/whenidontwork: Serverless ICS on Cloudflare Workers](https://github.com/gabanz/whenidontwork)
+- [CORS proxy with Cloudflare Workers](https://rednafi.com/javascript/cors-proxy-with-cloudflare-workers/)
+- [ICS-powered web app with Azure proxy](https://bexelbie.com/2026/02/18/online-compact-calendar)
+- [Astro Vercel adapter docs](https://docs.astro.build/en/guides/integrations-guide/vercel/)

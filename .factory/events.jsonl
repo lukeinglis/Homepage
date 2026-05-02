@@ -40,3 +40,31 @@
 {"type": "agent.completed", "timestamp": "2026-05-02T18:30:16.003237+00:00", "project": "personal-website", "agent": "archivist", "data": {"return_code": 0}}
 {"type": "summary.started", "timestamp": "2026-05-02T18:30:22.727184+00:00", "project": "personal-website", "agent": null, "data": {}}
 {"type": "summary.completed", "timestamp": "2026-05-02T18:30:22.733486+00:00", "project": "personal-website", "agent": null, "data": {"kept": 0, "reverted": 0, "errored": 0, "backlog": 3}}
+{"type": "detect", "timestamp": "2026-05-02T18:30:38.751852+00:00", "project": "personal-website", "agent": null, "data": {"state": "has_factory"}}
+{"type": "detect", "timestamp": "2026-05-02T20:07:10.048508+00:00", "project": "", "agent": null, "data": {"state": "has_factory"}}
+{"type": "study.started", "timestamp": "2026-05-02T20:08:48.626258+00:00", "project": "personal-website", "agent": null, "data": {}}
+{"type": "study.completed", "timestamp": "2026-05-02T20:08:50.747078+00:00", "project": "personal-website", "agent": null, "data": {"chars": 10315}}
+{"type": "agent.started", "timestamp": "2026-05-02T20:09:01.827698+00:00", "project": "personal-website", "agent": "researcher", "data": {"task": "Mode 2 research for /Users/linglis/factory-projects/personal-website. \n\n## Focus Target\nGitHub issues #1 and #2:\n- Issue #1: Port personalized links from old site into day configs (src/config/days/*.t"}}
+{"type": "agent.failed", "timestamp": "2026-05-02T20:14:01.865002+00:00", "project": "personal-website", "agent": "researcher", "data": {"return_code": 1, "stderr": "Agent timed out after 300.0s"}}
+{"type": "agent.started", "timestamp": "2026-05-02T20:14:10.199476+00:00", "project": "personal-website", "agent": "researcher", "data": {"task": "Mode 2 research for /Users/linglis/factory-projects/personal-website.\n\nFocus: GitHub issues #1 (port personalized links) and #2 (add calendar widget with ICS support).\n\nResearch these specific topics:"}}
+{"type": "agent.completed", "timestamp": "2026-05-02T20:21:01.807838+00:00", "project": "personal-website", "agent": "researcher", "data": {"return_code": 0}}
+{"type": "agent.started", "timestamp": "2026-05-02T20:21:41.334391+00:00", "project": "personal-website", "agent": "archivist", "data": {"task": "Record the Researcher's findings for the personal-website project. Read .factory/strategy/research.md and .factory/reviews/ceo-verdict-researcher.md. The research covers: old site link structure (30+ "}}
+{"type": "agent.failed", "timestamp": "2026-05-02T20:23:41.362275+00:00", "project": "personal-website", "agent": "archivist", "data": {"return_code": 1, "stderr": "Agent timed out after 120.0s"}}
+{"type": "eval.started", "timestamp": "2026-05-02T20:23:52.740444+00:00", "project": "personal-website", "agent": null, "data": {"command": "node eval/score.cjs"}}
+{"type": "eval.completed", "timestamp": "2026-05-02T20:24:26.388138+00:00", "project": "personal-website", "agent": null, "data": {"composite": 0.47000000000000003, "passed": false, "dimensions": 11}}
+{"type": "eval.started", "timestamp": "2026-05-02T20:24:28.846737+00:00", "project": "personal-website", "agent": null, "data": {"command": "node eval/score.cjs"}}
+{"type": "eval.completed", "timestamp": "2026-05-02T20:25:05.139297+00:00", "project": "personal-website", "agent": null, "data": {"composite": 0.47000000000000003, "passed": false, "dimensions": 11}}
+{"type": "agent.started", "timestamp": "2026-05-02T20:25:30.206582+00:00", "project": "personal-website", "agent": "strategist", "data": {"task": "Generate a single focused hypothesis for /Users/linglis/factory-projects/personal-website.\n\n## Focus Directive (Targeted Mode)\nTarget: Port personalized links from old site into day configs (GitHub is"}}
+{"type": "agent.completed", "timestamp": "2026-05-02T20:27:21.131254+00:00", "project": "personal-website", "agent": "strategist", "data": {"return_code": 0}}
+{"type": "experiment.begin", "timestamp": "2026-05-02T20:27:54.798059+00:00", "project": "personal-website", "agent": null, "data": {"exp_id": 1, "hypothesis": "Port categorized links from old site and add calendar widget with ICS proxy"}}
+{"type": "agent.started", "timestamp": "2026-05-02T20:28:38.376548+00:00", "project": "personal-website", "agent": "builder", "data": {"task": "Implement GitHub issue #3 in lukeinglis/Homepage.\n\n1. Read the issue: gh issue view 3\n2. cd /Users/linglis/factory-projects/personal-website, read CLAUDE.md and factory.md\n3. Read the CEO-approved str"}}
+{"type": "agent.failed", "timestamp": "2026-05-02T21:01:56.345273+00:00", "project": "personal-website", "agent": "builder", "data": {"return_code": 1, "stderr": "Agent timed out after 600.0s"}}
+{"type": "eval.started", "timestamp": "2026-05-02T21:08:09.861970+00:00", "project": "personal-website", "agent": null, "data": {"command": "node eval/score.cjs"}}
+{"type": "eval.completed", "timestamp": "2026-05-02T21:08:47.244215+00:00", "project": "personal-website", "agent": null, "data": {"composite": 0.47000000000000003, "passed": false, "dimensions": 11}}
+{"type": "guard.completed", "timestamp": "2026-05-02T21:09:22.567192+00:00", "project": "personal-website", "agent": null, "data": {"violations": 2, "clean": false}}
+{"type": "precheck.completed", "timestamp": "2026-05-02T21:09:25.144676+00:00", "project": "personal-website", "agent": null, "data": {"passed": false, "failures": ["score_direction", "scope"]}}
+{"type": "guard.completed", "timestamp": "2026-05-02T21:10:13.377540+00:00", "project": "personal-website", "agent": null, "data": {"violations": 1, "clean": false}}
+{"type": "precheck.completed", "timestamp": "2026-05-02T21:10:15.472482+00:00", "project": "personal-website", "agent": null, "data": {"passed": false, "failures": ["scope"]}}
+{"type": "experiment.finalize", "timestamp": "2026-05-02T21:11:42.415683+00:00", "project": "personal-website", "agent": null, "data": {"exp_id": 1, "verdict": "keep", "hypothesis": "Port categorized links from old site and add calendar widget with ICS proxy"}}
+{"type": "summary.started", "timestamp": "2026-05-02T21:11:55.190067+00:00", "project": "personal-website", "agent": null, "data": {}}
+{"type": "summary.completed", "timestamp": "2026-05-02T21:11:55.199397+00:00", "project": "personal-website", "agent": null, "data": {"kept": 1, "reverted": 0, "errored": 0, "backlog": 4}}

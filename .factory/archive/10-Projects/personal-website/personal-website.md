@@ -15,11 +15,12 @@ A day-aware adaptive personal dashboard/start page. Theme, greeting, widgets, an
 
 ## Status
 
-- **State**: Build plan approved, pre-build
-- **Stack**: Astro + TypeScript (strict) + GitHub Pages
-- **Current Score**: 0.0 (greenfield)
-- **Experiments Run**: 0
-- **Kept**: 0, **Reverted**: 0
+- **State**: Cycle 2 research complete, strategy pending
+- **Stack**: Astro 6 + Preact + TypeScript, deployed to Vercel
+- **Current Score**: 1.0 (build complete, 6/6 phases kept)
+- **Experiments Run**: 6
+- **Kept**: 6, **Reverted**: 0
+- **Next**: Issue #1 (personalized links) + Issue #2 MVP (calendar widget)
 
 ## Build Plan (Approved 2026-05-02)
 
@@ -69,9 +70,10 @@ Build order is strictly sequential: each phase depends on the prior.
 
 ## Deferred (Requires Human)
 
-- Enable GitHub Pages: Settings > Pages > Source > GitHub Actions
-- Update default weather location in `src/config/defaults.ts`
-- Personalize quick links in `src/config/days/*.ts`
+- ~~Enable GitHub Pages~~ : **Obsolete.** Deployed to Vercel.
+- ~~Default weather location~~ : **Done.** London fallback in defaults.ts.
+- Personalize quick links: **Issue #1** (Cycle 2)
+- Provide real bank/finance URLs for link config
 
 ## Research Notes
 

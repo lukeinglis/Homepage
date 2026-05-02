@@ -1,18 +1,16 @@
 # Researcher Agent Output
 
-- **timestamp:** 2026-05-02T17:26:27Z
+- **timestamp:** 2026-05-02T20:21:01Z
 - **exit_code:** 0
 
 ---
 
-Discovery complete. Here's what I produced:
+Research complete. Written to `.factory/strategy/research.md` with findings on all four topics:
 
-**`.factory/strategy/research.md`**: Comprehensive research report covering:
-- **Similar projects**: Bento, Catppuccin Startpage, Hiccup (lightweight, GitHub Pages native) plus heavier references (Homepage, Glance, Dashy) for architecture patterns
-- **Framework recommendation: Astro** (strong). Islands architecture is a direct match for the spec's requirements: static HTML shell, independently-hydrating widgets, zero JS by default, official GitHub Pages action, TypeScript built-in. SvelteKit is a viable runner-up but ships unnecessary client-side navigation JS. Next.js is overkill.
-- **Weather API: Open-Meteo**. No API key, CORS-enabled, free for non-commercial use, separate geocoding endpoint
-- **Quotes: Static embedded list** for v1 reliability, with ZenQuotes.io as optional stretch
-- **Architecture patterns**: CSS custom properties with `data-day` attribute for theme switching (inline script in `<head>` prevents flash), typed TypeScript day configs, Astro island hydration directives per widget type
-- **Pitfalls identified**: Theme flash, geolocation prompt fatigue, localStorage quota, widget error cascade, WCAG AA across 7 themes
+1. **Old site link structure**: JSON configs with 6 categorized sections, ~30 links. Current site has only 4 flat links per day. Recommend adding `LinkSection` type to restore categorized organization.
 
-**`.factory/eval_profile.json`** + **`eval/score.js`**: Eval system with 6 dimensions (build 0.20, tests 0.25, lint 0.15, day-config completeness 0.15, widget isolation 0.15, Lighthouse 0.10), threshold 0.80.
+2. **ICS parsing library**: **ical.js** (v2.2.1) is the clear winner. Zero deps, browser-native, full RFC 5545 with recurrence support, Mozilla-backed.
+
+3. **CORS for ICS feeds**: No frontend workaround exists. Best option is a **standalone Vercel API route** (`api/calendar-proxy.ts`) that keeps Astro fully static while proxying ICS fetches server-side. ~15 lines of code.
+
+4. **Current day config structure**: `DayConfig` has `quickLinks: QuickLink[]` (name, url, icon). Widget system is hardcoded in `index.astro`, not dynamic. Adding a calendar widget follows the same pattern: create component, import in index.astro, wrap in WidgetWrapper.

@@ -1,11 +1,5 @@
-## CEO Review: Researcher Agent
+## CEO Review: Researcher Agent (Cycle 2, Issues #1 + #2)
 - **Verdict:** PROCEED
-- **Rationale:** Research is comprehensive and well-grounded. Framework comparison (Astro vs SvelteKit vs Next.js) is thorough with concrete criteria. Astro is clearly the right pick: islands architecture directly maps to the widget isolation requirement, static output works on GitHub Pages out of the box, and progressive hydration directives (`client:load`, `client:idle`, `client:visible`) let each widget control its own loading strategy. Open-Meteo for weather (no API key, CORS-enabled) and static embedded quotes are pragmatic choices for a start page.
-- **Issues found:** None. No calendar-time estimates. Good depth on pitfalls (theme flash, geolocation caching, widget error cascade, WCAG AA across 7 themes).
-- **Instructions for next step:** The Strategist should use this research to create a phased build plan. Key priorities from the research:
-  1. Astro + TypeScript + GitHub Pages is the stack
-  2. Day-config system with CSS custom properties and `data-day` attribute is the theming approach
-  3. Inline `<head>` script for theme detection (prevents flash) is critical for UX
-  4. Open-Meteo for weather, static list for quotes
-  5. Error boundaries per widget are essential for isolation
-  6. All 7 day themes need WCAG AA contrast validation
+- **Rationale:** Research covers all four areas comprehensively. Old site structure is well analyzed (JSON configs with 6 categorized sections, ~30 links). ical.js is clearly the right library (zero deps, browser native, full RFC 5545, Mozilla backed). The CORS proxy solution via Vercel API route (api/calendar-proxy.ts) is pragmatic and keeps Astro static. Current day config structure is understood (flat quickLinks array needs LinkSection expansion).
+- **Issues found:** None significant. The recommendation to split Issue #2 into MVP (display events) vs stretch (content-aware adaptation) is sound.
+- **Instructions for next step:** The Strategist should combine both issues into a single hypothesis. Issue #1 (links) is the foundational work: add LinkSection type, populate all 7 day configs with categorized links from the old site. Issue #2 MVP follows: add ical.js dependency, create Vercel API proxy, build CalendarWidget with localStorage caching. Content-aware adaptation is a stretch goal for a future cycle.

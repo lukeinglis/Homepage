@@ -7,3 +7,8 @@
 - [x] archivist after build phase 5 — 2026-05-02T18:12:55Z
 - [x] archivist after build phase 6 — 2026-05-02T18:22:47Z
 - [x] FINAL archivist — 2026-05-02T18:30:19Z
+- [x] archivist after research — 2026-05-02T20:23:45Z (agent timed out, checkpoint recorded manually)
+- [x] archivist after strategy — 2026-05-02T20:27:50Z
+- [x] archivist after build — 2026-05-02T21:08:09Z
+- [x] archivist after experiment 1 (keep) — 2026-05-02T21:11:47Z
+- [x] FINAL archivist — 2026-05-02T21:11:59Z

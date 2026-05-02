@@ -6,7 +6,7 @@
       "score": 1.0,
       "weight": 0.15,
       "passed": true,
-      "details": "personal-website(js): 12 passed, 0 failed"
+      "details": "personal-website(js): 14 passed, 0 failed"
     },
     {
       "name": "lint",
@@ -20,7 +20,7 @@
       "score": 0.0,
       "weight": 0.05,
       "passed": false,
-      "details": "personal-website(ts): 108 errors"
+      "details": "personal-website(ts): 154 errors"
     },
     {
       "name": "coverage",
