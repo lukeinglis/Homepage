@@ -1,0 +1,42 @@
+{
+  "goal": "A personal browser homepage that adapts its theme, greeting, widgets, and quick links based on the day of the week. Fully static, deployable to GitHub Pages, built with Astro and TypeScript.",
+  "scope": [
+    "src/**",
+    "public/**",
+    "config/**",
+    "tests/**",
+    "package.json",
+    "tsconfig.json",
+    "astro.config.mjs",
+    "README.md",
+    ".github/**"
+  ],
+  "guards": [
+    "Do not delete or overwrite existing tests",
+    "Do not modify files outside the declared scope",
+    "Do not introduce secrets or credentials into the repository",
+    "Do not add server-side dependencies: the site must be deployable as fully static",
+    "Each widget must be isolated: failure in one widget must not break the page",
+    "Maintain WCAG AA color contrast across all day themes"
+  ],
+  "eval_command": "node eval/score.cjs",
+  "eval_threshold": 0.8,
+  "constraints": [],
+  "hypothesis_budget": {
+    "min_growth": 2,
+    "max_new": 2
+  },
+  "target_branch": "main",
+  "smoke_test": "npm run build && grep -q 'data-day' dist/index.html",
+  "project_eval": [],
+  "eval_weights": {
+    "hygiene": 0.5,
+    "growth": 0.5,
+    "project": 0.0
+  },
+  "research_target": null,
+  "mutable_surfaces": [],
+  "fixed_surfaces": [],
+  "research_constraints": [],
+  "cost_budget": null
+}

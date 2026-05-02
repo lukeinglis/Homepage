@@ -1,0 +1,14 @@
+## E2E Verification
+- **Status:** PASS
+- **Start command:** `npm run dev` (dev), `npm run build && npx astro preview` (production)
+- **What was tested:**
+  - Desktop (1280x720): Page loads, Saturday coral theme applied, greeting "Lazy afternoon. Enjoy the moment." correct for Saturday afternoon
+  - Clock widget: Shows correct time (2:23 PM), updates live, correct date
+  - Quick links: 4 Saturday-specific links (YouTube, Reddit, Music, Recipes) rendered with emoji icons
+  - Quote widget: Daily quote displayed with author attribution
+  - Notes widget: Textarea with placeholder, character count, localStorage ready
+  - Weather widget: Hydrated and showing loading skeleton (geolocation pending in headless browser, correct graceful degradation)
+  - Mobile (375x812): Single-column responsive layout, all widgets stacked correctly
+  - Console: Zero errors, zero warnings
+- **Issues found:** Weather widget loading skeleton is nearly invisible against light Saturday background (subtle CSS issue, not a blocker). Weather API not reachable in headless mode due to geolocation timeout.
+- **Smoke test configured:** yes

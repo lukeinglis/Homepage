@@ -1,0 +1,53 @@
+{
+  "project": "personal-website",
+  "type": "web-app",
+  "framework": "astro",
+  "language": "typescript",
+  "human_reviewed": true,
+  "eval_command": "node eval/score.js",
+  "threshold": 0.8,
+  "dimensions": [
+    {
+      "id": "build",
+      "name": "Build Success",
+      "weight": 0.20,
+      "command": "npm run build",
+      "description": "Astro static build completes without errors"
+    },
+    {
+      "id": "tests",
+      "name": "Test Suite",
+      "weight": 0.25,
+      "command": "npm test",
+      "description": "All unit and integration tests pass"
+    },
+    {
+      "id": "lint",
+      "name": "Lint & Type Check",
+      "weight": 0.15,
+      "command": "npm run lint",
+      "description": "ESLint and TypeScript type checking pass"
+    },
+    {
+      "id": "day_configs",
+      "name": "Day Config Completeness",
+      "weight": 0.15,
+      "command": "node eval/check-day-configs.js",
+      "description": "All 7 day configs exist and have valid theme, greeting, widgets, and quickLinks"
+    },
+    {
+      "id": "widget_isolation",
+      "name": "Widget Isolation",
+      "weight": 0.15,
+      "command": "npm run test:isolation",
+      "description": "A deliberately broken widget does not crash the page"
+    },
+    {
+      "id": "lighthouse",
+      "name": "Lighthouse Performance",
+      "weight": 0.10,
+      "command": "npm run lighthouse",
+      "description": "Lighthouse performance score >= 90 on built output"
+    }
+  ]
+}
