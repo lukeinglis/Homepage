@@ -4,6 +4,7 @@ import { getDayConfig, getGreeting, getTimeOfDay } from "../config/loader";
 import { WidgetWrapper } from "../components/WidgetWrapper";
 import { ClockWidget } from "../components/ClockWidget";
 import { QuickLinksWidget } from "../components/QuickLinksWidget";
+import { WeatherWidget } from "../components/WeatherWidget";
 
 const config = getDayConfig();
 const greeting = getGreeting();
@@ -22,13 +23,20 @@ const timeOfDay = getTimeOfDay();
         <ClockWidget />
       </WidgetWrapper>
 
+      <WidgetWrapper name="weather" client:idle>
+        <WeatherWidget />
+      </WidgetWrapper>
+
       <WidgetWrapper name="quickLinks" client:load>
         <QuickLinksWidget links={config.quickLinks} />
       </WidgetWrapper>
 
       {
         config.widgets
-          .filter((w) => w.id !== "clock" && w.id !== "quickLinks")
+          .filter(
+            (w) =>
+              w.id !== "clock" && w.id !== "quickLinks" && w.id !== "weather",
+          )
           .map((widget) => (
             <div class="widget-placeholder" data-widget={widget.id}>
               {widget.id}
