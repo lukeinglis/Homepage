@@ -46,8 +46,8 @@ describe("getLocation", () => {
       getCurrentPosition: vi.fn(
         (
           success: PositionCallback,
-          _error?: PositionErrorCallback | null,
-          _options?: PositionOptions,
+          _error?: PositionErrorCallback | null, // eslint-disable-line @typescript-eslint/no-unused-vars
+          _options?: PositionOptions, // eslint-disable-line @typescript-eslint/no-unused-vars
         ) => {
           success({
             coords: { latitude: 48.85, longitude: 2.35 },
