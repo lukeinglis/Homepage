@@ -17,10 +17,14 @@
     "lighthouse": "echo 'Lighthouse audit: stub (pass)' && exit 0"
   },
   "dependencies": {
-    "astro": "^6.2.1"
+    "@astrojs/preact": "^5.1.2",
+    "astro": "^6.2.1",
+    "preact": "^10.29.1"
   },
   "devDependencies": {
+    "@preact/preset-vite": "^2.10.5",
     "@testing-library/dom": "^10.4.1",
+    "@testing-library/preact": "^3.2.4",
     "@typescript-eslint/eslint-plugin": "^8.59.1",
     "@typescript-eslint/parser": "^8.59.1",
     "eslint": "^10.3.0",

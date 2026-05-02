@@ -151,7 +151,7 @@ const { title = "Personal Dashboard" } = Astro.props;
         gap: 1rem;
       }
 
-      @media (min-width: 768px) {
+      @media (min-width: 640px) {
         .widget-grid {
           grid-template-columns: repeat(2, 1fr);
         }
@@ -174,6 +174,102 @@ const { title = "Personal Dashboard" } = Astro.props;
         min-height: 120px;
         color: var(--color-secondary);
         font-size: 0.875rem;
+      }
+
+      .widget {
+        background-color: var(--color-surface);
+        border-radius: 12px;
+        padding: 1.5rem;
+        min-height: 120px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      }
+
+      .widget-error {
+        background-color: var(--color-surface);
+        border: 2px dashed var(--color-accent);
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 120px;
+        color: var(--color-secondary);
+        font-size: 0.875rem;
+      }
+
+      .clock-widget {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .clock-time {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--color-primary);
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.02em;
+      }
+
+      .clock-date {
+        font-size: 0.875rem;
+        color: var(--color-secondary);
+        margin-top: 0.5rem;
+      }
+
+      .quick-links-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--color-primary);
+        margin-bottom: 0.75rem;
+      }
+
+      .quick-links-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+      }
+
+      .quick-link-card {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.625rem 0.75rem;
+        border-radius: 8px;
+        background-color: var(--color-background);
+        color: var(--color-text);
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: background-color 0.15s ease, transform 0.15s ease;
+      }
+
+      .quick-link-card:hover {
+        background-color: var(--color-accent);
+        transform: translateY(-1px);
+      }
+
+      .quick-link-card:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+      }
+
+      .quick-link-icon {
+        font-size: 1.125rem;
+        flex-shrink: 0;
+      }
+
+      .quick-link-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .quick-links-empty {
+        color: var(--color-secondary);
+        font-size: 0.875rem;
+        text-align: center;
       }
     </style>
   </head>
