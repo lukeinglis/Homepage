@@ -1,4 +1,5 @@
 import { useState, useEffect } from "preact/hooks";
+import ICAL from "ical.js";
 import { calendarConfig } from "../config/calendar";
 
 interface CalendarEvent {
@@ -45,9 +46,6 @@ function setCachedEvents(events: CalendarEvent[]): void {
 
 function parseICS(icsText: string, color?: string): CalendarEvent[] {
   try {
-    const ICAL = (window as Record<string, unknown>).ICAL as typeof import("ical.js") | undefined;
-    if (!ICAL) return [];
-
     const jcal = ICAL.parse(icsText);
     const comp = new ICAL.Component(jcal);
     const vevents = comp.getAllSubcomponents("vevent");
@@ -68,26 +66,14 @@ function parseICS(icsText: string, color?: string): CalendarEvent[] {
       const effectiveEnd = end ?? new Date(start.getTime() + 3600000);
       const allDay = event.startDate?.isDate ?? false;
 
-      if (allDay) {
-        if (start < todayEnd && effectiveEnd > todayStart) {
-          events.push({
-            summary: event.summary ?? "Untitled",
-            startTime: start,
-            endTime: effectiveEnd,
-            allDay: true,
-            color,
-          });
-        }
-      } else {
-        if (start < todayEnd && effectiveEnd > todayStart) {
-          events.push({
-            summary: event.summary ?? "Untitled",
-            startTime: start,
-            endTime: effectiveEnd,
-            allDay: false,
-            color,
-          });
-        }
+      if (start < todayEnd && effectiveEnd > todayStart) {
+        events.push({
+          summary: event.summary ?? "Untitled",
+          startTime: start,
+          endTime: effectiveEnd,
+          allDay,
+          color,
+        });
       }
     }
 

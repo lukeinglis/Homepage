@@ -1,16 +1,5 @@
 import { useState } from "preact/hooks";
-
-interface QuickLink {
-  name: string;
-  url: string;
-  icon?: string;
-}
-
-interface LinkSection {
-  title: string;
-  icon?: string;
-  links: QuickLink[];
-}
+import type { QuickLink, LinkSection } from "../config/types";
 
 interface Props {
   links: QuickLink[];

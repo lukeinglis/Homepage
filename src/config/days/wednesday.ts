@@ -1,4 +1,5 @@
 import type { DayConfig } from "../types";
+import { socialsSection, professionalSection } from "../shared-links";
 
 const wednesday: DayConfig = {
   name: "wednesday",
@@ -28,27 +29,7 @@ const wednesday: DayConfig = {
     { name: "LinkedIn", url: "https://www.linkedin.com", icon: "💼" },
     { name: "DraftKings", url: "https://sportsbook.draftkings.com", icon: "🎲" },
   ],
-  linkSections: [
-    {
-      title: "Socials",
-      icon: "👤",
-      links: [
-        { name: "Twitter/X", url: "https://x.com/home", icon: "𝕏" },
-        { name: "Instagram", url: "https://www.instagram.com/", icon: "📷" },
-        { name: "Reddit", url: "https://www.reddit.com/", icon: "🤖" },
-        { name: "YouTube", url: "https://www.youtube.com/", icon: "📺" },
-      ],
-    },
-    {
-      title: "Email & Professional",
-      icon: "📧",
-      links: [
-        { name: "Gmail", url: "https://mail.google.com" },
-        { name: "Yahoo Mail", url: "https://mail.yahoo.com" },
-        { name: "LinkedIn", url: "https://www.linkedin.com" },
-      ],
-    },
-  ],
+  linkSections: [socialsSection, professionalSection],
   focusText: "Balance day. Review progress and adjust course.",
 };
 
