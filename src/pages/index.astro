@@ -1,18 +1,64 @@
 ---
+import Layout from "../layouts/Layout.astro";
+import { getDayConfig, getGreeting, getTimeOfDay } from "../config/loader";
 
+const config = getDayConfig();
+const greeting = getGreeting();
+const timeOfDay = getTimeOfDay();
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Personal Dashboard</title>
-	</head>
-	<body>
-		<h1>Personal Dashboard</h1>
-		<p>A day-aware personal dashboard.</p>
-	</body>
-</html>
+<Layout>
+  <header class="header">
+    <h1 class="greeting">{greeting}</h1>
+    <p class="focus-text">{config.focusText}</p>
+  </header>
+
+  <main>
+    <section class="widget-grid">
+      {
+        config.widgets.map((widget) => (
+          <div class="widget-placeholder" data-widget={widget.id}>
+            {widget.id}
+          </div>
+        ))
+      }
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .header {
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  .greeting {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .greeting {
+      font-size: 2rem;
+    }
+  }
+
+  .focus-text {
+    font-size: 1rem;
+    color: var(--color-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 768px) {
+    .focus-text {
+      font-size: 1.125rem;
+    }
+  }
+
+  main {
+    padding-top: 1rem;
+  }
+</style>
