@@ -4,7 +4,7 @@ const tuesday: DayConfig = {
   name: "tuesday",
   theme: {
     primary: "#166534",
-    secondary: "#22c55e",
+    secondary: "#15803d",
     accent: "#4ade80",
     background: "#f0fdf4",
     surface: "#ffffff",

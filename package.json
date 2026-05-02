@@ -13,8 +13,8 @@
     "test": "vitest run",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test:isolation": "echo 'Widget isolation tests: stub (pass)' && exit 0",
-    "lighthouse": "echo 'Lighthouse audit: stub (pass)' && exit 0"
+    "test:isolation": "vitest run tests/widget-isolation.test.tsx",
+    "lighthouse": "node scripts/lighthouse.cjs"
   },
   "dependencies": {
     "@astrojs/preact": "^5.1.2",
