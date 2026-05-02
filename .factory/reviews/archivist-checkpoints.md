@@ -12,3 +12,10 @@
 - [x] archivist after build — 2026-05-02T21:08:09Z
 - [x] archivist after experiment 1 (keep) — 2026-05-02T21:11:47Z
 - [x] FINAL archivist — 2026-05-02T21:11:59Z
+- [x] archivist after research — 2026-05-02T23:25:48Z
+- [x] archivist after strategy — 2026-05-02T23:32:16Z
+- [x] archivist after strategy — 2026-05-02T23:32:43Z
+- [x] archivist after build — 2026-05-02T23:48:20Z
+- [x] archivist after experiment 2 (keep) — 2026-05-02T23:55:00Z
+- [x] archivist after experiment 2 (keep) — 2026-05-02T23:57:24Z
+- [x] FINAL archivist — 2026-05-02T23:57:34Z

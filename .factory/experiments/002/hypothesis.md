@@ -1,0 +1,1 @@
+Fix weather blank state (#5), style notes textarea (#6), add per-day favicon (#12): three scoped CSS/UI fixes in one PR

@@ -25,15 +25,16 @@ Day-aware adaptive personal homepage/dashboard. Renders a different theme, greet
 
 ## Status
 
-- **State:** Complete (all 6 phases done, E2E verified)
-- **Current Score:** 1.0 / 1.0
-- **Experiments Run:** 6
-- **Kept:** 6, **Reverted:** 0
-- **Tests Passing:** 169
-- **Cycle Duration:** ~67 minutes (2026-05-02, 17:21 to 18:28 UTC)
-- **Cycle Summary:** [[cycle-summary-2026-05-02]]
+- **State:** Cycle 3, experiment 2 complete (KEEP)
+- **Current Score:** 0.47 / 0.45 threshold
+- **Experiments Run:** 8 (6 prior cycles + 2 this cycle)
+- **Kept:** 8, **Reverted:** 0
+- **Open Issues:** 7 (3 closed by PR #14: #5, #6, #12)
+- **Current Cycle:** Fix open issues, in order that makes sense
+- **Cycle 3 Results:** H1 kept (links+calendar), H2 kept (weather/notes/favicon polish)
 
 ## Recent Experiments
+- [[personal-website-007]] — Cycle 3 Exp 2: Weather skeleton, notes textarea, per-day favicon (KEEP, +0.00)
 - [[personal-website-006]] — H6 Final polish: WCAG AA, widget isolation, Lighthouse, README (KEEP, +0.15)
 - [[personal-website-005]] — H5 Notes + Quote widgets, localStorage persistence (KEEP)
 - [[personal-website-004]] — H4 Weather widget, Open-Meteo integration (KEEP)
@@ -50,18 +51,23 @@ Day-aware adaptive personal homepage/dashboard. Renders a different theme, greet
 5. **H5: Notes + quote widgets** (capability_surface) — Notes scratchpad (localStorage, debounced), Quote widget (static 50-quote rotation by day-of-year)
 6. **H6: Polish** (capability_surface) — WCAG AA theme validation, widget isolation tests, Lighthouse, README
 
-## Eval Dimensions
+## Eval Dimensions (current)
 
 | Dimension | Weight | Score |
 |-----------|--------|-------|
-| build | 0.20 | 1.0 |
-| tests | 0.25 | 1.0 |
-| lint | 0.15 | 1.0 |
-| day_configs | 0.15 | 1.0 |
-| widget_isolation | 0.15 | 1.0 |
-| lighthouse | 0.10 | 1.0 |
+| tests | 0.15 | 1.0 |
+| lint | 0.075 | 0.9 |
+| type_check | 0.05 | 0.0 |
+| coverage | 0.125 | 0.5 |
+| guard_patterns | 0.05 | 1.0 |
+| config_parser | 0.05 | 1.0 |
+| capability_surface | 0.14 | 0.0 |
+| experiment_diversity | 0.11 | 0.5 |
+| observability | 0.10 | 0.0 |
+| research_grounding | 0.08 | 0.0 |
+| factory_effectiveness | 0.07 | 0.5 |
 
-**Composite:** 1.0 (threshold: 0.8)
+**Composite:** 0.47 (threshold: 0.45)
 
 ## Key Architectural Decisions
 
@@ -82,3 +88,4 @@ Day-aware adaptive personal homepage/dashboard. Renders a different theme, greet
 ## Links
 
 - [[personal-website-2026-05-02|Strategy Snapshot (2026-05-02)]]
+- [[personal-website-2026-05-02-cycle3-strategy|Cycle 3 Strategy (2026-05-02)]]

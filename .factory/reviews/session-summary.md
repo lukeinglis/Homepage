@@ -1,17 +1,18 @@
 # Session Summary — personal-website
 
-_Generated: 2026-05-02 21:11 UTC_
+_Generated: 2026-05-02 23:57 UTC_
 
 ## Overview
 
-- **Mode:** improve
-- **Experiments:** 1 total (1 kept, 0 reverted, 0 errors)
+- **Mode:** unknown
+- **Experiments:** 2 total (2 kept, 0 reverted, 0 errors)
 
 ## What Was Built
 
 | # | Hypothesis | Category | Delta | PR |
 |---|------------|----------|-------|----|
 | 1 | Port categorized links from old site and add calendar widget | EXPLORE | — | #4 |
+| 2 | Fix weather blank state (#5), style notes textarea (#6), add | FIX | — | #14 |
 
 ## What Was Deferred
 
