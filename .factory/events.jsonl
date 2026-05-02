@@ -36,3 +36,7 @@
 {"type": "detect", "timestamp": "2026-05-02T18:26:32.360250+00:00", "project": "personal-website", "agent": null, "data": {"state": "evals_pending_review"}}
 {"type": "eval.started", "timestamp": "2026-05-02T18:27:33.100313+00:00", "project": "personal-website", "agent": null, "data": {"command": "node eval/score.cjs"}}
 {"type": "eval.completed", "timestamp": "2026-05-02T18:28:02.473637+00:00", "project": "personal-website", "agent": null, "data": {"composite": 0.47000000000000003, "passed": false, "dimensions": 11}}
+{"type": "agent.started", "timestamp": "2026-05-02T18:28:31.472064+00:00", "project": "personal-website", "agent": "archivist", "data": {"task": "Final archive for the factory build cycle on /Users/linglis/factory-projects/personal-website.\nThis was a complete Build mode cycle (B0-B6) for a personal homepage project.\n1. Read git log for the ful"}}
+{"type": "agent.completed", "timestamp": "2026-05-02T18:30:16.003237+00:00", "project": "personal-website", "agent": "archivist", "data": {"return_code": 0}}
+{"type": "summary.started", "timestamp": "2026-05-02T18:30:22.727184+00:00", "project": "personal-website", "agent": null, "data": {}}
+{"type": "summary.completed", "timestamp": "2026-05-02T18:30:22.733486+00:00", "project": "personal-website", "agent": null, "data": {"kept": 0, "reverted": 0, "errored": 0, "backlog": 3}}
