@@ -1,4 +1,11 @@
 import type { DayConfig } from "../types";
+import {
+  socialsSection,
+  professionalSection,
+  sportsNewsSection,
+  sportsBettingSection,
+  fantasySportsSection,
+} from "../shared-links";
 
 const sunday: DayConfig = {
   name: "sunday",
@@ -23,10 +30,17 @@ const sunday: DayConfig = {
     { id: "notes" },
   ],
   quickLinks: [
-    { name: "Reading", url: "https://medium.com", icon: "📚" },
-    { name: "News", url: "https://news.ycombinator.com", icon: "📰" },
-    { name: "Music", url: "https://open.spotify.com", icon: "🎵" },
-    { name: "Journal", url: "https://notion.so", icon: "✍️" },
+    { name: "DraftKings", url: "https://sportsbook.draftkings.com", icon: "🎲" },
+    { name: "ESPN Fantasy", url: "https://fantasy.espn.com/baseball/league?leagueId=4739&seasonId=2025", icon: "⚾" },
+    { name: "Action Network", url: "https://www.actionnetwork.com", icon: "📊" },
+    { name: "Reddit", url: "https://www.reddit.com/", icon: "🤖" },
+  ],
+  linkSections: [
+    socialsSection,
+    professionalSection,
+    sportsNewsSection,
+    sportsBettingSection,
+    fantasySportsSection,
   ],
   focusText: "Calm day. Reflect on the past week and prepare for the next.",
 };

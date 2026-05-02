@@ -1,4 +1,10 @@
 import type { DayConfig } from "../types";
+import {
+  socialsSection,
+  sportsNewsSection,
+  sportsBettingSection,
+  fantasySportsSection,
+} from "../shared-links";
 
 const saturday: DayConfig = {
   name: "saturday",
@@ -23,10 +29,16 @@ const saturday: DayConfig = {
     { id: "notes" },
   ],
   quickLinks: [
-    { name: "YouTube", url: "https://youtube.com", icon: "📺" },
-    { name: "Reddit", url: "https://reddit.com", icon: "💭" },
-    { name: "Music", url: "https://open.spotify.com", icon: "🎵" },
-    { name: "Recipes", url: "https://www.allrecipes.com", icon: "🍳" },
+    { name: "DraftKings", url: "https://sportsbook.draftkings.com", icon: "🎲" },
+    { name: "ESPN Fantasy", url: "https://fantasy.espn.com/baseball/league?leagueId=4739&seasonId=2025", icon: "⚾" },
+    { name: "Action Network", url: "https://www.actionnetwork.com", icon: "📊" },
+    { name: "Reddit", url: "https://www.reddit.com/", icon: "🤖" },
+  ],
+  linkSections: [
+    socialsSection,
+    sportsNewsSection,
+    sportsBettingSection,
+    fantasySportsSection,
   ],
   focusText: "Your day off. Explore, rest, or pursue a passion project.",
 };

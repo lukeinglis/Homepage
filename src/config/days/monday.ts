@@ -1,4 +1,5 @@
 import type { DayConfig } from "../types";
+import { socialsSection, professionalSection } from "../shared-links";
 
 const monday: DayConfig = {
   name: "monday",
@@ -23,11 +24,12 @@ const monday: DayConfig = {
     { id: "notes" },
   ],
   quickLinks: [
-    { name: "Email", url: "https://mail.google.com", icon: "📧" },
+    { name: "Gmail", url: "https://mail.google.com", icon: "📧" },
     { name: "Calendar", url: "https://calendar.google.com", icon: "📅" },
-    { name: "Tasks", url: "https://todoist.com", icon: "✅" },
-    { name: "Docs", url: "https://docs.google.com", icon: "📝" },
+    { name: "LinkedIn", url: "https://www.linkedin.com", icon: "💼" },
+    { name: "DraftKings", url: "https://sportsbook.draftkings.com", icon: "🎲" },
   ],
+  linkSections: [socialsSection, professionalSection],
   focusText: "Deep work day. Tackle your hardest task first.",
 };
 

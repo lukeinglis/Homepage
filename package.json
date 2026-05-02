@@ -19,6 +19,7 @@
   "dependencies": {
     "@astrojs/preact": "^5.1.2",
     "astro": "^6.2.1",
+    "ical.js": "^2.2.1",
     "preact": "^10.29.1"
   },
   "devDependencies": {

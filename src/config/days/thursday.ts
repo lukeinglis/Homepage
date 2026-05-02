@@ -1,4 +1,5 @@
 import type { DayConfig } from "../types";
+import { socialsSection, professionalSection } from "../shared-links";
 
 const thursday: DayConfig = {
   name: "thursday",
@@ -23,11 +24,12 @@ const thursday: DayConfig = {
     { id: "notes" },
   ],
   quickLinks: [
-    { name: "GitHub", url: "https://github.com", icon: "💻" },
-    { name: "Stack Overflow", url: "https://stackoverflow.com", icon: "🔍" },
-    { name: "Figma", url: "https://figma.com", icon: "🎨" },
-    { name: "Slack", url: "https://slack.com", icon: "💬" },
+    { name: "Gmail", url: "https://mail.google.com", icon: "📧" },
+    { name: "Calendar", url: "https://calendar.google.com", icon: "📅" },
+    { name: "LinkedIn", url: "https://www.linkedin.com", icon: "💼" },
+    { name: "DraftKings", url: "https://sportsbook.draftkings.com", icon: "🎲" },
   ],
+  linkSections: [socialsSection, professionalSection],
   focusText: "Energy day. Channel your momentum into creative solutions.",
 };
 

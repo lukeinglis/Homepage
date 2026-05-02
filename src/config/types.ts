@@ -20,6 +20,12 @@ export interface QuickLink {
   icon?: string;
 }
 
+export interface LinkSection {
+  title: string;
+  icon?: string;
+  links: QuickLink[];
+}
+
 export interface WidgetSlot {
   id: string;
   props?: Record<string, unknown>;
@@ -31,7 +37,19 @@ export interface DayConfig {
   greeting: Greeting;
   widgets: WidgetSlot[];
   quickLinks: QuickLink[];
+  linkSections?: LinkSection[];
   focusText: string;
+}
+
+export interface CalendarSource {
+  name: string;
+  url: string;
+  color?: string;
+}
+
+export interface CalendarConfig {
+  sources: CalendarSource[];
+  cacheTtlMinutes: number;
 }
 
 export type DayName =

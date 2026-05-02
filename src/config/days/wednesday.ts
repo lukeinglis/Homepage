@@ -1,4 +1,5 @@
 import type { DayConfig } from "../types";
+import { socialsSection, professionalSection } from "../shared-links";
 
 const wednesday: DayConfig = {
   name: "wednesday",
@@ -23,11 +24,12 @@ const wednesday: DayConfig = {
     { id: "notes" },
   ],
   quickLinks: [
-    { name: "Email", url: "https://mail.google.com", icon: "📧" },
+    { name: "Gmail", url: "https://mail.google.com", icon: "📧" },
     { name: "Calendar", url: "https://calendar.google.com", icon: "📅" },
-    { name: "Notes", url: "https://notion.so", icon: "📓" },
-    { name: "Drive", url: "https://drive.google.com", icon: "📁" },
+    { name: "LinkedIn", url: "https://www.linkedin.com", icon: "💼" },
+    { name: "DraftKings", url: "https://sportsbook.draftkings.com", icon: "🎲" },
   ],
+  linkSections: [socialsSection, professionalSection],
   focusText: "Balance day. Review progress and adjust course.",
 };
 

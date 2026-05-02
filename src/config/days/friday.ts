@@ -1,4 +1,5 @@
 import type { DayConfig } from "../types";
+import { socialsSection, professionalSection } from "../shared-links";
 
 const friday: DayConfig = {
   name: "friday",
@@ -23,11 +24,12 @@ const friday: DayConfig = {
     { id: "notes" },
   ],
   quickLinks: [
-    { name: "Email", url: "https://mail.google.com", icon: "📧" },
+    { name: "Gmail", url: "https://mail.google.com", icon: "📧" },
     { name: "Calendar", url: "https://calendar.google.com", icon: "📅" },
-    { name: "Music", url: "https://open.spotify.com", icon: "🎵" },
-    { name: "News", url: "https://news.ycombinator.com", icon: "📰" },
+    { name: "LinkedIn", url: "https://www.linkedin.com", icon: "💼" },
+    { name: "DraftKings", url: "https://sportsbook.draftkings.com", icon: "🎲" },
   ],
+  linkSections: [socialsSection, professionalSection],
   focusText: "Wind-down day. Close open loops and plan for next week.",
 };
 
