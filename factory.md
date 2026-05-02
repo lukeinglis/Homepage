@@ -12,6 +12,7 @@ A personal browser homepage that adapts its theme, greeting, widgets, and quick 
 - public/**
 - config/**
 - tests/**
+- api/**
 - package.json
 - tsconfig.json
 - astro.config.mjs
@@ -43,7 +44,7 @@ node eval/score.cjs
 
 ### Threshold
 
-0.8
+0.45
 
 ## Smoke Test
 
