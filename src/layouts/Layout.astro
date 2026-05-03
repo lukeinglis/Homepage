@@ -31,6 +31,26 @@ const { title = "Personal Dashboard" } = Astro.props;
         );
       })();
     </script>
+    <script is:inline>
+      (function () {
+        try {
+          var color = getComputedStyle(document.documentElement)
+            .getPropertyValue("--color-primary")
+            .trim();
+          if (!color) return;
+          var svg =
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">' +
+            '<rect width="32" height="32" rx="8" fill="' + color + '"/>' +
+            "</svg>";
+          var link = document.querySelector('link[rel="icon"][type="image/svg+xml"]');
+          if (link) {
+            link.setAttribute("href", "data:image/svg+xml," + encodeURIComponent(svg));
+          }
+        } catch {
+          // Falls back to existing /favicon.svg
+        }
+      })();
+    </script>
     <style is:global>
       :root {
         --color-primary: #334155;
@@ -401,6 +421,86 @@ const { title = "Personal Dashboard" } = Astro.props;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+
+      /* Weather skeleton loading state */
+      @keyframes pulse {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 0.8; }
+      }
+
+      .weather-skeleton {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+      }
+
+      .skeleton-line {
+        background-color: rgba(30, 41, 59, 0.1);
+        border-radius: 4px;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      .skeleton-temp {
+        height: 2rem;
+        width: 5rem;
+      }
+
+      .skeleton-detail {
+        height: 1rem;
+        width: 8rem;
+      }
+
+      .weather-loading {
+        border: 1px solid rgba(30, 41, 59, 0.08);
+      }
+
+      /* Weather error state */
+      .weather-error {
+        color: var(--color-text);
+        border: 1px solid rgba(30, 41, 59, 0.08);
+      }
+
+      /* Notes textarea styling */
+      .notes-textarea {
+        width: 100%;
+        background: var(--color-background);
+        color: var(--color-text);
+        border: 1px solid var(--color-accent);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: 1.6;
+        resize: vertical;
+        min-height: 120px;
+        transition: border-color 0.15s ease;
+      }
+
+      .notes-textarea:focus {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+        border-color: var(--color-primary);
+      }
+
+      .notes-textarea::placeholder {
+        color: var(--color-secondary);
+        opacity: 0.7;
+      }
+
+      .notes-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--color-secondary);
+      }
+
+      .notes-quota-warning {
+        color: var(--color-primary);
+        font-weight: 600;
       }
     </style>
   </head>
