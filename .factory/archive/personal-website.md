@@ -25,13 +25,14 @@ Day-aware adaptive personal homepage/dashboard. Renders a different theme, greet
 
 ## Status
 
-- **State:** Cycle 3, experiment 2 complete (KEEP)
+- **State:** Cycle 4, research complete for Issue #15 (scene-based redesign)
 - **Current Score:** 0.47 / 0.45 threshold
 - **Experiments Run:** 8 (6 prior cycles + 2 this cycle)
 - **Kept:** 8, **Reverted:** 0
-- **Open Issues:** 7 (3 closed by PR #14: #5, #6, #12)
-- **Current Cycle:** Fix open issues, in order that makes sense
+- **Open Issues:** Issue #15 (major redesign) is the current focus
+- **Current Cycle:** Issue #15: Scene-based glassmorphism dashboard redesign
 - **Cycle 3 Results:** H1 kept (links+calendar), H2 kept (weather/notes/favicon polish)
+- **Cycle 4 Scope:** Complete visual + architectural overhaul from day-based themes to 4-scene system with ~30 modules, animated backgrounds, Cmd+K palette
 
 ## Recent Experiments
 - [[personal-website-007]] — Cycle 3 Exp 2: Weather skeleton, notes textarea, per-day favicon (KEEP, +0.00)
@@ -84,6 +85,16 @@ Day-aware adaptive personal homepage/dashboard. Renders a different theme, greet
 - Enable GitHub Pages in repository Settings > Pages > Source > GitHub Actions
 - Update default weather location coordinates in `src/config/defaults.ts`
 - Personalize quick links in `src/config/days/*.ts`
+
+## Issue #15 Research (2026-05-04)
+
+Design prototype analyzed: `.factory/design-reference/src/` (11 files, ~3000 lines React JSX).
+Key research notes:
+- [[scene-based-redesign-overview]] - Full redesign scope and migration path
+- [[glassmorphism-visual-system]] - Visual design system details
+- [[scene-system-architecture]] - 4-scene system replacing 7 day configs
+- [[cmdk-palette-design]] - Cmd+K fuzzy search palette
+- [[prototype-module-inventory]] - ~30 modules across 5 categories
 
 ## Links
 

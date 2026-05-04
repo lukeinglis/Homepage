@@ -1,0 +1,15 @@
+{
+  "id": 3,
+  "timestamp": "2026-05-04 14:55:39.837707",
+  "hypothesis": "Port scene-based dashboard prototype to Astro + Preact",
+  "change_summary": "Ported all 11 design prototype files (3746 lines) to production Preact TSX: 4 scene layouts, ~30 modules, glassmorphism CSS, animated backgrounds, Cmd+K palette, scene/team switchers",
+  "issue_number": 16,
+  "pr_number": 17,
+  "score_before": null,
+  "score_after": null,
+  "delta": null,
+  "verdict": "keep",
+  "cost_usd": null,
+  "notes": "ceo:keep score_delta=+0.0000 precheck=passed agents_spawned=R,S,B hypothesis_type=code execution_artifacts=na e2e=pass backlog_cleared=yes pr_status=open_for_review",
+  "research_citations": []
+}
