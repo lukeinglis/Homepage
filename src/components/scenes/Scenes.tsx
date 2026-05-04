@@ -10,15 +10,13 @@ import { WorkCalendar, PersonalCalendar, YouTubeFrame, YouTubeQueue, StreamingSh
 interface SceneShellProps {
   children: ComponentChildren;
   bg: ComponentChildren;
-  scrim?: string | null;
   scopeClass?: string;
 }
 
-function SceneShell({ children, bg, scrim, scopeClass = "" }: SceneShellProps) {
+function SceneShell({ children, bg, scopeClass = "" }: SceneShellProps) {
   return (
     <div className={`scene-enter ${scopeClass}`} style={{ minHeight: "100vh", position: "relative" }}>
       <div style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}>{bg}</div>
-      {scrim && <div aria-hidden style={{ position: "fixed", inset: 0, background: scrim, pointerEvents: "none", zIndex: 1 }} />}
       <div className="relative z-10 max-w-scene mx-auto px-10 pt-10 pb-24">
         {children}
       </div>
@@ -36,10 +34,6 @@ function pickBg(scene: string, teamNight: string | null) {
   return <BgWeekendPM />;
 }
 
-function pickScrim() {
-  return null;
-}
-
 function teamScopeClass(teamNight: string | null) {
   if (teamNight === "auburn") return "scene-team team-auburn";
   if (teamNight === "chelsea") return "scene-team team-chelsea";
@@ -51,7 +45,7 @@ export function SceneWeekdayAM({ teamNight }: { teamNight: string | null }) {
   return (
     <SceneShell scopeClass={teamNight ? teamScopeClass(teamNight) : "scene-wkdy-am"}
       bg={pickBg("wkdy_am", teamNight)}
-      scrim={pickScrim()}>
+>
       <Greeting scene="wkdy_am" />
       <div className="mt-8 grid grid-cols-12 gap-5">
         <div className="col-span-8"><MeetingTimeline now="08:18" phase="day" /></div>
@@ -91,7 +85,7 @@ export function SceneWeekdayPM({ teamNight }: { teamNight: string | null }) {
   return (
     <SceneShell scopeClass={teamNight ? teamScopeClass(teamNight) : ""}
       bg={pickBg("wkdy_pm", teamNight)}
-      scrim={pickScrim()}>
+>
       <Greeting scene="wkdy_pm" />
       <div className="mt-8 grid grid-cols-12 gap-5">
         <div className="col-span-7"><TonightHero size="large" /></div>
@@ -135,7 +129,7 @@ export function SceneWeekendAM({ teamNight }: { teamNight: string | null }) {
   return (
     <SceneShell scopeClass={teamNight ? teamScopeClass(teamNight) : "scene-wknd-am"}
       bg={pickBg("wknd_am", teamNight)}
-      scrim={pickScrim()}>
+>
       <Greeting scene="wknd_am" />
       <div className="mt-8"><EventTakeover /></div>
       <div className="mt-5 grid grid-cols-12 gap-5">
@@ -169,7 +163,7 @@ export function SceneWeekendPM({ teamNight }: { teamNight: string | null }) {
   return (
     <SceneShell scopeClass={teamNight ? teamScopeClass(teamNight) : ""}
       bg={pickBg("wknd_pm", teamNight)}
-      scrim={pickScrim()}>
+>
       <Greeting scene="wknd_pm" />
       <div className="mt-8 grid grid-cols-12 gap-5">
         <div className="col-span-7"><TonightHero size="large" /></div>
