@@ -1,7 +1,7 @@
 {
   "project_name": "personal-website",
-  "generated_at": "2026-05-02 21:11:55.195638+00:00",
-  "mode": "improve",
+  "generated_at": "2026-05-02 23:57:30.928222+00:00",
+  "mode": "unknown",
   "experiments_kept": [
     {
       "id": 1,
@@ -16,6 +16,21 @@
       "verdict": "keep",
       "cost_usd": null,
       "notes": "ceo:keep score_delta=+0.0000 precheck=override_operational agents_spawned=R,S,B pr_status=open_for_review hypothesis_type=code execution_artifacts=na e2e=pass backlog_cleared=partial",
+      "research_citations": []
+    },
+    {
+      "id": 2,
+      "timestamp": "2026-05-02 19:55:11.549351",
+      "hypothesis": "Fix weather blank state (#5), style notes textarea (#6), add per-day favicon (#12)",
+      "change_summary": "CSS/UI polish: weather skeleton pulse animation, notes textarea themed styling, per-day SVG favicon",
+      "issue_number": 13,
+      "pr_number": 14,
+      "score_before": null,
+      "score_after": null,
+      "delta": null,
+      "verdict": "keep",
+      "cost_usd": null,
+      "notes": "ceo:keep score_delta=+0.0000 precheck=passed agents_spawned=R,S,B,R,E pr_status=open_for_review hypothesis_type=code execution_artifacts=na e2e=pass backlog_cleared=partial",
       "research_citations": []
     }
   ],

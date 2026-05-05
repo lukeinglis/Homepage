@@ -2,48 +2,43 @@
 
 ### Observations
 - Current composite score: 0.47
-- Weakest eval dimension: type_check (0.0, 108 pre-existing errors)
-- No experiments yet (first cycle for this target)
-- Site deploys on Vercel with Astro static output. 7 day configs exist with flat `quickLinks` arrays (4 generic links each). Old site had ~30 categorized links across 6 sections.
-- Two open GitHub issues filed by the owner: #1 (port links) and #2 (calendar widget). Both are the focus target.
-- Observability: 0.0%, but this is a static personal dashboard with no server-side request handling. Not actionable this cycle.
+- Weakest eval dimensions: type_check (0.0, 108 pre-existing TS7026 errors), capability_surface (0.0)
+- Last experiment: #1 (links + calendar widget), kept, no delta recorded
+- Pattern: Score is held down by pre-existing type_check issues and undetected capability_surface. The site works but has visual polish gaps: weather widget blank on light backgrounds, notes textarea unstyled, favicon static across all day themes.
+- 10 open GitHub issues. CEO FEEC analysis prioritizes #5 and #6 as FIX, #12 as small EXPLORE. Larger issues (#7, #8, #9, #10, #11, #1, #2) are blocked, need user input, or are too large for this cycle.
+- All three target issues share a common pattern: missing CSS definitions for existing class names. The skeleton, textarea, and favicon elements exist in markup but lack styling.
 
 ### Hypotheses
 
-#### H1: Port categorized links from old site and add calendar widget with ICS proxy
-- **Category:** EXPLORE
-- **Type:** code
-- **Backlog item:** Port personalized links from old site into day configs (GitHub issue #1) and add calendar widget with ICS support and content-aware adaptation (GitHub issue #2)
-- **Addresses:** #1, #2
-- **Growth dimension:** capability_surface
-- **What:** Two connected pieces of work in one PR:
+#### H1: Fix weather blank state, style notes textarea, add per-day favicon
+- **Category:** FIX
+- **Backlog item:** Please fix open issues, in order that makes sense
+- **Addresses:** #5, #6, #12
+- **What:** Three scoped CSS/UI fixes in one PR:
 
-  **Part 1 (Issue #1): Link sections and data population**
-  1. Add `LinkSection` interface to `src/config/types.ts`: `{ title: string; icon?: string; links: QuickLink[] }`. Add optional `linkSections?: LinkSection[]` to `DayConfig`.
-  2. Update `QuickLinksWidget` to render `linkSections` below the existing `quickLinks` row. Each section gets a collapsible header and its links grid. Falls back gracefully when `linkSections` is undefined.
-  3. Populate all 7 day configs with categorized links from `old-site-reference/config/sites.json`:
-     - **Weekdays (Mon-Fri):** quickLinks top row (Gmail, Calendar, LinkedIn, DraftKings). Sections: Socials (Twitter/X, Instagram, Reddit, YouTube), Professional (Gmail, Yahoo Mail, LinkedIn).
-     - **Saturday:** quickLinks top row (DraftKings, ESPN, Action Network, Reddit). Sections: Socials, Sports News (Auburn On3, Auburn Board, Chelsea FC), Sports Betting (DraftKings, Action Network, KenPom, ETR, Fantasy Labs), Fantasy Sports (ESPN Fantasy Baseball, Yahoo FF, Sleeper).
-     - **Sunday:** All 6 sections from sites.json (most populated day, matching old site day-7 pattern). quickLinks top row same as Saturday.
-  4. Verify exact link URLs and icons against `old-site-reference/config/sites.json`. Use Lucide icon names from old config where available.
+  **#5 Weather blank state (FIX):**
+  1. Add skeleton animation CSS in Layout.astro for `.skeleton-line`, `.skeleton-temp`, `.skeleton-detail`: semi-transparent background using `rgba(var(--color-text-rgb), 0.1)`, pulse keyframe animation, explicit height/width so elements are visible on all light day backgrounds.
+  2. Change `.weather-error` text color from `var(--color-secondary)` to `var(--color-text)` for WCAG AA contrast on denied/timeout states.
+  3. Add subtle border or background tint to the weather widget card in its loading/error states so the blank box is distinguishable.
 
-  **Part 2 (Issue #2 MVP): Calendar widget with ICS support**
-  1. Install `ical.js` (`npm install ical.js`).
-  2. Create `api/calendar-proxy.ts` at project root: Vercel serverless function that accepts POST with `{ url: string }`, fetches the ICS feed (normalizing `webcal://` to `https://`), returns text with CORS headers. Allowlist calendar provider domains (icloud.com, google.com, apple.com). Keep Astro `output: 'static'`.
-  3. Add `CalendarSource` and `CalendarConfig` interfaces to `src/config/types.ts`. Create `src/config/calendar.ts` with empty sources array (user will add their ICS URLs after deploy).
-  4. Build `CalendarWidget.tsx` (Preact): fetches ICS via the proxy, parses with `ICAL.parse()`, filters to today's events, sorts by start time, renders a compact event list with time and title. Implements localStorage caching with 15-minute TTL and stale-while-revalidate pattern. Shows loading skeleton, empty state ("No events today"), and error fallback.
-  5. Add CalendarWidget to `index.astro` widget grid with `client:load`.
-  6. Add tests for: LinkSection rendering in QuickLinksWidget, CalendarWidget loading/error/empty states, ICS parsing logic (mock ICS data), calendar proxy URL validation/allowlist.
+  **#6 Notes textarea styling (FIX):**
+  1. Add `.notes-textarea` CSS in Layout.astro: `background: var(--color-background)`, `color: var(--color-text)`, `border: 1px solid var(--color-accent)`, `border-radius` matching widget cards (0.75rem), `padding: 1rem`, `font-family: inherit`, `resize: vertical`, `min-height: 120px`.
+  2. Add focus state: `outline: 2px solid var(--color-primary)`, `outline-offset: 2px` for keyboard accessibility.
+  3. Add placeholder text styling with reduced opacity.
 
-  **Explicitly deferred:** Content-aware adaptation (calendar events influencing which link sections appear). This is a future cycle item per CEO direction.
+  **#12 Per-day favicon (EXPLORE):**
+  1. Add a small inline `<script>` in Layout.astro that reads `document.documentElement.dataset.day` on page load.
+  2. Build an SVG string using the computed `--color-primary` CSS variable value (a simple colored circle or rounded square).
+  3. Set it as the favicon via `link[rel="icon"]` href using a `data:image/svg+xml` URI.
+  4. No static favicon files per day needed. Falls back to existing `/favicon.svg` if script fails.
 
-- **Why:** These are the only two open issues, both filed by the owner. Issue #1 restores the old site's most-used feature (categorized bookmarks). Issue #2 adds a new capability (live calendar). Combined because they share config/widget infrastructure and the link section structure created for #1 is the prerequisite for future content-aware adaptation from #2. Research confirms ical.js as the right library (zero deps, browser-native, full RFC 5545) and the Vercel `api/` directory approach keeps Astro static.
-- **Expected impact:** capability_surface 0.0 -> 0.3 (two new widget capabilities, rich config data across all 7 days). Tests and coverage should hold or improve with new test coverage included.
+- **Why:** These are the three smallest, most independent issues from the CEO's FEEC analysis. #5 is a visibility bug (skeleton/error invisible on light backgrounds). #6 is a styling deficiency (textarea uses raw browser defaults). #12 is a small cosmetic feature (favicon matches daily theme). They share a common surface (Layout.astro CSS + minor component tweaks) and don't conflict. All are pure frontend CSS/JS with no dependencies, no new packages, and no architectural changes.
+- **Expected impact:** No direct composite eval score change (type_check 0.0 and capability_surface 0.0 are the bottlenecks, and these fixes target visual polish not scored dimensions). However, closing 3 GitHub issues improves user-facing quality and unblocks growth work in subsequent cycles. Tests should hold steady (these are CSS changes, not logic changes).
 - **Priority:** high
 
 ### Anti-patterns to Avoid
-- Do not switch Astro to SSR/hybrid output. CEO explicitly stated Astro must stay static. The calendar proxy uses Vercel's standalone `api/` directory, independent of Astro's build mode.
-- Do not attempt content-aware adaptation this cycle. CEO deferred it.
-- Do not add Finance section links with placeholder URLs. Only port links where real URLs exist in the old config files.
-- Do not add the optional `ical.timezones.js` addon. Most calendar feeds include embedded VTIMEZONE data. Skip to keep bundle size down.
-- Do not put ICS URLs directly in source code. They contain auth tokens (especially iCloud). Use `calendar.ts` config with placeholder comments directing the user to add their own URLs.
+- Don't try to fix type_check errors (108 pre-existing TS7026) in the same PR as UI fixes. That's a separate effort requiring tsconfig or type declaration changes.
+- Don't add geolocation coordinate changes (#7) without user input on their actual location.
+- Don't attempt dark mode (#8), PWA (#11), or search bar (#9) alongside these small fixes. Those are architectural changes needing dedicated cycles.
+- Don't over-engineer the favicon: an inline SVG data URI is simpler and more reliable than generating static files per day or adding build-time favicon generation.
+- Don't add JavaScript-based skeleton animations when CSS keyframes suffice. Keep the loading state pure CSS for performance.

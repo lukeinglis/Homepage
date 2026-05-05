@@ -1,17 +1,15 @@
-## CEO Review: Strategist Agent (Cycle 2, Targeted: Issues #1 + #2)
+## CEO Review: Strategist Agent (Cycle 3, Fix Open Issues)
 - **Verdict:** PROCEED
-- **Rationale:** Single hypothesis correctly combines both issues. Part 1 (link sections) has no external deps and provides immediate value. Part 2 (calendar widget MVP) is well-scoped: ical.js + Vercel API proxy + localStorage caching, no content-aware adaptation. The anti-patterns section is excellent: explicitly forbids SSR switch, content-aware adaptation, placeholder finance URLs, timezone addon, and hardcoded ICS URLs.
-- **Issues found:** None. Exactly 1 hypothesis as required by targeted mode. Growth dimension (capability_surface) is correctly identified. Backlog item tag is present and matches the target.
-- **Growth check:** H1 targets capability_surface (growth dimension). Passed.
-- **Backlog item adequacy:** H1 claims to clear the combined backlog item covering both issues. Part 1 fully addresses Issue #1 (categorized links across all 7 days). Part 2 addresses Issue #2 MVP (calendar display with ICS support) while explicitly deferring the content-aware adaptation. This is acceptable since the backlog item says "content-aware adaptation" but that's the stretch goal; the core ask (calendar widget with ICS support) is delivered. Verdict: ADEQUATE.
+- **Rationale:** Single hypothesis correctly bundles 3 small, cohesive issues (#5, #6, #12) into one PR. FEEC ordering is correct: Fix first (#5 weather blank state, #6 notes textarea), then Explore (#12 per-day favicon). All changes share Layout.astro as primary surface. No new dependencies, no architectural changes. Scope is right-sized for one PR.
+- **Issues found:** None. Exactly 1 hypothesis as required by targeted mode. Backlog item tag present and matches target.
+- **Growth check:** Growth dimension requirements suspended for targeted mode. H1 is correctly classified as FIX.
+- **Backlog item adequacy:** H1 claims to address "fix open issues" by tackling the 3 smallest, most impactful issues. This is a reasonable interpretation: fixing 3 of 10 issues is meaningful progress, and the remaining 7 are larger efforts requiring dedicated cycles. Verdict: ADEQUATE (partial clear expected: the backlog item covers all 10 issues but this PR resolves 3).
 - **Instructions for next step:** Builder should:
-  1. Read old-site-reference/config/sites.json for exact link URLs, icons, and categories
-  2. Add LinkSection interface to src/config/types.ts
-  3. Update QuickLinksWidget.tsx to render sections with collapsible headers
-  4. Populate all 7 day configs following the weekday/weekend mapping in the hypothesis
-  5. Install ical.js, create api/calendar-proxy.ts at project root
-  6. Build CalendarWidget.tsx with loading/error/empty states
-  7. Add comprehensive tests
-  8. Do NOT modify eval/score.cjs or .factory/ files
+  1. Fix weather skeleton visibility: add CSS for .skeleton-line, .skeleton-temp, .skeleton-detail with theme-aware semi-transparent backgrounds and pulse animation
+  2. Fix weather error state: change text color to var(--color-text) for contrast
+  3. Style notes textarea: border-radius, theme-colored border, font-family inherit, focus state
+  4. Add per-day favicon: inline script reading data-day attribute, generate SVG data URI using --color-primary
+  5. Test on all 7 day themes for WCAG AA contrast
+  6. Do NOT modify eval/score.cjs or .factory/ files
 
 PLAN APPROVED

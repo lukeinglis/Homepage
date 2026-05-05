@@ -1,5 +1,11 @@
-## CEO Review: Researcher Agent (Cycle 2, Issues #1 + #2)
-- **Verdict:** PROCEED
-- **Rationale:** Research covers all four areas comprehensively. Old site structure is well analyzed (JSON configs with 6 categorized sections, ~30 links). ical.js is clearly the right library (zero deps, browser native, full RFC 5545, Mozilla backed). The CORS proxy solution via Vercel API route (api/calendar-proxy.ts) is pragmatic and keeps Astro static. Current day config structure is understood (flat quickLinks array needs LinkSection expansion).
-- **Issues found:** None significant. The recommendation to split Issue #2 into MVP (display events) vs stretch (content-aware adaptation) is sound.
-- **Instructions for next step:** The Strategist should combine both issues into a single hypothesis. Issue #1 (links) is the foundational work: add LinkSection type, populate all 7 day configs with categorized links from the old site. Issue #2 MVP follows: add ical.js dependency, create Vercel API proxy, build CalendarWidget with localStorage caching. Content-aware adaptation is a stretch goal for a future cycle.
+## CEO Review: Researcher Agent (Cycle 3, Fix Open Issues)
+- **Verdict:** PROCEED (with timeout caveat)
+- **Rationale:** Researcher timed out at 300s, but prior research from cycle 1 exists in research.md covering link porting and calendar widget architecture. Local observations from `factory study` are comprehensive: 10 open issues catalogued, FEEC priority clear, backlog context established.
+- **Issues found:** Researcher timeout. No new research produced this cycle.
+- **Instructions for next step:** Strategist should work from local observations + prior research. Focus is on bundling the most impactful bug fixes and UI polish issues into a single hypothesis. The target is "fix open issues in order that makes sense", so the Strategist should pick a cohesive bundle of small/medium issues that can ship in one PR.
+
+FEEC priority analysis of the 10 open issues:
+1. Fix: #5 (weather blank state bug), #6 (notes textarea styling)
+2. Explore (small): #12 (per-day favicon)
+3. Explore (medium): #9 (search bar), #10 (widget grid config)
+4. Explore (large/blocked): #7 (needs user coords), #8 (dark mode), #11 (PWA), #1 (content port), #2 (calendar)

@@ -6,7 +6,7 @@
       "score": 1.0,
       "weight": 0.15,
       "passed": true,
-      "details": "personal-website(js): 14 passed, 0 failed"
+      "details": "personal-website(js): 12 passed, 0 failed"
     },
     {
       "name": "lint",
@@ -20,7 +20,7 @@
       "score": 0.0,
       "weight": 0.05,
       "passed": false,
-      "details": "personal-website(ts): 154 errors"
+      "details": "personal-website(ts): 108 errors"
     },
     {
       "name": "coverage",
@@ -55,7 +55,7 @@
       "score": 0.5,
       "weight": 0.11,
       "passed": true,
-      "details": "Only 0 experiments, too few to judge"
+      "details": "Only 1 experiments, too few to judge"
     },
     {
       "name": "observability",
@@ -76,9 +76,9 @@
       "score": 0.5,
       "weight": 0.07,
       "passed": true,
-      "details": "Only 0 experiments, too few to judge"
+      "details": "Only 1 experiments, too few to judge"
     }
   ],
   "guard_violations": [],
-  "passed": false
+  "passed": true
 }
