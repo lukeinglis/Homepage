@@ -66,6 +66,17 @@ export function CmdK({ open, onClose }: { open: boolean; onClose: () => void }) 
       return [...recentItems, ...rest];
     })();
 
+  function activateItem(it: CmdKItem) {
+    const next = [it.key, ...recents.filter(k => k !== it.key)].slice(0, 12);
+    setRecents(next);
+    try { localStorage.setItem(RECENTS_KEY, JSON.stringify(next)); } catch { /* empty */ }
+    if (it.kind === "bookmark" && it.sub) {
+      const href = it.sub.startsWith("http") || it.sub.includes("://") ? it.sub : "https://" + it.sub;
+      window.open(href, "_blank", "noopener");
+    }
+    onClose();
+  }
+
   const onKey = (e: KeyboardEvent) => {
     if (e.key === "Escape") { onClose(); return; }
     if (e.key === "ArrowDown") { e.preventDefault(); setSel(s => Math.min(s + 1, flatList.length - 1)); }
@@ -73,15 +84,7 @@ export function CmdK({ open, onClose }: { open: boolean; onClose: () => void }) 
     if (e.key === "Enter") {
       e.preventDefault();
       const it = flatList[sel];
-      if (it) {
-        const next = [it.key, ...recents.filter(k => k !== it.key)].slice(0, 12);
-        setRecents(next);
-        try { localStorage.setItem(RECENTS_KEY, JSON.stringify(next)); } catch { /* empty */ }
-        if (it.kind === "bookmark" && it.sub) {
-          window.open(it.sub, "_blank", "noopener");
-        }
-        onClose();
-      }
+      if (it) activateItem(it);
     }
   };
 
@@ -94,15 +97,7 @@ export function CmdK({ open, onClose }: { open: boolean; onClose: () => void }) 
     const active = i === sel;
     return (
       <div onMouseEnter={() => setSel(i)}
-        onClick={() => {
-          const next = [it.key, ...recents.filter(k => k !== it.key)].slice(0, 12);
-          setRecents(next);
-          try { localStorage.setItem(RECENTS_KEY, JSON.stringify(next)); } catch { /* empty */ }
-          if (it.kind === "bookmark" && it.sub) {
-            window.open(it.sub, "_blank", "noopener");
-          }
-          onClose();
-        }}
+        onClick={() => activateItem(it)}
         className={`flex items-center gap-3 px-4 py-2 cursor-pointer ${active ? "" : ""}`}
         style={{ borderRadius: 8, background: active ? "rgba(255,255,255,0.10)" : undefined }}>
         <div className="rounded-md flex items-center justify-center hairline flex-none" style={{ width: 28, height: 28, background: it.kind === "action" ? "rgba(255,180,80,0.18)" : "rgba(255,255,255,0.04)" }}>
