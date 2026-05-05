@@ -56,7 +56,7 @@ export function GameRow({ g, dense = false }: { g: Game; dense?: boolean }) {
         </div>
       )}
       <div className="flex items-center gap-1.5 justify-end" style={{ width: 78 }}>
-        {g.live && <span className="live-dot" />}
+        {g.live && <><span className="live-dot" /><span className="sr-only">Live</span></>}
         <span className="font-mono tabnum" style={{ fontSize: "11px" }}>{g.state}</span>
       </div>
     </div>
@@ -97,7 +97,7 @@ export function SportsBoard({
       <div className="divider my-3" />
       <div className="flex items-center justify-between font-mono text-muted" style={{ fontSize: "10.5px" }}>
         <div>Tracking · NFL · NBA · MLB · CFB · CBB · EPL · UCL · F1 · PGA · ATP · UFC</div>
-        <button style={{ color: "inherit" }}>All games <Icon name="chevron" size={11} /></button>
+        <button aria-label="View all games" style={{ color: "inherit" }}>All games <Icon name="chevron" size={11} /></button>
       </div>
     </div>
   );
@@ -273,7 +273,7 @@ export function EventTakeover() {
           </div>
           <div className="flex items-center gap-2 mt-4">
             <span className="chip" style={{ background: "rgba(255,235,170,0.16)", borderColor: "rgba(255,235,170,0.3)", color: "#f4efd8" }}>
-              <span className="live-dot" />R3 LIVE on ESPN+
+              <span className="live-dot" /><span className="sr-only">Live</span>R3 LIVE on ESPN+
             </span>
             <span className="chip" style={{ background: "rgba(255,235,170,0.10)", borderColor: "rgba(255,235,170,0.22)", color: "#f4efd8" }}>
               Final round 2:00 ET CBS

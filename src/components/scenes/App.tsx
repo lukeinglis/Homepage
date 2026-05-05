@@ -116,6 +116,7 @@ export function App() {
       <TeamSwitcher current={teamNight} onChange={pickTeamNight} />
 
       <button onClick={() => setCmdkOpen(true)}
+        aria-label="Open command palette"
         className="fixed z-40 flex items-center gap-2 rounded-full"
         style={{
           bottom: 24, left: 24,
@@ -148,6 +149,8 @@ function SceneSwitcher({ current, onChange }: { current: number; onChange: (i: n
       }}>
       {SCENES.map((s, i) => (
         <button key={s.id} onClick={() => onChange(i)}
+          aria-label={`Switch to ${s.label} scene`}
+          aria-pressed={i === current}
           className="px-3 py-1.5 rounded-full transition-all"
           style={{
             background: i === current ? "rgba(255,255,255,0.16)" : "transparent",
@@ -175,6 +178,8 @@ function TeamSwitcher({ current, onChange }: { current: string | null; onChange:
       <span className="font-mono uppercase px-2.5" style={{ fontSize: "10px", letterSpacing: "0.18em", color: "rgba(255,255,255,0.55)" }}>Match</span>
       {TEAM_NIGHTS.map((t) => (
         <button key={t.id || "default"} onClick={() => onChange(t.id)}
+          aria-label={`Switch to ${t.label} theme`}
+          aria-pressed={t.id === current}
           className="px-3 py-1.5 rounded-full transition-all"
           style={{
             background: t.id === current ? "rgba(255,255,255,0.16)" : "transparent",
