@@ -25,7 +25,7 @@ const TEAM_NIGHTS = [
   { id: "camden", label: "Orioles", hint: "Camden Yards · first pitch" },
 ];
 
-function detectScene(): number {
+export function detectScene(): number {
   const now = new Date();
   const day = now.getDay();
   const hour = now.getHours();
