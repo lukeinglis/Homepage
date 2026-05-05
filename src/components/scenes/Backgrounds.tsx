@@ -1,5 +1,4 @@
-// Rich, illustrated, location-specific scene backgrounds.
-// Painterly layered SVG: multiple parallax planes, atmospheric light, signature silhouettes.
+import { useMemo } from 'preact/hooks';
 
 interface ParticlesProps {
   count?: number;
@@ -17,57 +16,74 @@ interface SnowProps {
 }
 
 function Particles({ count = 40, color = "rgba(255,255,255,0.5)", spd = 18, size = 2 }: ParticlesProps) {
-  const dots = Array.from({ length: count }).map((_, i) => {
+  const dots = useMemo(() => Array.from({ length: count }).map((_, i) => {
     const top = Math.random() * 100, left = Math.random() * 100;
     const dur = (spd + Math.random() * spd) + "s";
     const delay = (-Math.random() * spd) + "s";
     const r = (Math.random() * size + 0.5).toFixed(1);
     const which = i % 3 === 0 ? "drift1" : i % 3 === 1 ? "drift2" : "drift3";
-    return (
-      <span key={i} style={{
-        position: "absolute", top: top + "%", left: left + "%",
-        width: r + "px", height: r + "px", borderRadius: "50%",
-        background: color, animation: `${which} ${dur} ${delay} ease-in-out infinite, sparkle ${(2 + Math.random() * 4).toFixed(1)}s ${delay} ease-in-out infinite`,
-      }} />
-    );
-  });
-  return <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>{dots}</div>;
+    const sparkDur = (2 + Math.random() * 4).toFixed(1);
+    return { top, left, dur, delay, r, which, sparkDur };
+  }), []);
+  return (
+    <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+      {dots.map((d, i) => (
+        <span key={i} style={{
+          position: "absolute", top: d.top + "%", left: d.left + "%",
+          width: d.r + "px", height: d.r + "px", borderRadius: "50%",
+          background: color, animation: `${d.which} ${d.dur} ${d.delay} ease-in-out infinite, sparkle ${d.sparkDur}s ${d.delay} ease-in-out infinite`,
+        }} />
+      ))}
+    </div>
+  );
 }
 
 function Rain({ count = 70 }: RainProps) {
-  const drops = Array.from({ length: count }).map((_, i) => {
+  const drops = useMemo(() => Array.from({ length: count }).map(() => {
     const left = Math.random() * 100;
     const dur = (0.7 + Math.random() * 0.7).toFixed(2) + "s";
     const delay = (-Math.random() * 1.4).toFixed(2) + "s";
     const len = 12 + Math.random() * 22;
     const op = (0.18 + Math.random() * 0.30).toFixed(2);
-    return <span key={i} style={{
-      position: "absolute", top: 0, left: left + "%",
-      width: "1px", height: len + "px",
-      background: `linear-gradient(180deg, transparent, rgba(255,255,255,${op}))`,
-      animation: `rainfall ${dur} ${delay} linear infinite`,
-      transform: "translateY(-10%)",
-    }} />;
-  });
-  return <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>{drops}</div>;
+    return { left, dur, delay, len, op };
+  }), []);
+  return (
+    <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+      {drops.map((d, i) => (
+        <span key={i} style={{
+          position: "absolute", top: 0, left: d.left + "%",
+          width: "1px", height: d.len + "px",
+          background: `linear-gradient(180deg, transparent, rgba(255,255,255,${d.op}))`,
+          animation: `rainfall ${d.dur} ${d.delay} linear infinite`,
+          transform: "translateY(-10%)",
+        }} />
+      ))}
+    </div>
+  );
 }
 
 function Snow({ count = 80 }: SnowProps) {
-  const flakes = Array.from({ length: count }).map((_, i) => {
+  const flakes = useMemo(() => Array.from({ length: count }).map(() => {
     const left = Math.random() * 100;
     const dur = (6 + Math.random() * 8).toFixed(1) + "s";
     const delay = (-Math.random() * 8).toFixed(1) + "s";
     const r = (Math.random() * 2 + 1).toFixed(1);
     const op = (0.4 + Math.random() * 0.5).toFixed(2);
-    return <span key={i} style={{
-      position: "absolute", top: 0, left: left + "%",
-      width: r + "px", height: r + "px", borderRadius: "50%",
-      background: `rgba(255,255,255,${op})`,
-      filter: "blur(0.4px)",
-      animation: `snowfall ${dur} ${delay} linear infinite`,
-    }} />;
-  });
-  return <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>{flakes}</div>;
+    return { left, dur, delay, r, op };
+  }), []);
+  return (
+    <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+      {flakes.map((d, i) => (
+        <span key={i} style={{
+          position: "absolute", top: 0, left: d.left + "%",
+          width: d.r + "px", height: d.r + "px", borderRadius: "50%",
+          background: `rgba(255,255,255,${d.op})`,
+          filter: "blur(0.4px)",
+          animation: `snowfall ${d.dur} ${d.delay} linear infinite`,
+        }} />
+      ))}
+    </div>
+  );
 }
 
 // ---- Boston, Beacon Hill morning ----

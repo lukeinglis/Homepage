@@ -56,6 +56,26 @@ export function App() {
   }, [teamNight]);
 
   useEffect(() => {
+    const id = setInterval(() => {
+      try {
+        const overrideTs = Number(localStorage.getItem("homepage_scene_override") || "0");
+        const now = Date.now();
+        const todayMidnight = new Date();
+        todayMidnight.setHours(0, 0, 0, 0);
+        if (overrideTs > todayMidnight.getTime() && overrideTs <= now) return;
+      } catch { /* empty */ }
+      const detected = detectScene();
+      setSceneIdx(prev => {
+        if (prev === detected) return prev;
+        setTransitioning(true);
+        setTimeout(() => setTransitioning(false), 220);
+        return detected;
+      });
+    }, 60_000);
+    return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       const isMod = e.metaKey || e.ctrlKey;
       if (isMod && e.key.toLowerCase() === "k") { e.preventDefault(); setCmdkOpen(o => !o); }
@@ -71,6 +91,7 @@ export function App() {
 
   function switchScene(i: number) {
     if (i === sceneIdx) return;
+    try { localStorage.setItem("homepage_scene_override", String(Date.now())); } catch { /* empty */ }
     setTransitioning(true);
     setTimeout(() => { setSceneIdx(i); setTransitioning(false); }, 220);
   }

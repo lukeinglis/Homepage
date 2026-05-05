@@ -25,7 +25,7 @@ export function CmdK({ open, onClose }: { open: boolean; onClose: () => void }) 
 
   const items = useMemo<CmdKItem[]>(() => {
     const bm = BOOKMARKS.map(b => ({ kind: "bookmark", cat: b.cat, name: b.name, sub: b.url, key: b.cat + "|" + b.name }));
-    const qa = QUICK_ACTIONS.map(a => ({ kind: "action", cat: "Quick action", name: a.name, sub: "⏎ run", key: "qa|" + a.name }));
+    const qa = QUICK_ACTIONS.map(a => ({ kind: "action", cat: "Quick action", name: a.name, sub: a.url || "⏎ run", key: "qa|" + a.name }));
     return [...qa, ...bm];
   }, []);
 
@@ -70,7 +70,7 @@ export function CmdK({ open, onClose }: { open: boolean; onClose: () => void }) 
     const next = [it.key, ...recents.filter(k => k !== it.key)].slice(0, 12);
     setRecents(next);
     try { localStorage.setItem(RECENTS_KEY, JSON.stringify(next)); } catch { /* empty */ }
-    if (it.kind === "bookmark" && it.sub) {
+    if (it.sub && it.sub !== "⏎ run") {
       const href = it.sub.startsWith("http") || it.sub.includes("://") ? it.sub : "https://" + it.sub;
       window.open(href, "_blank", "noopener");
     }

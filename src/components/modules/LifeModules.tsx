@@ -56,44 +56,40 @@ interface GreetingProps {
   name?: string;
 }
 
-function greetingFor(scene: string, name: string) {
-  const map: Record<string, { greet: string; sub: string; date: string }> = {
-    wkdy_am: {
-      greet: "Good morning, " + name + ".",
-      sub: "Calm Tuesday over the Charles. Three deep blocks scheduled.",
-      date: "Tuesday · May 5",
-    },
-    wkdy_pm: {
-      greet: "Easy into the evening, " + name + ".",
-      sub: "Boston’s hung out the lights. Polenta on at six.",
-      date: "Tuesday · May 5",
-    },
-    wknd_am: {
-      greet: "Saturday’s wide open, " + name + ".",
-      sub: "Auburn at 3:30. Masters from now until late.",
-      date: "Saturday · April 12",
-    },
-    wknd_pm: {
-      greet: "Settle in, " + name + ".",
-      sub: "Wolves at 8:30. Short ribs already on.",
-      date: "Saturday · April 12",
-    },
-  };
-  return map[scene];
+const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+function timeOfDayGreeting(hour: number, name: string): { greet: string; sub: string } {
+  if (hour < 12) return { greet: `Good morning, ${name}.`, sub: "Fresh start. Make it count." };
+  if (hour < 17) return { greet: `Good afternoon, ${name}.`, sub: "Steady through the middle stretch." };
+  return { greet: `Good evening, ${name}.`, sub: "Wind it down. Tomorrow’s got its own plans." };
 }
 
-const SCENE_TIME: Record<string, string> = {
-  wkdy_am: "7:42",
-  wkdy_pm: "6:18",
-  wknd_am: "9:14",
-  wknd_pm: "7:52",
-};
+function formatDate(now: Date): string {
+  return `${DAYS[now.getDay()]} · ${MONTHS[now.getMonth()]} ${now.getDate()}`;
+}
 
-export function Greeting({ scene, name = "Luke" }: GreetingProps): JSX.Element {
+function formatTime(now: Date): { time: string; ampm: string } {
+  let h = now.getHours();
+  const m = now.getMinutes();
+  const ampm = h >= 12 ? "PM" : "AM";
+  h = h % 12 || 12;
+  const time = `${h}:${m.toString().padStart(2, "0")}`;
+  return { time, ampm };
+}
+
+export function Greeting({ name = "Luke" }: GreetingProps): JSX.Element {
   const { city, status } = useDetectedCity("Boston");
-  const dt = greetingFor(scene, name);
-  const time = SCENE_TIME[scene];
-  const ampm = scene.endsWith("_am") ? "AM" : "PM";
+  const [now, setNow] = useState(() => new Date());
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 60_000);
+    return () => clearInterval(id);
+  }, []);
+
+  const dt = timeOfDayGreeting(now.getHours(), name);
+  const dateStr = formatDate(now);
+  const { time, ampm } = formatTime(now);
 
   const dotTitle =
     status === "live" ? "Detected from your location" :
@@ -112,7 +108,7 @@ export function Greeting({ scene, name = "Luke" }: GreetingProps): JSX.Element {
     <div className="module-enter" style={{ animationDelay: "0ms" }}>
       <div className="flex items-baseline gap-4">
         <div className="font-mono uppercase text-muted" style={{ fontSize: "11px", letterSpacing: "0.18em" }}>
-          {dt?.date}
+          {dateStr}
         </div>
         <div className="font-mono tabnum text-muted flex items-center gap-1.5" style={{ fontSize: "11px" }}>
           <span>{time} {ampm} · {city}</span>
@@ -131,8 +127,8 @@ export function Greeting({ scene, name = "Luke" }: GreetingProps): JSX.Element {
         </div>
       </div>
       <div className="font-serif mt-2" style={{ fontSize: "56px", lineHeight: 1.02, maxWidth: 860, letterSpacing: "-0.012em" }}>
-        {dt?.greet}{" "}
-        <span className="italic" style={{ opacity: 0.78 }}>{dt?.sub}</span>
+        {dt.greet}{" "}
+        <span className="italic" style={{ opacity: 0.78 }}>{dt.sub}</span>
       </div>
     </div>
   );

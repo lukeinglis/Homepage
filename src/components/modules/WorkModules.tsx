@@ -174,13 +174,13 @@ export function NotesModule() {
 }
 
 export function DevQuicklaunch() {
-  const tools = [
-    { name: "Claude", icon: "claude" },
-    { name: "ChatGPT", icon: "sparkles" },
-    { name: "GitHub", icon: "github" },
-    { name: "Granite", icon: "wand" },
+  const tools: { name: string; icon: string; url?: string }[] = [
+    { name: "Claude", icon: "claude", url: "https://claude.ai" },
+    { name: "ChatGPT", icon: "sparkles", url: "https://chatgpt.com" },
+    { name: "GitHub", icon: "github", url: "https://github.com" },
+    { name: "Granite", icon: "wand", url: "https://granite.chat" },
     { name: "Terminal", icon: "command" },
-    { name: "Jira", icon: "jira" },
+    { name: "Jira", icon: "jira", url: "https://issues.redhat.com" },
   ];
   return (
     <div className="module p-4 module-enter" style={{ animationDelay: "200ms" }}>
@@ -189,7 +189,12 @@ export function DevQuicklaunch() {
         <div className="font-mono text-muted" style={{ fontSize: "10.5px" }}>⌘K to search</div>
       </div>
       <div className="grid grid-cols-3 gap-2">
-        {tools.map(t => (
+        {tools.map(t => t.url ? (
+          <a key={t.name} href={t.url} target="_blank" rel="noopener noreferrer" className="tile hairline rounded-md py-2.5 flex flex-col items-center gap-1.5" style={{ background: "rgba(255,255,255,0.03)", textDecoration: "none", color: "inherit" }}>
+            <Icon name={t.icon} size={16} />
+            <div className="font-mono" style={{ fontSize: "10.5px" }}>{t.name}</div>
+          </a>
+        ) : (
           <button key={t.name} className="tile hairline rounded-md py-2.5 flex flex-col items-center gap-1.5" style={{ background: "rgba(255,255,255,0.03)" }}>
             <Icon name={t.icon} size={16} />
             <div className="font-mono" style={{ fontSize: "10.5px" }}>{t.name}</div>
@@ -201,20 +206,25 @@ export function DevQuicklaunch() {
 }
 
 export function WorkShortcuts() {
-  const apps = [
-    { n: "Gmail", i: "mail" }, { n: "Cal", i: "calendar" }, { n: "Drive", i: "doc" },
-    { n: "Docs", i: "doc" }, { n: "Slides", i: "slide" }, { n: "Sheets", i: "sheet" },
-    { n: "Slack", i: "slack" }, { n: "Confl.", i: "bookmark" },
+  const apps: { n: string; i: string; url?: string }[] = [
+    { n: "Gmail", i: "mail", url: "https://mail.google.com" },
+    { n: "Cal", i: "calendar", url: "https://calendar.google.com" },
+    { n: "Drive", i: "doc", url: "https://drive.google.com" },
+    { n: "Docs", i: "doc", url: "https://docs.google.com" },
+    { n: "Slides", i: "slide", url: "https://slides.google.com" },
+    { n: "Sheets", i: "sheet", url: "https://sheets.google.com" },
+    { n: "Slack", i: "slack", url: "https://slack.com" },
+    { n: "Confl.", i: "bookmark", url: "https://confluence.com" },
   ];
   return (
     <div className="module p-3 module-enter" style={{ animationDelay: "240ms" }}>
       <div className="font-mono uppercase mb-2 px-1" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>Workspace</div>
       <div className="grid grid-cols-4 gap-1.5">
         {apps.map(a => (
-          <button key={a.n} className="tile hairline rounded-md py-2 flex flex-col items-center gap-1" style={{ background: "rgba(255,255,255,0.03)" }}>
+          <a key={a.n} href={a.url} target="_blank" rel="noopener noreferrer" className="tile hairline rounded-md py-2 flex flex-col items-center gap-1" style={{ background: "rgba(255,255,255,0.03)", textDecoration: "none", color: "inherit" }}>
             <Icon name={a.i} size={14} />
             <div className="font-mono" style={{ fontSize: "10px" }}>{a.n}</div>
-          </button>
+          </a>
         ))}
       </div>
     </div>
