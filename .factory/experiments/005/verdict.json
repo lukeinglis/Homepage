@@ -1,0 +1,15 @@
+{
+  "id": 5,
+  "timestamp": "2026-05-05 14:24:51.645629",
+  "hypothesis": "Add accessibility: aria labels, contrast fixes, reduced motion",
+  "change_summary": "Added aria-labels to all interactive buttons, ARIA combobox pattern for CmdK, prefers-reduced-motion media query, improved text-muted contrast, sr-only LIVE labels",
+  "issue_number": 32,
+  "pr_number": 44,
+  "score_before": null,
+  "score_after": null,
+  "delta": null,
+  "verdict": "keep",
+  "cost_usd": null,
+  "notes": "ceo:keep score_delta=+0.0000 precheck=passed hypothesis_type=code e2e=pass backlog_cleared=yes",
+  "research_citations": []
+}

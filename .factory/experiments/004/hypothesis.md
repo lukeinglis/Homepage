@@ -1,0 +1,1 @@
+Quick wins batch: remove dead widget files (#18), memoize background particles (#34), dynamic greeting with real time (#35), auto-scene time switching (#31), wire CmdK quick actions (#30), wire shortcut buttons (#19)

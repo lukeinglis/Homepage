@@ -1,26 +1,26 @@
 {
-  "total": 0.47000000000000003,
+  "total": 0.483281,
   "results": [
     {
       "name": "tests",
       "score": 1.0,
       "weight": 0.15,
       "passed": true,
-      "details": "personal-website(js): 14 passed, 0 failed"
+      "details": "(js): 1 passed, 0 failed"
     },
     {
       "name": "lint",
       "score": 0.9,
       "weight": 0.075,
       "passed": false,
-      "details": "personal-website(js): 1 errors"
+      "details": "(js): 1 errors"
     },
     {
       "name": "type_check",
       "score": 0.0,
       "weight": 0.05,
       "passed": false,
-      "details": "personal-website(ts): 1775 errors"
+      "details": "(ts): 1630 errors"
     },
     {
       "name": "coverage",
@@ -52,10 +52,10 @@
     },
     {
       "name": "experiment_diversity",
-      "score": 0.5,
+      "score": 0.5571,
       "weight": 0.11,
       "passed": true,
-      "details": "Only 2 experiments, too few to judge"
+      "details": "2 distinct categories in last 3 experiments; dominant=feature (67%); last 3: ['feature', 'bugfix', 'feature']"
     },
     {
       "name": "observability",
@@ -73,10 +73,10 @@
     },
     {
       "name": "factory_effectiveness",
-      "score": 0.5,
+      "score": 0.6,
       "weight": 0.07,
       "passed": true,
-      "details": "Only 2 experiments, too few to judge"
+      "details": "keep_rate=1.00 (3/3), delta_score=0.50, managed_projects=0"
     }
   ],
   "guard_violations": [],

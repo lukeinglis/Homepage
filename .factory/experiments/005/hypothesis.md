@@ -1,0 +1,1 @@
+Add accessibility: aria labels on all interactive elements, prefers-reduced-motion for animations, WCAG contrast fixes (#32)

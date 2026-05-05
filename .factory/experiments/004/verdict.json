@@ -1,0 +1,15 @@
+{
+  "id": 4,
+  "timestamp": "2026-05-05 14:17:33.633969",
+  "hypothesis": "Quick wins batch: remove dead widget files, memoize particles, dynamic greeting, auto-scene, wire buttons",
+  "change_summary": "Deleted 31 dead files, memoized background particles, added real-time greeting, auto-scene detection, wired 13 shortcut buttons and 3 CmdK quick actions to real URLs, added 6 scene detection tests",
+  "issue_number": 42,
+  "pr_number": 43,
+  "score_before": null,
+  "score_after": null,
+  "delta": null,
+  "verdict": "keep",
+  "cost_usd": null,
+  "notes": "ceo:keep score_delta=+0.0000 precheck=passed hypothesis_type=code e2e=pass backlog_cleared=yes",
+  "research_citations": []
+}
