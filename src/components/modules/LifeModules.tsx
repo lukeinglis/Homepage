@@ -353,7 +353,7 @@ export function NowPlaying(): JSX.Element {
         </div>
         <div className="flex-1 min-w-0">
           <div className="font-mono uppercase text-muted flex items-center gap-1.5" style={{ fontSize: "10px", letterSpacing: "0.05em" }}>
-            <span className="live-dot" style={{ background: "#7adfff" }} />
+            <span className="live-dot" style={{ background: "#7adfff" }} /><span className="sr-only">Live</span>
             Now playing · {np.source}
           </div>
           <div className="font-medium font-serif italic leading-tight mt-0.5 truncate" style={{ fontSize: "13px" }}>
@@ -363,12 +363,14 @@ export function NowPlaying(): JSX.Element {
         </div>
         <div className="flex items-center gap-2">
           <button
+            aria-label="Pause"
             className="hairline rounded-full flex items-center justify-center"
             style={{ width: 28, height: 28 }}
           >
             <Icon name="pause" size={12} />
           </button>
           <button
+            aria-label="Skip to next track"
             className="hairline rounded-full flex items-center justify-center"
             style={{ width: 28, height: 28 }}
           >
@@ -444,6 +446,7 @@ export function PinnedRow({ pins = [] }: PinnedRowProps): JSX.Element {
       {pins.map((p, i) => (
         <button
           key={i}
+          aria-label={`Open ${p.n}`}
           className="tile hairline rounded-md px-2.5 py-1.5 flex items-center gap-1.5"
           style={{ background: "rgba(255,255,255,0.03)" }}
         >

@@ -32,9 +32,9 @@ export function TonightHero({ size = "large" }: { size?: string }) {
           <div className="leading-relaxed mt-3" style={{ fontSize: "12.5px", color: "rgba(243,230,211,0.85)" }}>{t.note}</div>
 
           <div className="flex items-center gap-2 mt-auto" style={{ paddingTop: 16 }}>
-            <button className="font-mono rounded-md" style={{ fontSize: "11px", padding: "6px 12px", background: "#d97a3a", color: "#1a1410" }}>Start cooking mode</button>
-            <button className="font-mono rounded-md hairline" style={{ fontSize: "11px", padding: "6px 12px" }}>Recipe ↗</button>
-            <button className="font-mono rounded-md hairline" style={{ fontSize: "11px", padding: "6px 12px" }}>Kitchen playlist ▶</button>
+            <button aria-label="Start cooking mode" className="font-mono rounded-md" style={{ fontSize: "11px", padding: "6px 12px", background: "#d97a3a", color: "#1a1410" }}>Start cooking mode</button>
+            <button aria-label="Open recipe" className="font-mono rounded-md hairline" style={{ fontSize: "11px", padding: "6px 12px" }}>Recipe ↗</button>
+            <button aria-label="Play kitchen playlist" className="font-mono rounded-md hairline" style={{ fontSize: "11px", padding: "6px 12px" }}>Kitchen playlist ▶</button>
           </div>
         </div>
       </div>
@@ -47,7 +47,7 @@ export function RecipeShelf() {
     <div className="module p-4 module-enter" style={{ animationDelay: "140ms" }}>
       <div className="flex items-baseline justify-between mb-3">
         <div className="font-mono uppercase text-muted" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>Saved · recently</div>
-        <button className="font-mono text-muted" style={{ fontSize: "10.5px" }}>All ↗</button>
+        <button aria-label="View all saved recipes" className="font-mono text-muted" style={{ fontSize: "10.5px" }}>All ↗</button>
       </div>
       <div className="space-y-2.5">
         {RECIPES.map((r, i) => (
@@ -93,7 +93,7 @@ export function GroceriesModule() {
           </div>
         ))}
       </div>
-      <button className="mt-3 font-mono rounded-md hairline w-full" style={{ fontSize: "11px", padding: "6px 12px" }}>Send to Instacart ↗</button>
+      <button aria-label="Send grocery list to Instacart" className="mt-3 font-mono rounded-md hairline w-full" style={{ fontSize: "11px", padding: "6px 12px" }}>Send to Instacart ↗</button>
     </div>
   );
 }

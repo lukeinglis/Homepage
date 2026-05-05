@@ -81,7 +81,7 @@ export function MeetingTimeline({ now = "10:18", phase = "day" }: { now?: string
             <div className="font-mono uppercase text-muted" style={{ fontSize: "11px", letterSpacing: "0.05em" }}>Up next · 10:00</div>
             <div className="font-medium leading-tight mt-0.5" style={{ fontSize: "14.5px" }}>1:1 with Priya · Inference EM</div>
           </div>
-          <button className="font-mono rounded-md" style={{ fontSize: "11px", padding: "6px 12px", background: "var(--rh)", color: "#fff" }}>
+          <button aria-label="Join Google Meet" className="font-mono rounded-md" style={{ fontSize: "11px", padding: "6px 12px", background: "var(--rh)", color: "#fff" }}>
             Join Meet ↗
           </button>
         </div>
@@ -190,12 +190,12 @@ export function DevQuicklaunch() {
       </div>
       <div className="grid grid-cols-3 gap-2">
         {tools.map(t => t.url ? (
-          <a key={t.name} href={t.url} target="_blank" rel="noopener noreferrer" className="tile hairline rounded-md py-2.5 flex flex-col items-center gap-1.5" style={{ background: "rgba(255,255,255,0.03)", textDecoration: "none", color: "inherit" }}>
+          <a key={t.name} href={t.url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${t.name}`} className="tile hairline rounded-md py-2.5 flex flex-col items-center gap-1.5" style={{ background: "rgba(255,255,255,0.03)", textDecoration: "none", color: "inherit" }}>
             <Icon name={t.icon} size={16} />
             <div className="font-mono" style={{ fontSize: "10.5px" }}>{t.name}</div>
           </a>
         ) : (
-          <button key={t.name} className="tile hairline rounded-md py-2.5 flex flex-col items-center gap-1.5" style={{ background: "rgba(255,255,255,0.03)" }}>
+          <button key={t.name} aria-label={`Open ${t.name}`} className="tile hairline rounded-md py-2.5 flex flex-col items-center gap-1.5" style={{ background: "rgba(255,255,255,0.03)" }}>
             <Icon name={t.icon} size={16} />
             <div className="font-mono" style={{ fontSize: "10.5px" }}>{t.name}</div>
           </button>
@@ -221,7 +221,7 @@ export function WorkShortcuts() {
       <div className="font-mono uppercase mb-2 px-1" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>Workspace</div>
       <div className="grid grid-cols-4 gap-1.5">
         {apps.map(a => (
-          <a key={a.n} href={a.url} target="_blank" rel="noopener noreferrer" className="tile hairline rounded-md py-2 flex flex-col items-center gap-1" style={{ background: "rgba(255,255,255,0.03)", textDecoration: "none", color: "inherit" }}>
+          <a key={a.n} href={a.url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${a.n}`} className="tile hairline rounded-md py-2 flex flex-col items-center gap-1" style={{ background: "rgba(255,255,255,0.03)", textDecoration: "none", color: "inherit" }}>
             <Icon name={a.i} size={14} />
             <div className="font-mono" style={{ fontSize: "10px" }}>{a.n}</div>
           </a>

@@ -98,6 +98,9 @@ export function CmdK({ open, onClose }: { open: boolean; onClose: () => void }) 
     return (
       <div onMouseEnter={() => setSel(i)}
         onClick={() => activateItem(it)}
+        role="option"
+        id={`cmdk-option-${i}`}
+        aria-selected={active}
         className={`flex items-center gap-3 px-4 py-2 cursor-pointer ${active ? "" : ""}`}
         style={{ borderRadius: 8, background: active ? "rgba(255,255,255,0.10)" : undefined }}>
         <div className="rounded-md flex items-center justify-center hairline flex-none" style={{ width: 28, height: 28, background: it.kind === "action" ? "rgba(255,180,80,0.18)" : "rgba(255,255,255,0.04)" }}>
@@ -124,12 +127,17 @@ export function CmdK({ open, onClose }: { open: boolean; onClose: () => void }) 
             onInput={(e: Event) => { setQ((e.target as HTMLInputElement).value); setSel(0); }}
             onKeyDown={onKey}
             placeholder="Search bookmarks, run actions..."
+            aria-label="Search bookmarks and actions"
+            role="combobox"
+            aria-expanded={true}
+            aria-controls="cmdk-listbox"
+            aria-activedescendant={flatList[sel] ? `cmdk-option-${sel}` : undefined}
             className="flex-1 text-white"
             style={{ background: "transparent", outline: "none", fontSize: "15px", border: "none", color: "#fff" }}
           />
           <span className="kbd">esc</span>
         </div>
-        <div className="overflow-y-auto scrolly py-2 text-white" style={{ maxHeight: "58vh" }}>
+        <div className="overflow-y-auto scrolly py-2 text-white" role="listbox" id="cmdk-listbox" style={{ maxHeight: "58vh" }}>
           {empty ? (
             <>
               {recents.length > 0 && (
