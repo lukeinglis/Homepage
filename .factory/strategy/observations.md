@@ -1,8 +1,8 @@
 # Interaction Study — 
 
-Analyzed 26 conversation log(s), 79 relevant messages.
+Analyzed 37 conversation log(s), 94 relevant messages.
 
-## User Messages (33)
+## User Messages (34)
 - Project: /Users/linglis/factory-projects/personal-website
 Mode: improve
 
@@ -54,13 +54,26 @@ Mode: improve
 Target: Please fix open issues, in order that makes sense
 
 Single-item mode. This target ha
+- Project: /Users/linglis/factory-projects/personal-website
+Mode: improve
 
-## Errors and Issues (46)
+## Focus Directive (Targeted Mode)
+
+Target: Please fix Issue 15 https://github.com/lukeinglis/Homepage/issues/15
+
+Single-item m
+
+## Errors and Issues (60)
 - Score is 0.47 before and 0.47 after (no regression, no improvement). The type_check errors went from 108 to 154, which is a concern. Let me check what those new type errors are. The type_check score i
 - The type errors are mostly pre-existing JSX type issues (TS7026 across all components, not just new ones) plus a few new ones from the CalendarWidget (ical.js types, @vercel/node). The type_check scor
 - 1. **score_direction**: Score 0.47 is below threshold 0.8. This is a pre-existing issue (type_check was already 0.0 with 108 errors), not caused by this PR.
 - Let me fix both issues: add `api/**` to scope and lower the threshold to match reality.
 - | **#5** | Fix weather widget blank state on light backgrounds | Quick win |
+- Good, I have the full context. Now implementing all three fixes in Layout.astro.
+- That lint error is from my favicon script. Let me fix it.
+- Now rebuild and re-run eval with the lint fix.
+- All three fixes implemented in `src/layouts/Layout.astro`:
+- - **Weather skeleton**: pulse animation with semi-transparent background, explicit dimensions, subtle border on loading/error states
 - - **Pitfalls identified**: Theme flash, geolocation prompt fatigue, localStorage quota, widget error cascade, WCAG AA across 7 themes
 - Build passes but 2 tests are failing. Let me check what's failing and fix it.
 - Two test failures in NotesWidget. Let me fix them quickly and commit everything.
@@ -81,8 +94,17 @@ Single-item mode. This target ha
 - 3. **Clock + quick links widgets**: First two `client:load` islands, widget wrapper with error boundaries, responsive grid
 - Starting an Improve cycle focused on fixing open issues. Let me detect the project state and gather context.
 - Current composite score is 0.47 (threshold 0.45). 10 open issues to consider. Starting the Improve pipeline with the focus directive on fixing open issues.
+- - FEEC ordering correct: Fix (#5, #6) then Explore (#12)
+- This is a targeted mode cycle, so growth dimension requirements are suspended. The hypothesis is correctly classified as FIX.
+- Precheck failed on scope due to dirty `.factory/` files from CEO operational activity (review files, archive, etc.). These are not PR changes. Let me stash them and re-run.
+- The backlog item is "Please fix open issues, in order that makes sense". This PR fixes 3 of 10 issues (#5, #6, #12). This is partial progress, not full completion. I'll mark it as PARTIAL and update t
+- Fixes 3 open issues in PR #14 (`experiment/2-fix-ui-polish`):
+- 1. **#5 Weather blank state** : Added CSS pulse animation for skeleton loading, semi-transparent backgrounds visible on all 7 day themes, themed error text color
 - - `src/components/WeatherWidget.tsx`: Preact widget with loading skeleton, error fallback, and weather display (temp, condition, wind)
 - **Tests:** All 96 tests pass (7 test files), covering weather API parsing, WMO code mapping, geolocation caching/denial logic, and widget loading/error/ready states. Build succeeds cleanly.
+- Archived cycle 3 strategy decisions: strategy snapshot written, dashboard updated, checkpoint logged. CEO approved H1 bundling issues #5, #6, #12 as scoped CSS/UI fixes targeting Layout.astro.
+- Now let me look at the weather widget, notes widget, and layout CSS to understand the current state of the bug fixes and polish items.
+- Now I have enough context. Let me verify one more thing: the current weather widget behavior when geolocation is denied (it falls back to default coordinates, not to error state).
 - I notice a typo in my allowlist. Let me fix the Yahoo calendar domain.
 - Simple fix: remove unused `vi` import.
 - Score is 0.9, well above the 0.8 threshold. All dimensions pass except Lighthouse which has an infrastructure flaky error (not caused by my changes). Time to commit and open the PR.
@@ -108,8 +130,10 @@ No similar projects found.
 
 ## Open GitHub Issues
 
-### Your Issues (10) — actionable, may generate fix hypotheses
+### Your Issues (11) — actionable, may generate fix hypotheses
 
+- **#15** Redesign: Scene-based dashboard with glassmorphism UI (by @lukeinglis)
+  > ## Summary  Full redesign of the Homepage dashboard based on a design prototype built with Claude Design. The new design replaces the current per-day-theme widget system with a scene-based layout that adapts to time of day, weekday/weekend, and optional team-night modes.  Design files attached to th
 - **#12** Add per-day favicon that reflects the day theme color (by @lukeinglis)
   > ## Problem  The favicon is static and doesn't change with the day theme. Since each day has a distinct color identity, the browser tab could reinforce that.  ## Expected Behavior  - Generate or swap the favicon dynamically based on the current day - Use an inline SVG favicon (supported in modern bro
 - **#11** Add PWA support for offline access and installability (by @lukeinglis)
@@ -133,19 +157,20 @@ No similar projects found.
 
 ## Backlog
 
-**TARGETED MODE** — building exactly one item: Please fix open issues, in order that makes sense
+**TARGETED MODE** — building exactly one item: Redesign: Scene-based dashboard with glassmorphism UI
 
-- Please fix open issues, in order that makes sense
+- Redesign: Scene-based dashboard with glassmorphism UI
 
 ## Observability Coverage
 - **Score:** 0.0%
-- **Function coverage:** 0/33 functions have logging (0%)
+- **Function coverage:** 0/36 functions have logging (0%)
 - **Total log statements:** 0
 - **Structured logging:** No
 - **Request tracing:** No
 
 ### Uninstrumented Files
 - .astro/content.d.ts (9 functions, 0 log statements)
+- api/calendar-proxy.ts (3 functions, 0 log statements)
 - src/config/loader.ts (4 functions, 0 log statements)
 - src/lib/contrast.ts (5 functions, 0 log statements)
 - src/lib/geolocation.test.ts (1 functions, 0 log statements)
@@ -156,15 +181,15 @@ No similar projects found.
 ### Observability Recommendations
 - Add structured logging (structlog for Python, pino for Node.js) for machine-parseable log output
 - Add request ID tracing (contextvars + unique ID per request) for end-to-end request correlation
-- Improve logging coverage: only 0/33 functions (0%) have log statements
-- Add logging to uninstrumented files: .astro/content.d.ts (9 functions, 0 log statements), src/config/loader.ts (4 functions, 0 log statements), src/lib/contrast.ts (5 functions, 0 log statements), src/lib/geolocation.test.ts (1 functions, 0 log statements), src/lib/weather.ts (4 functions, 0 log statements)
+- Improve logging coverage: only 0/36 functions (0%) have log statements
+- Add logging to uninstrumented files: .astro/content.d.ts (9 functions, 0 log statements), api/calendar-proxy.ts (3 functions, 0 log statements), src/config/loader.ts (4 functions, 0 log statements), src/lib/contrast.ts (5 functions, 0 log statements), src/lib/geolocation.test.ts (1 functions, 0 log statements)
 
 ## Prior Knowledge (Obsidian)
 No prior notes found.
 
 ## Cross-Project Insights
 
-Analyzed 1 projects (personal-website), 1 experiments, 100% overall keep rate.
+Analyzed 1 projects (personal-website), 2 experiments, 100% overall keep rate.
 
 
 Full report: .factory/strategy/insights.md

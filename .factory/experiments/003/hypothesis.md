@@ -1,0 +1,1 @@
+Port scene-based dashboard prototype to Astro + Preact: Replace 7 day-theme widget system with 4-scene glassmorphism layout per Issue #15

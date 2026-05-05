@@ -19,3 +19,8 @@
 - [x] archivist after experiment 2 (keep) — 2026-05-02T23:55:00Z
 - [x] archivist after experiment 2 (keep) — 2026-05-02T23:57:24Z
 - [x] FINAL archivist — 2026-05-02T23:57:34Z
+- [x] archivist after research — 2026-05-04T18:20:13Z (inline, agent timed out)
+- [x] archivist after strategy — 2026-05-04T18:23:22Z (inline)
+- [x] archivist after build — 2026-05-04T18:53:22Z (inline)
+- [x] archivist after experiment 3 (keep) — 2026-05-04T18:55:46Z (inline)
+- [x] FINAL archivist — 2026-05-04T18:55:46Z (inline)

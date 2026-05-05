@@ -331,16 +331,17 @@ export const BOOKMARKS: Bookmark[] = [
 export interface QuickAction {
   name: string;
   hint: string;
+  url?: string;
 }
 
 export const QUICK_ACTIONS: QuickAction[] = [
-  { name: "New Google Doc", hint: "doc" },
+  { name: "New Google Doc", hint: "doc", url: "https://docs.google.com/document/d/create" },
   { name: "Start focus block — 50m", hint: "focus" },
   { name: "Play kitchen playlist", hint: "music" },
   { name: "Start cooking mode", hint: "cook" },
   { name: "What's on TV tonight", hint: "tv" },
-  { name: "New Obsidian note", hint: "note" },
-  { name: "Open Claude — new chat", hint: "llm" },
+  { name: "New Obsidian note", hint: "note", url: "obsidian://new" },
+  { name: "Open Claude — new chat", hint: "llm", url: "https://claude.ai/new" },
 ];
 
 export const NOW_PLAYING = {

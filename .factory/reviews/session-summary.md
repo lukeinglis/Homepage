@@ -1,11 +1,11 @@
 # Session Summary — personal-website
 
-_Generated: 2026-05-02 23:57 UTC_
+_Generated: 2026-05-04 18:55 UTC_
 
 ## Overview
 
 - **Mode:** unknown
-- **Experiments:** 2 total (2 kept, 0 reverted, 0 errors)
+- **Experiments:** 3 total (3 kept, 0 reverted, 0 errors)
 
 ## What Was Built
 
@@ -13,6 +13,7 @@ _Generated: 2026-05-02 23:57 UTC_
 |---|------------|----------|-------|----|
 | 1 | Port categorized links from old site and add calendar widget | EXPLORE | — | #4 |
 | 2 | Fix weather blank state (#5), style notes textarea (#6), add | FIX | — | #14 |
+| 3 | Port scene-based dashboard prototype to Astro + Preact | EXPLORE | — | #17 |
 
 ## What Was Deferred
 

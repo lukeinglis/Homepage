@@ -1,6 +1,45 @@
-# Research: Issues #1 (Personalized Links) and #2 (Calendar Widget)
+# Research: Issue #15 Scene-Based Dashboard Redesign
 
-## Project Summary
+## Design Prototype Analysis
+
+The design prototype (`.factory/design-reference/src/`) is ~3000 lines of React JSX using CDN-loaded Tailwind, Babel standalone, and React 18. It defines:
+
+- **4 scenes**: weekday AM, weekday PM, weekend AM, weekend PM
+- **~30 modules** across 5 categories: Work, Sports, Cooking, Life, Navigation
+- **3 team-night overrides**: Auburn, Chelsea, Orioles (swap backgrounds + accents)
+- **Animated backgrounds**: 857 lines of gradient orb animations per scene/team
+- **Cmd+K palette**: Fuzzy search across categorized bookmarks
+- **Glassmorphism visual system**: backdrop-filter blur, translucent cards, grain overlay
+
+## Current Project State
+
+- **Stack**: Astro 6.2 + Preact 10.29 + TypeScript + Vitest
+- **Current widgets**: Clock, Weather, QuickLinks, Calendar, Quote, Notes (6 total)
+- **Current system**: 7 day-specific configs with per-day themes, simple widget grid
+- **Deployment**: Vercel (static)
+- **Tests**: 14 passing, vitest with happy-dom
+
+## Migration Architecture
+
+### Approach: Scene System on Astro + Preact
+
+The prototype uses React but the production stack is Astro + Preact. Key decisions:
+
+1. **Scene orchestration**: Build as a single Preact island (`client:load`) that manages scene state, transitions, and team-night mode. All modules render within this island.
+
+2. **CSS strategy**: Port the prototype's vanilla CSS (glassmorphism, scene scopes, animations) into a global stylesheet. The `.module`, `.chip`, `.kbd`, scene-scoped overrides all live in CSS.
+
+3. **Data layer**: Prototype uses `window.*` globals. Production uses TypeScript modules with typed data exports.
+
+4. **Background animations**: Port as separate Preact components with CSS animations. Use `will-change: transform` for GPU acceleration.
+
+5. **Fonts**: Newsreader (Google Fonts), Geist + Geist Mono (Vercel CDN). Load via `<link>` in Layout.astro.
+
+### Scope: ~3000 lines prototype to Preact + TypeScript
+
+Full implementation touches: 4 scene layouts, ~30 modules, animated backgrounds, Cmd+K palette, scene/team switchers, complete visual system overhaul.
+
+## Prior Research (Issues #1 and #2)
 
 Static Astro 6 site with Preact, deployed to Vercel. Personal dashboard with day-specific themes, greetings, widgets (clock, weather, quickLinks, quote, notes), and per-day quick links. Currently has only 4 generic quick links per day. Old site had 30+ categorized links across socials, sports, betting, fantasy, professional, and finance sections.
 

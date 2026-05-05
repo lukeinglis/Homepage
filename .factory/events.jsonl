@@ -101,3 +101,28 @@
 {"type": "agent.failed", "timestamp": "2026-05-02T23:57:20.705061+00:00", "project": "personal-website", "agent": "archivist", "data": {"return_code": 1, "stderr": "Agent timed out after 120.0s"}}
 {"type": "summary.started", "timestamp": "2026-05-02T23:57:30.923465+00:00", "project": "personal-website", "agent": null, "data": {}}
 {"type": "summary.completed", "timestamp": "2026-05-02T23:57:30.930408+00:00", "project": "personal-website", "agent": null, "data": {"kept": 2, "reverted": 0, "errored": 0, "backlog": 4}}
+{"type": "detect", "timestamp": "2026-05-04T18:09:11.730937+00:00", "project": "", "agent": null, "data": {"state": "has_factory"}}
+{"type": "eval.started", "timestamp": "2026-05-04T18:09:21.185792+00:00", "project": "", "agent": null, "data": {"command": "node eval/score.cjs"}}
+{"type": "eval.completed", "timestamp": "2026-05-04T18:10:04.118584+00:00", "project": "", "agent": null, "data": {"composite": 0.47000000000000003, "passed": true, "dimensions": 11}}
+{"type": "study.started", "timestamp": "2026-05-04T18:10:49.472028+00:00", "project": "", "agent": null, "data": {}}
+{"type": "study.completed", "timestamp": "2026-05-04T18:10:51.428562+00:00", "project": "", "agent": null, "data": {"chars": 17295}}
+{"type": "agent.started", "timestamp": "2026-05-04T18:11:06.239655+00:00", "project": "personal-website", "agent": "researcher", "data": {"task": "Mode 2 research for /Users/linglis/factory-projects/personal-website. \n\nThe focus target is GitHub Issue #15: a complete redesign of a personal browser homepage dashboard. Key aspects to research:\n\n1."}}
+{"type": "agent.failed", "timestamp": "2026-05-04T18:16:06.265448+00:00", "project": "personal-website", "agent": "researcher", "data": {"return_code": 1, "stderr": "Agent timed out after 300.0s"}}
+{"type": "agent.started", "timestamp": "2026-05-04T18:18:08.045702+00:00", "project": "personal-website", "agent": "archivist", "data": {"task": "Record the research findings for Issue #15 redesign at /Users/linglis/factory-projects/personal-website.\nRead .factory/strategy/research.md and .factory/reviews/ceo-verdict-researcher.md.\nThe research"}}
+{"type": "agent.failed", "timestamp": "2026-05-04T18:20:08.076048+00:00", "project": "personal-website", "agent": "archivist", "data": {"return_code": 1, "stderr": "Agent timed out after 120.0s"}}
+{"type": "agent.started", "timestamp": "2026-05-04T18:20:24.037128+00:00", "project": "personal-website", "agent": "strategist", "data": {"task": "Generate a single targeted hypothesis for /Users/linglis/factory-projects/personal-website.\n\n## Focus Directive (Targeted Mode)\nTarget: GitHub Issue #15 - Redesign: Scene-based dashboard with glassmor"}}
+{"type": "agent.completed", "timestamp": "2026-05-04T18:22:57.553125+00:00", "project": "personal-website", "agent": "strategist", "data": {"return_code": 0}}
+{"type": "eval.started", "timestamp": "2026-05-04T18:23:26.333704+00:00", "project": "personal-website", "agent": null, "data": {"command": "node eval/score.cjs"}}
+{"type": "eval.completed", "timestamp": "2026-05-04T18:24:09.019287+00:00", "project": "personal-website", "agent": null, "data": {"composite": 0.47000000000000003, "passed": true, "dimensions": 11}}
+{"type": "eval.started", "timestamp": "2026-05-04T18:24:11.962921+00:00", "project": "personal-website", "agent": null, "data": {"command": "node eval/score.cjs"}}
+{"type": "eval.completed", "timestamp": "2026-05-04T18:24:50.738425+00:00", "project": "personal-website", "agent": null, "data": {"composite": 0.47000000000000003, "passed": true, "dimensions": 11}}
+{"type": "experiment.begin", "timestamp": "2026-05-04T18:24:55.467918+00:00", "project": "personal-website", "agent": null, "data": {"exp_id": 3, "hypothesis": "Port scene-based dashboard prototype to Astro + Preact: Replace 7 day-theme widget system with 4-scene glassmorphism layout per Issue #15"}}
+{"type": "agent.started", "timestamp": "2026-05-04T18:25:48.849019+00:00", "project": "personal-website", "agent": "builder", "data": {"task": "Implement GitHub issue #16 in lukeinglis/Homepage.\n\n1. Read the issue: gh issue view 16\n2. cd /Users/linglis/factory-projects/personal-website, read CLAUDE.md and factory.md\n3. Read the CEO-approved s"}}
+{"type": "agent.completed", "timestamp": "2026-05-04T18:51:02.566031+00:00", "project": "personal-website", "agent": "builder", "data": {"return_code": 0}}
+{"type": "eval.started", "timestamp": "2026-05-04T18:53:27.696633+00:00", "project": "personal-website", "agent": null, "data": {"command": "node eval/score.cjs"}}
+{"type": "eval.completed", "timestamp": "2026-05-04T18:53:58.512027+00:00", "project": "personal-website", "agent": null, "data": {"composite": 0.47000000000000003, "passed": true, "dimensions": 11}}
+{"type": "guard.completed", "timestamp": "2026-05-04T18:54:21.882484+00:00", "project": "personal-website", "agent": null, "data": {"violations": 1, "clean": false}}
+{"type": "precheck.completed", "timestamp": "2026-05-04T18:54:23.992661+00:00", "project": "personal-website", "agent": null, "data": {"passed": false, "failures": ["scope"]}}
+{"type": "experiment.finalize", "timestamp": "2026-05-04T18:55:39.839918+00:00", "project": "personal-website", "agent": null, "data": {"exp_id": 3, "verdict": "keep", "hypothesis": "Port scene-based dashboard prototype to Astro + Preact"}}
+{"type": "summary.started", "timestamp": "2026-05-04T18:55:48.989850+00:00", "project": "personal-website", "agent": null, "data": {}}
+{"type": "summary.completed", "timestamp": "2026-05-04T18:55:48.994128+00:00", "project": "personal-website", "agent": null, "data": {"kept": 3, "reverted": 0, "errored": 0, "backlog": 4}}
