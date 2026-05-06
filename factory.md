@@ -16,6 +16,7 @@ A personal browser homepage that adapts its theme, greeting, widgets, and quick 
 - package.json
 - tsconfig.json
 - astro.config.mjs
+- middleware.ts
 - README.md
 - .github/**
 

@@ -9,6 +9,7 @@
     "package.json",
     "tsconfig.json",
     "astro.config.mjs",
+    "middleware.ts",
     "README.md",
     ".github/**"
   ],
