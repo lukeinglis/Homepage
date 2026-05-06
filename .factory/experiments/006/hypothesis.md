@@ -1,0 +1,1 @@
+Add Google OAuth authentication to protect personal dashboard (#45)

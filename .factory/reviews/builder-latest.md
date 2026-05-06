@@ -1,20 +1,18 @@
 # Builder Agent Output
 
-- **timestamp:** 2026-05-05T18:23:17Z
+- **timestamp:** 2026-05-06T14:19:46Z
 - **exit_code:** 0
 
 ---
 
-All done. PR opened at https://github.com/lukeinglis/Homepage/pull/44.
+PR created: https://github.com/lukeinglis/Homepage/pull/46
 
-**Summary of changes across 7 files:**
+**Summary of what was built:**
 
-1. **Aria-labels**: Added descriptive `aria-label` to every interactive button (scene switcher, team switcher, CmdK trigger, Join Meet, DevQuicklaunch tools, WorkShortcuts apps, cooking buttons, All games, NowPlaying pause/skip, PinnedRow). Added `aria-pressed` to toggle buttons.
+- **6 auth API endpoints** (`api/auth/`): config, login, callback, session, logout, and refresh. Handles the full Google OAuth 2.0 flow with iron-session encrypted cookies.
+- **Vercel Edge Middleware** (`middleware.ts`): Redirects unauthenticated visitors to `/login`, exempts auth routes and static assets.
+- **Login page** (`src/pages/login.astro`): Standalone page with glassmorphism styling matching the dashboard aesthetic, "Sign in with Google" button.
+- **Frontend integration**: App.tsx fetches the session on mount, passes the user's first name through to the Greeting component in all 4 scenes, and shows a subtle avatar + "Sign out" link in the top-left corner.
+- **No secrets in codebase**: All auth config reads from env vars (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, SESSION_SECRET, ALLOWED_EMAIL).
 
-2. **CmdK ARIA combobox pattern**: `role="combobox"` + `aria-expanded` + `aria-controls` + `aria-activedescendant` on search input. `role="listbox"` on results container. `role="option"` + `aria-selected` on each result row.
-
-3. **Reduced motion**: Comprehensive `prefers-reduced-motion: reduce` media query that zeroes out `animation-duration` and `transition-duration` on all elements, covering inline styles in Backgrounds.tsx (particles, rain, snow) as well as CSS-defined animations (liveblink, drift, sparkle, etc).
-
-4. **Text contrast**: Bumped `.text-muted` opacity from 0.62 to 0.72 across default, wkdy-am, and wknd-am scenes.
-
-5. **LIVE labels**: Added `.sr-only` utility class and screen-reader "Live" text next to every `live-dot` indicator.
+Build passes, all 6 tests pass, smoke test passes, eval score holds at 0.6 (above the 0.45 threshold).

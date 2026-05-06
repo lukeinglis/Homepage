@@ -139,3 +139,5 @@
 {"type": "agent.started", "timestamp": "2026-05-05T18:18:21.704434+00:00", "project": "personal-website", "agent": "builder", "data": {"task": "Implement accessibility fixes for /Users/linglis/factory-projects/personal-website (GitHub issue #32).\n\n1. Read the issue: gh issue view 32\n2. cd /Users/linglis/factory-projects/personal-website, read"}}
 {"type": "agent.completed", "timestamp": "2026-05-05T18:23:17.777094+00:00", "project": "personal-website", "agent": "builder", "data": {"return_code": 0}}
 {"type": "experiment.finalize", "timestamp": "2026-05-05T18:24:51.649197+00:00", "project": "", "agent": null, "data": {"exp_id": 5, "verdict": "keep", "hypothesis": "Add accessibility: aria labels, contrast fixes, reduced motion"}}
+{"type": "agent.completed", "timestamp": "2026-05-06T14:19:46.696772+00:00", "project": "personal-website", "agent": "builder", "data": {"return_code": 0}}
+{"type": "experiment.finalize", "timestamp": "2026-05-06T14:21:50.900981+00:00", "project": "", "agent": null, "data": {"exp_id": 6, "verdict": "keep", "hypothesis": "Add Google OAuth authentication to protect personal dashboard"}}
