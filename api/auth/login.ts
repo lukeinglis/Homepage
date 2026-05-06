@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { GOOGLE_AUTH_URL, SCOPES, getRedirectUri, getGoogleClientId } from "./config";
+import { GOOGLE_AUTH_URL, SCOPES, getRedirectUri, getGoogleClientId } from "./config.js";
 import crypto from "crypto";
 
 export default function handler(req: VercelRequest, res: VercelResponse): void {

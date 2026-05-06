@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { clearSession } from "./session-util";
+import { clearSession } from "./session-util.js";
 
 export default function handler(
   req: VercelRequest,

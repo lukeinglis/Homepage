@@ -6,8 +6,8 @@ import {
   getGoogleClientId,
   getGoogleClientSecret,
   getAllowedEmail,
-} from "./config";
-import { setSession } from "./session-util";
+} from "./config.js";
+import { setSession } from "./session-util.js";
 
 function parseCookies(cookieHeader: string | undefined): Record<string, string> {
   if (!cookieHeader) return {};

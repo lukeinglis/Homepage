@@ -1,4 +1,4 @@
-import { GOOGLE_TOKEN_URL, getGoogleClientId, getGoogleClientSecret } from "./config";
+import { GOOGLE_TOKEN_URL, getGoogleClientId, getGoogleClientSecret } from "./config.js";
 
 interface TokenResponse {
   access_token: string;

@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getSession, setSession } from "./session-util";
-import { refreshAccessToken } from "./refresh";
+import { getSession, setSession } from "./session-util.js";
+import { refreshAccessToken } from "./refresh.js";
 
 export default async function handler(
   req: VercelRequest,
