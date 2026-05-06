@@ -4,11 +4,17 @@ import { Icon } from './Icons';
 import { CmdK } from './CmdK';
 import { SceneWeekdayAM, SceneWeekdayPM, SceneWeekendAM, SceneWeekendPM } from './Scenes';
 
+interface UserInfo {
+  name: string;
+  email: string;
+  picture: string;
+}
+
 interface SceneConfig {
   id: string;
   label: string;
   time: string;
-  Comp: (p: { teamNight: string | null }) => ComponentChildren;
+  Comp: (p: { teamNight: string | null; userName?: string }) => ComponentChildren;
 }
 
 const SCENES: SceneConfig[] = [
@@ -44,6 +50,7 @@ export function App() {
   const [teamNight, setTeamNight] = useState<string | null>(() => {
     try { return localStorage.getItem("homepage_team") || null; } catch { return null; }
   });
+  const [user, setUser] = useState<UserInfo | null>(null);
   const [cmdkOpen, setCmdkOpen] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
 
@@ -54,6 +61,15 @@ export function App() {
       else { localStorage.removeItem("homepage_team"); }
     } catch { /* empty */ }
   }, [teamNight]);
+
+  useEffect(() => {
+    fetch("/api/auth/session")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.authenticated && data.user) setUser(data.user);
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -102,6 +118,7 @@ export function App() {
   }
 
   const Scene = SCENES[sceneIdx].Comp;
+  const firstName = user?.name?.split(" ")[0];
 
   return (
     <div style={{ minHeight: "100vh", overflow: "auto" }} className="scrolly">
@@ -109,8 +126,36 @@ export function App() {
         opacity: transitioning ? 0 : 1,
         transition: "opacity 600ms cubic-bezier(.22,1,.36,1)",
       }} key={sceneIdx + "-" + (teamNight || "x")}>
-        {Scene({ teamNight })}
+        {Scene({ teamNight, userName: firstName })}
       </div>
+
+      {user && (
+        <div className="fixed z-40 flex items-center gap-2"
+          style={{ top: 20, left: 20 }}>
+          {user.picture && (
+            <img
+              src={user.picture}
+              alt=""
+              referrerPolicy="no-referrer"
+              style={{
+                width: 28, height: 28, borderRadius: "50%",
+                border: "1px solid rgba(255,255,255,0.2)",
+              }}
+            />
+          )}
+          <a href="/api/auth/logout"
+            className="font-mono"
+            style={{
+              fontSize: "10.5px",
+              color: "rgba(255,255,255,0.5)",
+              textDecoration: "none",
+              transition: "color 200ms",
+            }}
+            onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "rgba(255,255,255,0.85)"; }}
+            onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "rgba(255,255,255,0.5)"; }}
+          >Sign out</a>
+        </div>
+      )}
 
       <SceneSwitcher current={sceneIdx} onChange={switchScene} />
       <TeamSwitcher current={teamNight} onChange={pickTeamNight} />
