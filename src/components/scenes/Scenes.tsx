@@ -41,12 +41,12 @@ function teamScopeClass(teamNight: string | null) {
   return "";
 }
 
-export function SceneWeekdayAM({ teamNight }: { teamNight: string | null }) {
+export function SceneWeekdayAM({ teamNight, userName }: { teamNight: string | null; userName?: string }) {
   return (
     <SceneShell scopeClass={teamNight ? teamScopeClass(teamNight) : "scene-wkdy-am"}
       bg={pickBg("wkdy_am", teamNight)}
 >
-      <Greeting scene="wkdy_am" />
+      <Greeting scene="wkdy_am" name={userName} />
       <div className="mt-8 grid grid-cols-12 gap-5">
         <div className="col-span-8"><MeetingTimeline now="08:18" phase="day" /></div>
         <div className="col-span-4 space-y-4">
@@ -81,12 +81,12 @@ export function SceneWeekdayAM({ teamNight }: { teamNight: string | null }) {
   );
 }
 
-export function SceneWeekdayPM({ teamNight }: { teamNight: string | null }) {
+export function SceneWeekdayPM({ teamNight, userName }: { teamNight: string | null; userName?: string }) {
   return (
     <SceneShell scopeClass={teamNight ? teamScopeClass(teamNight) : ""}
       bg={pickBg("wkdy_pm", teamNight)}
 >
-      <Greeting scene="wkdy_pm" />
+      <Greeting scene="wkdy_pm" name={userName} />
       <div className="mt-8 grid grid-cols-12 gap-5">
         <div className="col-span-7"><TonightHero size="large" /></div>
         <div className="col-span-5"><YouTubeFrame sub="Watch while cooking" video={{
@@ -122,7 +122,7 @@ export function SceneWeekdayPM({ teamNight }: { teamNight: string | null }) {
   );
 }
 
-export function SceneWeekendAM({ teamNight }: { teamNight: string | null }) {
+export function SceneWeekendAM({ teamNight, userName }: { teamNight: string | null; userName?: string }) {
   const featured = teamNight === "chelsea" ? MY_TEAMS_DETAIL[2]
     : teamNight === "camden" ? MY_TEAMS_DETAIL[1]
     : MY_TEAMS_DETAIL[0];
@@ -130,7 +130,7 @@ export function SceneWeekendAM({ teamNight }: { teamNight: string | null }) {
     <SceneShell scopeClass={teamNight ? teamScopeClass(teamNight) : "scene-wknd-am"}
       bg={pickBg("wknd_am", teamNight)}
 >
-      <Greeting scene="wknd_am" />
+      <Greeting scene="wknd_am" name={userName} />
       <div className="mt-8"><EventTakeover /></div>
       <div className="mt-5 grid grid-cols-12 gap-5">
         <div className="col-span-7 space-y-5">
@@ -155,7 +155,7 @@ export function SceneWeekendAM({ teamNight }: { teamNight: string | null }) {
   );
 }
 
-export function SceneWeekendPM({ teamNight }: { teamNight: string | null }) {
+export function SceneWeekendPM({ teamNight, userName }: { teamNight: string | null; userName?: string }) {
   const featured = teamNight === "chelsea" ? MY_TEAMS_DETAIL[2]
     : teamNight === "auburn" ? MY_TEAMS_DETAIL[0]
     : teamNight === "camden" ? MY_TEAMS_DETAIL[1]
@@ -164,7 +164,7 @@ export function SceneWeekendPM({ teamNight }: { teamNight: string | null }) {
     <SceneShell scopeClass={teamNight ? teamScopeClass(teamNight) : ""}
       bg={pickBg("wknd_pm", teamNight)}
 >
-      <Greeting scene="wknd_pm" />
+      <Greeting scene="wknd_pm" name={userName} />
       <div className="mt-8 grid grid-cols-12 gap-5">
         <div className="col-span-7"><TonightHero size="large" /></div>
         <div className="col-span-5 space-y-5">
