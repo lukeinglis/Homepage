@@ -1,6 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getIronSession } from "iron-session";
-import { getSessionOptions, type SessionData } from "./config";
+import { getSession, setSession } from "./session-util";
 import { refreshAccessToken } from "./refresh";
 
 export default async function handler(
@@ -14,15 +13,9 @@ export default async function handler(
     return;
   }
 
-  let session;
-  try {
-    session = await getIronSession<SessionData>(req, res, getSessionOptions());
-  } catch {
-    res.json({ authenticated: false });
-    return;
-  }
+  const session = getSession(req);
 
-  if (!session.email) {
+  if (!session || !session.email) {
     res.json({ authenticated: false });
     return;
   }
@@ -33,14 +26,12 @@ export default async function handler(
         const refreshed = await refreshAccessToken(session.refreshToken);
         session.accessToken = refreshed.accessToken;
         session.tokenExpiry = refreshed.tokenExpiry;
-        await session.save();
+        setSession(res, session);
       } catch {
-        session.destroy();
         res.json({ authenticated: false });
         return;
       }
     } else {
-      session.destroy();
       res.json({ authenticated: false });
       return;
     }
