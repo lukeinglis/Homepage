@@ -201,21 +201,6 @@ export const MARKETS: MarketData[] = [
   { sym: "10Y", val: "4.42%", chg: "+3 bps", up: true, spark: [4,5,6,5,7,6,8,7,9,8,10,9] },
 ];
 
-export interface Weather {
-  t: number;
-  lo: number;
-  hi: number;
-  cond: string;
-  icon: string;
-  city: string;
-}
-
-export const WEATHER: Record<string, Weather> = {
-  morning: { t: 58, lo: 49, hi: 71, cond: "Partly cloudy", icon: "cloud-sun", city: "Boston" },
-  evening: { t: 64, lo: 49, hi: 71, cond: "Light rain", icon: "cloud-rain", city: "Boston" },
-  wknd_am: { t: 67, lo: 55, hi: 78, cond: "Sun & clouds", icon: "sun", city: "Boston" },
-  wknd_pm: { t: 61, lo: 55, hi: 78, cond: "Clear", icon: "moon", city: "Boston" },
-};
 
 export const NEWS: Record<string, string[]> = {
   bloomberg: [

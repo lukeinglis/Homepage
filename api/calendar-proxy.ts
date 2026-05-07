@@ -44,11 +44,10 @@ export default async function handler(
   res: VercelResponse,
 ): Promise<void> {
   const origin = req.headers.origin || "";
-  const allowedOrigins = [
-    "https://lukeinglis.me",
-    "http://localhost:4321",
-    "http://localhost:3000",
-  ];
+  const allowedOrigins = ["https://lukeinglis.me"];
+  if (process.env.NODE_ENV !== "production") {
+    allowedOrigins.push("http://localhost:4321", "http://localhost:3000");
+  }
   if (allowedOrigins.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
     res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -88,6 +87,7 @@ export default async function handler(
     return;
   }
 
+  const MAX_SIZE = 5 * 1024 * 1024;
   try {
     const response = await fetch(fetchUrl, {
       headers: { Accept: "text/calendar" },
@@ -101,7 +101,18 @@ export default async function handler(
       return;
     }
 
+    const contentLength = response.headers.get("content-length");
+    if (contentLength && parseInt(contentLength, 10) > MAX_SIZE) {
+      res.status(413).json({ error: "Calendar file too large" });
+      return;
+    }
+
     const text = await response.text();
+    if (text.length > MAX_SIZE) {
+      res.status(413).json({ error: "Calendar file too large" });
+      return;
+    }
+
     res.setHeader("Content-Type", "text/calendar; charset=utf-8");
     res.status(200).send(text);
   } catch (err) {

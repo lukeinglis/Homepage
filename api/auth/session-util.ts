@@ -19,13 +19,8 @@ function getSecret(): Buffer {
   if (!secret || secret.length < 32) {
     throw new Error("SESSION_SECRET must be at least 32 characters");
   }
-  return crypto.pbkdf2Sync(
-    secret,
-    "lukeinglis.me-homepage-session",
-    100000,
-    32,
-    "sha256",
-  );
+  const salt = process.env.SESSION_SALT || "lukeinglis.me-homepage-session";
+  return crypto.pbkdf2Sync(secret, salt, 100000, 32, "sha256");
 }
 
 function encrypt(data: string): string {
@@ -105,7 +100,7 @@ export function setSession(res: VercelResponse, data: SessionData): void {
     .join("; ");
 
   const hmac = getSessionHmac(data.email);
-  const hmacCookie = `${SIG_COOKIE_NAME}=${hmac}; Path=/; SameSite=Strict; Max-Age=${THIRTY_DAYS}${securePart}`;
+  const hmacCookie = `${SIG_COOKIE_NAME}=${hmac}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${THIRTY_DAYS}${securePart}`;
 
   const existing = res.getHeader("Set-Cookie");
   const cookies = existing

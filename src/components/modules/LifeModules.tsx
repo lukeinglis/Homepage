@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'preact/hooks';
 import type { JSX } from 'preact';
 import { Icon } from '../scenes/Icons';
-import { WEATHER, MARKETS, NETWORTH, NEWS, NOW_PLAYING, SHOP, QUOTES } from '../../data/scene-data';
+import { MARKETS, NETWORTH, NEWS, NOW_PLAYING, SHOP, QUOTES } from '../../data/scene-data.js';
+import { fetchWeather, getCachedLocation, requestLocation } from '../../lib/weather-api.js';
+import type { WeatherData } from '../../lib/weather-api.js';
 
 // ---------------------------------------------------------------------------
 // useDetectedCity
@@ -165,50 +167,91 @@ export function Sparkline({ values, up }: SparklineProps): JSX.Element {
 // WeatherModule
 // ---------------------------------------------------------------------------
 
-interface WeatherModuleProps {
-  scene: string;
-}
+export function WeatherModule(): JSX.Element {
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-export function WeatherModule({ scene }: WeatherModuleProps): JSX.Element {
-  const weatherKey: Record<string, string> = {
-    wkdy_am: "morning",
-    wkdy_pm: "evening",
-    wknd_am: "wknd_am",
-    wknd_pm: "wknd_pm",
-  };
-  const w = WEATHER[weatherKey[scene]];
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        let loc = getCachedLocation();
+        if (!loc) loc = await requestLocation();
+        const data = await fetchWeather(loc?.lat, loc?.lon);
+        if (!cancelled) {
+          setWeather(data);
+          setLoading(false);
+        }
+      } catch {
+        if (!cancelled) {
+          setError(true);
+          setLoading(false);
+        }
+      }
+    }
+    load();
+    const interval = setInterval(load, 15 * 60 * 1000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, []);
 
-  const hours: [string, number][] = scene.endsWith("_am")
-    ? [["6a", 54], ["8a", 58], ["10a", 62], ["12p", 66], ["2p", 70], ["4p", 69], ["6p", 65], ["8p", 60]]
-    : [["12p", 66], ["2p", 70], ["4p", 69], ["6p", 65], ["8p", 60], ["10p", 56], ["12a", 53], ["2a", 51]];
+  if (loading) {
+    return (
+      <div className="module p-4 module-enter" style={{ animationDelay: "60ms" }}>
+        <div className="flex items-center justify-between mb-2">
+          <div className="font-mono uppercase" style={{ fontSize: "10.5px", letterSpacing: "0.16em", opacity: 0.6 }}>
+            Loading weather...
+          </div>
+        </div>
+        <div style={{ height: 60, background: "rgba(128,128,128,0.1)", borderRadius: 8 }} />
+      </div>
+    );
+  }
+
+  if (error || !weather) {
+    return (
+      <div className="module p-4 module-enter" style={{ animationDelay: "60ms" }}>
+        <div className="font-mono text-muted" style={{ fontSize: "11px" }}>Weather unavailable</div>
+      </div>
+    );
+  }
+
+  const temps = weather.hourlyTemps.map((h) => h.temp);
+  const minT = Math.min(...temps.filter(Number.isFinite));
+  const maxT = Math.max(...temps.filter(Number.isFinite));
+  const range = maxT - minT || 1;
 
   return (
     <div className="module p-4 module-enter" style={{ animationDelay: "60ms" }}>
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <Icon name={w.icon} size={14} />
-          <div className="font-mono uppercase" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>{w.city}</div>
+          <Icon name={weather.icon} size={14} />
+          <div className="font-mono uppercase" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>{weather.city}</div>
         </div>
-        <div className="font-mono text-muted" style={{ fontSize: "10.5px" }}>{w.cond}</div>
+        <div className="font-mono text-muted" style={{ fontSize: "10.5px" }}>{weather.description}</div>
       </div>
       <div className="flex items-baseline gap-3">
-        <div className="font-serif leading-none tabnum" style={{ fontSize: "44px" }}>{w.t}°</div>
-        <div className="font-mono text-muted tabnum" style={{ fontSize: "11px" }}>{w.lo}° · {w.hi}°</div>
+        <div className="font-serif leading-none tabnum" style={{ fontSize: "44px" }}>{weather.temperature}°</div>
+        <div className="font-mono text-muted tabnum" style={{ fontSize: "11px" }}>{weather.lowTemp}° · {weather.highTemp}°</div>
       </div>
       <div className="mt-3 flex items-end gap-1.5" style={{ height: 42 }}>
-        {hours.map((h, i) => {
-          const pct = (h[1] - 48) / 26;
+        {weather.hourlyTemps.map((h, i) => {
+          const pct = (h.temp - minT) / range;
           return (
             <div key={i} className="flex-1 flex flex-col items-center gap-1">
               <div
                 className="w-full rounded-sm"
                 style={{
-                  height: `${pct * 100}%`,
+                  height: `${Math.max(pct, 0) * 100}%`,
                   minHeight: 6,
                   background: "linear-gradient(180deg, rgba(255,180,120,0.85), rgba(255,180,120,0.25))",
                 }}
               />
-              <div className="font-mono text-muted tabnum" style={{ fontSize: "9px" }}>{h[0]}</div>
+              <div className="font-mono text-muted tabnum" style={{ fontSize: "9px" }}>{h.hour}</div>
             </div>
           );
         })}
