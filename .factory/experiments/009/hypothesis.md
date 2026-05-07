@@ -1,0 +1,1 @@
+Update dashboard content to match real user profile: remove unused modules, update services, stocks, fantasy, quotes, work context
