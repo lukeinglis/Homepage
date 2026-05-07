@@ -141,3 +141,9 @@
 {"type": "experiment.finalize", "timestamp": "2026-05-05T18:24:51.649197+00:00", "project": "", "agent": null, "data": {"exp_id": 5, "verdict": "keep", "hypothesis": "Add accessibility: aria labels, contrast fixes, reduced motion"}}
 {"type": "agent.completed", "timestamp": "2026-05-06T14:19:46.696772+00:00", "project": "personal-website", "agent": "builder", "data": {"return_code": 0}}
 {"type": "experiment.finalize", "timestamp": "2026-05-06T14:21:50.900981+00:00", "project": "", "agent": null, "data": {"exp_id": 6, "verdict": "keep", "hypothesis": "Add Google OAuth authentication to protect personal dashboard"}}
+{"type": "eval.started", "timestamp": "2026-05-07T15:51:28.232348+00:00", "project": "", "agent": null, "data": {"command": "node eval/score.cjs"}}
+{"type": "eval.completed", "timestamp": "2026-05-07T15:51:58.210557+00:00", "project": "", "agent": null, "data": {"composite": 0.497427, "passed": true, "dimensions": 11}}
+{"type": "experiment.begin", "timestamp": "2026-05-07T15:52:07.608099+00:00", "project": "", "agent": null, "data": {"exp_id": 7, "hypothesis": "Fix 7 CRITICAL/HIGH security vulnerabilities in auth system (#47)"}}
+{"type": "agent.started", "timestamp": "2026-05-07T15:52:56.767242+00:00", "project": "personal-website", "agent": "builder", "data": {"task": "Implement security fixes for GitHub issue #47 in lukeinglis/Homepage.\n\n1. Read the issue: gh issue view 47\n2. cd /Users/linglis/factory-projects/personal-website, read CLAUDE.md\n3. git checkout -b exp"}}
+{"type": "agent.completed", "timestamp": "2026-05-07T15:56:03.006886+00:00", "project": "personal-website", "agent": "builder", "data": {"return_code": 0}}
+{"type": "experiment.finalize", "timestamp": "2026-05-07T15:59:08.889043+00:00", "project": "", "agent": null, "data": {"exp_id": 7, "verdict": "keep", "hypothesis": "Fix 7 CRITICAL/HIGH security vulnerabilities in auth system"}}

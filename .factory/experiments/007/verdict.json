@@ -1,0 +1,15 @@
+{
+  "id": 7,
+  "timestamp": "2026-05-07 11:59:08.887076",
+  "hypothesis": "Fix 7 CRITICAL/HIGH security vulnerabilities in auth system",
+  "change_summary": "AES-GCM encryption, HMAC session signature, constant-time state validation, SSRF protection, SameSite=Strict, restricted CORS, generic errors, .gitignore hardening",
+  "issue_number": 47,
+  "pr_number": 48,
+  "score_before": null,
+  "score_after": null,
+  "delta": null,
+  "verdict": "keep",
+  "cost_usd": null,
+  "notes": "ceo:keep score_delta=+0.0000 precheck=passed hypothesis_type=code e2e=pass backlog_cleared=yes",
+  "research_citations": []
+}

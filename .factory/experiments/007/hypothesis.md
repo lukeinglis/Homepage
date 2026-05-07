@@ -1,0 +1,1 @@
+Fix 7 CRITICAL/HIGH security vulnerabilities in auth system (#47)
