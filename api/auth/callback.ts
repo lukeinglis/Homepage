@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import {
   GOOGLE_TOKEN_URL,
@@ -9,7 +10,9 @@ import {
 } from "./config.js";
 import { setSession } from "./session-util.js";
 
-function parseCookies(cookieHeader: string | undefined): Record<string, string> {
+function parseCookies(
+  cookieHeader: string | undefined,
+): Record<string, string> {
   if (!cookieHeader) return {};
   const result: Record<string, string> = {};
   for (const pair of cookieHeader.split(";")) {
@@ -42,14 +45,27 @@ export default async function handler(
 
   const cookies = parseCookies(req.headers.cookie);
   const storedState = cookies.oauth_state;
-  if (!state || state !== storedState) {
+
+  res.setHeader("Set-Cookie", ["oauth_state=; Path=/; HttpOnly; Max-Age=0"]);
+
+  if (
+    !state ||
+    typeof state !== "string" ||
+    !storedState
+  ) {
     res.status(403).json({ error: "Invalid state parameter" });
     return;
   }
 
-  res.setHeader("Set-Cookie", [
-    `oauth_state=; Path=/; HttpOnly; Max-Age=0`,
-  ]);
+  const stateBuffer = Buffer.from(String(state));
+  const storedBuffer = Buffer.from(storedState);
+  if (
+    stateBuffer.length !== storedBuffer.length ||
+    !crypto.timingSafeEqual(stateBuffer, storedBuffer)
+  ) {
+    res.status(403).json({ error: "Invalid state parameter" });
+    return;
+  }
 
   let redirectUri: string;
   let clientId: string;
@@ -78,8 +94,9 @@ export default async function handler(
   });
 
   if (!tokenResponse.ok) {
-    const text = await tokenResponse.text();
-    res.status(502).json({ error: `Token exchange failed: ${text}` });
+    res
+      .status(502)
+      .json({ error: "Authentication failed. Please try again." });
     return;
   }
 
@@ -94,7 +111,9 @@ export default async function handler(
   });
 
   if (!userinfoResponse.ok) {
-    res.status(502).json({ error: "Failed to fetch user info" });
+    res
+      .status(502)
+      .json({ error: "Authentication failed. Please try again." });
     return;
   }
 
@@ -105,9 +124,11 @@ export default async function handler(
   };
 
   if (userinfo.email.toLowerCase() !== allowedEmail.toLowerCase()) {
-    res.status(403).send(accessDeniedPage(
-      `The account ${userinfo.email} is not authorized to access this site.`,
-    ));
+    res.status(403).send(
+      accessDeniedPage(
+        `The account ${userinfo.email} is not authorized to access this site.`,
+      ),
+    );
     return;
   }
 

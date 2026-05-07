@@ -4,7 +4,7 @@ export default function middleware(request: Request) {
 
   if (
     pathname.startsWith("/api/auth/") ||
-    pathname.startsWith("/login") ||
+    pathname === "/login" ||
     pathname.startsWith("/_astro/") ||
     pathname.startsWith("/favicon")
   ) {
@@ -13,14 +13,13 @@ export default function middleware(request: Request) {
 
   const cookieHeader = request.headers.get("cookie") || "";
   const hasSession = cookieHeader.includes("homepage_session=");
+  const hasSig = cookieHeader.includes("homepage_session_sig=");
 
-  if (!hasSession) {
+  if (!hasSession || !hasSig) {
     return Response.redirect(new URL("/login", request.url));
   }
 }
 
 export const config = {
-  matcher: [
-    "/((?!api/auth|login|_astro|favicon).*)",
-  ],
+  matcher: ["/((?!api/auth|login|_astro|favicon).*)"],
 };
