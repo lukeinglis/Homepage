@@ -1,0 +1,1 @@
+Security follow-ups (#49-53) and live weather integration (#20)

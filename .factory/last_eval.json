@@ -1,5 +1,5 @@
 {
-  "total": 0.497427,
+  "total": 0.500793,
   "results": [
     {
       "name": "tests",
@@ -52,10 +52,10 @@
     },
     {
       "name": "experiment_diversity",
-      "score": 0.6857,
+      "score": 0.7163,
       "weight": 0.11,
       "passed": true,
-      "details": "3 distinct categories in last 6 experiments; dominant=feature (50%); last 3: ['feature', 'bugfix', 'prompt_engineering']"
+      "details": "3 distinct categories in last 7 experiments; dominant=feature (43%); last 3: ['bugfix', 'prompt_engineering', 'bugfix']"
     },
     {
       "name": "observability",
@@ -76,7 +76,7 @@
       "score": 0.6,
       "weight": 0.07,
       "passed": true,
-      "details": "keep_rate=1.00 (6/6), delta_score=0.50, managed_projects=0"
+      "details": "keep_rate=1.00 (7/7), delta_score=0.50, managed_projects=0"
     }
   ],
   "guard_violations": [],
