@@ -1,24 +1,39 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { getSession } from "./auth/session-util.js";
 
-const ALLOWED_DOMAINS = [
+const ALLOWED_HOSTNAMES = [
   "calendar.google.com",
   "outlook.live.com",
   "outlook.office365.com",
-  "caldav.icloud.com",
+  "p01-caldav.icloud.com",
+  "p02-caldav.icloud.com",
+  "p03-caldav.icloud.com",
+  "p04-caldav.icloud.com",
+  "p05-caldav.icloud.com",
+  "p06-caldav.icloud.com",
   "calendar.yahoo.com",
   "ics.calendarlabs.com",
 ];
 
 function isAllowedUrl(url: string): boolean {
   try {
-    const parsed = new URL(url);
-    return (
-      (parsed.protocol === "https:" || parsed.protocol === "webcal:") &&
-      ALLOWED_DOMAINS.some(
-        (domain) =>
-          parsed.hostname === domain || parsed.hostname.endsWith(`.${domain}`),
-      )
-    );
+    const parsed = new URL(url.replace("webcal://", "https://"));
+
+    if (parsed.protocol !== "https:") return false;
+
+    if (/^\d+\.\d+\.\d+\.\d+$/.test(parsed.hostname)) return false;
+    if (parsed.hostname.includes(":")) return false;
+    if (parsed.hostname === "localhost") return false;
+
+    if (
+      parsed.hostname.endsWith(".internal") ||
+      parsed.hostname.endsWith(".local")
+    )
+      return false;
+
+    if (parsed.username || parsed.password) return false;
+
+    return ALLOWED_HOSTNAMES.includes(parsed.hostname);
   } catch {
     return false;
   }
@@ -28,7 +43,18 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse,
 ): Promise<void> {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  const origin = req.headers.origin || "";
+  const allowedOrigins = [
+    "https://lukeinglis.me",
+    "http://localhost:4321",
+    "http://localhost:3000",
+  ];
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+  } else {
+    res.setHeader("Access-Control-Allow-Origin", "https://lukeinglis.me");
+  }
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
@@ -39,6 +65,12 @@ export default async function handler(
 
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method not allowed" });
+    return;
+  }
+
+  const session = getSession(req);
+  if (!session || !session.email) {
+    res.status(401).json({ error: "Unauthorized" });
     return;
   }
 
