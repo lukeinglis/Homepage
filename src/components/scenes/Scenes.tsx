@@ -50,7 +50,7 @@ export function SceneWeekdayAM({ teamNight, userName }: { teamNight: string | nu
       <div className="mt-8 grid grid-cols-12 gap-5">
         <div className="col-span-8"><MeetingTimeline now="08:18" phase="day" /></div>
         <div className="col-span-4 space-y-4">
-          <WeatherModule scene="wkdy_am" />
+          <WeatherModule />
           <MarketsModule phase="open" />
         </div>
       </div>
@@ -140,7 +140,7 @@ export function SceneWeekendAM({ teamNight, userName }: { teamNight: string | nu
         <div className="col-span-5 space-y-5">
           <MyTeamsRail />
           <FantasyModule />
-          <WeatherModule scene="wknd_am" />
+          <WeatherModule />
         </div>
       </div>
       <div className="mt-5 grid grid-cols-12 gap-5">
