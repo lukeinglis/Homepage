@@ -93,7 +93,6 @@ export function GroceriesModule() {
           </div>
         ))}
       </div>
-      <button aria-label="Send grocery list to Instacart" className="mt-3 font-mono rounded-md hairline w-full" style={{ fontSize: "11px", padding: "6px 12px" }}>Send to Instacart ↗</button>
     </div>
   );
 }

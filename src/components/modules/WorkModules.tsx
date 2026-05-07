@@ -1,5 +1,5 @@
 import { Icon } from '../scenes/Icons';
-import { MEETINGS, PROJECTS, INBOX, NOTES } from '../../data/scene-data';
+import { MEETINGS, PROJECTS, INBOX, NOTES, RED_HAT_NEWS } from '../../data/scene-data';
 import type { Meeting } from '../../data/scene-data';
 
 const TYPE_COLORS: Record<string, string> = {
@@ -174,12 +174,10 @@ export function NotesModule() {
 }
 
 export function DevQuicklaunch() {
-  const tools: { name: string; icon: string; url?: string }[] = [
+  const tools: { name: string; icon: string; url: string }[] = [
     { name: "Claude", icon: "claude", url: "https://claude.ai" },
     { name: "ChatGPT", icon: "sparkles", url: "https://chatgpt.com" },
     { name: "GitHub", icon: "github", url: "https://github.com" },
-    { name: "Granite", icon: "wand", url: "https://granite.chat" },
-    { name: "Terminal", icon: "command" },
     { name: "Jira", icon: "jira", url: "https://issues.redhat.com" },
   ];
   return (
@@ -188,17 +186,12 @@ export function DevQuicklaunch() {
         <div className="font-mono uppercase" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>LLM · Dev</div>
         <div className="font-mono text-muted" style={{ fontSize: "10.5px" }}>⌘K to search</div>
       </div>
-      <div className="grid grid-cols-3 gap-2">
-        {tools.map(t => t.url ? (
+      <div className="grid grid-cols-2 gap-2">
+        {tools.map(t => (
           <a key={t.name} href={t.url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${t.name}`} className="tile hairline rounded-md py-2.5 flex flex-col items-center gap-1.5" style={{ background: "rgba(255,255,255,0.03)", textDecoration: "none", color: "inherit" }}>
             <Icon name={t.icon} size={16} />
             <div className="font-mono" style={{ fontSize: "10.5px" }}>{t.name}</div>
           </a>
-        ) : (
-          <button key={t.name} aria-label={`Open ${t.name}`} className="tile hairline rounded-md py-2.5 flex flex-col items-center gap-1.5" style={{ background: "rgba(255,255,255,0.03)" }}>
-            <Icon name={t.icon} size={16} />
-            <div className="font-mono" style={{ fontSize: "10.5px" }}>{t.name}</div>
-          </button>
         ))}
       </div>
     </div>
@@ -206,7 +199,7 @@ export function DevQuicklaunch() {
 }
 
 export function WorkShortcuts() {
-  const apps: { n: string; i: string; url?: string }[] = [
+  const apps: { n: string; i: string; url: string }[] = [
     { n: "Gmail", i: "mail", url: "https://mail.google.com" },
     { n: "Cal", i: "calendar", url: "https://calendar.google.com" },
     { n: "Drive", i: "doc", url: "https://drive.google.com" },
@@ -214,7 +207,6 @@ export function WorkShortcuts() {
     { n: "Slides", i: "slide", url: "https://slides.google.com" },
     { n: "Sheets", i: "sheet", url: "https://sheets.google.com" },
     { n: "Slack", i: "slack", url: "https://slack.com" },
-    { n: "Confl.", i: "bookmark", url: "https://confluence.com" },
   ];
   return (
     <div className="module p-3 module-enter" style={{ animationDelay: "240ms" }}>
@@ -239,9 +231,9 @@ export function RedHatNews() {
         <div className="font-mono uppercase" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>Red Hat · internal</div>
       </div>
       <ul className="space-y-1.5" style={{ fontSize: "12.5px" }}>
-        <li>RHEL AI 1.5 GA freeze · Friday EOD</li>
-        <li>Q3 OKR draft circulated to Naren's staff</li>
-        <li>Summit: ticket allocations released</li>
+        {RED_HAT_NEWS.map((item, i) => (
+          <li key={i}>{item}</li>
+        ))}
       </ul>
     </div>
   );

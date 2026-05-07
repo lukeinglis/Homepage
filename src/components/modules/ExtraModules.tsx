@@ -1,5 +1,5 @@
 import { Icon } from '../scenes/Icons';
-import { MEETINGS } from '../../data/scene-data';
+import { MEETINGS, STREAMING } from '../../data/scene-data';
 import type { Meeting } from '../../data/scene-data';
 
 export function WorkCalendar({ phase = "day" }: { phase?: string }) {
@@ -185,31 +185,37 @@ export function YouTubeQueue({ scene = "wkdy_pm" }: { scene?: string }) {
 }
 
 export function StreamingShelf({ scene = "wknd_pm" }: { scene?: string }) {
+  const showKey = scene.startsWith("wknd") ? "wknd_pm" : "wkdy_pm";
+  const shows = STREAMING[showKey] || STREAMING.wkdy_pm;
+  const bgs = [
+    "linear-gradient(180deg,#0a2230,#040b10)",
+    "linear-gradient(180deg,#1a2030,#06080f)",
+    "linear-gradient(180deg,#3a1a0a,#100604)",
+    "linear-gradient(180deg,#1a1a2e,#070710)",
+  ];
   const rows = scene === "wknd_pm" ? [
     {
-      row: "Continue watching", items: [
-        { t: "Severance — S3E2", svc: "Apple TV+", left: "47m left", bg: "linear-gradient(180deg,#0a2230,#040b10)", new: true },
-        { t: "Slow Horses — S5E1", svc: "Apple TV+", left: "new", bg: "linear-gradient(180deg,#1a2030,#06080f)", new: true },
-        { t: "Industry — S4E3", svc: "HBO Max", left: "S4E3", bg: "linear-gradient(180deg,#3a0a0a,#100404)" },
-        { t: "Ripley", svc: "Netflix", left: "3 episodes", bg: "linear-gradient(180deg,#1a1a2e,#070710)" },
-      ]
+      row: "Continue watching", items: shows.map((s, i) => ({
+        t: s.title, svc: s.service, left: s.note,
+        bg: bgs[i % bgs.length],
+        new: s.badge === "NEW", live: false,
+      })),
     },
     {
       row: "Sports tonight on streaming", items: [
-        { t: "Wolves @ Nuggets G4", svc: "TNT · Max", left: "8:30 ET", bg: "linear-gradient(180deg,#0c2340,#236192)", live: true },
-        { t: "UFC 322 PPV", svc: "ESPN+", left: "10:00 ET", bg: "linear-gradient(180deg,#3a0606,#0e0202)" },
-        { t: "MLS · Galaxy v LAFC", svc: "Apple TV", left: "10:30 ET", bg: "linear-gradient(180deg,#1a1a1a,#000000)" },
-        { t: "F1 Miami · qualifying", svc: "F1 TV", left: "recap", bg: "linear-gradient(180deg,#3a0606,#100000)" },
+        { t: "Wolves @ Nuggets G4", svc: "TNT", left: "8:30 ET", bg: "linear-gradient(180deg,#0c2340,#236192)", live: true, new: false },
+        { t: "UFC 322 PPV", svc: "ESPN+", left: "10:00 ET", bg: "linear-gradient(180deg,#3a0606,#0e0202)", live: false, new: false },
+        { t: "MLS · Galaxy v LAFC", svc: "Apple TV", left: "10:30 ET", bg: "linear-gradient(180deg,#1a1a1a,#000000)", live: false, new: false },
+        { t: "F1 Miami · qualifying", svc: "F1 TV", left: "recap", bg: "linear-gradient(180deg,#3a0606,#100000)", live: false, new: false },
       ]
     },
   ] : [
     {
-      row: "Tonight's pick", items: [
-        { t: "Severance — S3E2", svc: "Apple TV+", left: "47m left", bg: "linear-gradient(180deg,#0a2230,#040b10)", new: true },
-        { t: "Slow Horses — S5E1", svc: "Apple TV+", left: "new", bg: "linear-gradient(180deg,#1a2030,#06080f)", new: true },
-        { t: "Industry — S4E3", svc: "HBO Max", left: "S4E3", bg: "linear-gradient(180deg,#3a0a0a,#100404)" },
-        { t: "Ripley", svc: "Netflix", left: "3 episodes", bg: "linear-gradient(180deg,#1a1a2e,#070710)" },
-      ]
+      row: "Tonight's pick", items: shows.map((s, i) => ({
+        t: s.title, svc: s.service, left: s.note,
+        bg: bgs[i % bgs.length],
+        new: s.badge === "NEW", live: false,
+      })),
     },
   ];
   return (

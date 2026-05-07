@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'preact/hooks';
 import type { JSX } from 'preact';
 import { Icon } from '../scenes/Icons';
-import { MARKETS, NETWORTH, NEWS, NOW_PLAYING, SHOP, QUOTES } from '../../data/scene-data.js';
+import { MARKETS, STOCKS, NEWS, NOW_PLAYING, QUOTES } from '../../data/scene-data.js';
 import { fetchWeather, getCachedLocation, requestLocation } from '../../lib/weather-api.js';
 import type { WeatherData } from '../../lib/weather-api.js';
 
@@ -142,10 +142,10 @@ export function Greeting({ name = "Luke" }: GreetingProps): JSX.Element {
 
 interface SparklineProps {
   values: number[];
-  up: boolean;
+  color: string;
 }
 
-export function Sparkline({ values, up }: SparklineProps): JSX.Element {
+export function Sparkline({ values, color }: SparklineProps): JSX.Element {
   const w = 60;
   const h = 22;
   const max = Math.max(...values);
@@ -158,7 +158,7 @@ export function Sparkline({ values, up }: SparklineProps): JSX.Element {
   const d = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
   return (
     <svg width={w} height={h}>
-      <path d={d} className="spark" stroke={up ? "#9ad59c" : "#f0978c"} strokeWidth="1.4" />
+      <path d={d} className="spark" stroke={color} strokeWidth="1.4" />
     </svg>
   );
 }
@@ -284,45 +284,30 @@ export function MarketsModule({ phase = "open" }: MarketsModuleProps): JSX.Eleme
           <div key={i} className="hairline rounded-md p-2.5" style={{ background: "rgba(255,255,255,0.03)" }}>
             <div className="flex items-baseline justify-between">
               <div className="font-mono uppercase text-muted" style={{ fontSize: "10px", letterSpacing: "0.05em" }}>{m.sym}</div>
-              <div className="font-mono tabnum" style={{ fontSize: "10.5px", color: m.up ? "#9ad59c" : "#f0978c" }}>{m.chg}</div>
+              <div className="font-mono tabnum" style={{ fontSize: "10.5px", color: m.color }}>{m.chg}</div>
             </div>
             <div className="flex items-baseline justify-between mt-0.5">
               <div className="font-serif tabnum" style={{ fontSize: "18px" }}>{m.val}</div>
-              <Sparkline values={m.spark} up={m.up} />
+              <Sparkline values={m.data} color={m.color} />
             </div>
           </div>
         ))}
       </div>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// NetWorthModule
-// ---------------------------------------------------------------------------
-
-export function NetWorthModule(): JSX.Element {
-  return (
-    <div className="module p-4 module-enter" style={{ animationDelay: "140ms" }}>
-      <div className="font-mono uppercase text-muted mb-1" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>
-        Net worth · glance
-      </div>
-      <div className="font-serif leading-none tabnum mt-1" style={{ fontSize: "28px" }}>{NETWORTH.total}</div>
-      <div className="font-mono mt-1" style={{ fontSize: "10.5px", color: "#9ad59c" }}>{NETWORTH.delta}</div>
       <div className="divider my-3" />
-      <div className="space-y-1.5" style={{ fontSize: "12px" }}>
-        <div className="flex justify-between">
-          <span className="text-muted">Brokerage</span>
-          <span className="font-mono tabnum">$268.4k</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-muted">401(k)</span>
-          <span className="font-mono tabnum">$184.2k</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-muted">Cash</span>
-          <span className="font-mono tabnum">$34.6k</span>
-        </div>
+      <div className="flex items-center justify-between mb-2">
+        <div className="font-mono uppercase text-muted" style={{ fontSize: "10px", letterSpacing: "0.16em" }}>Portfolio · watchlist</div>
+        <div className="font-mono text-muted" style={{ fontSize: "10px" }}>{STOCKS.length} tickers</div>
+      </div>
+      <div className="grid grid-cols-3 gap-1.5">
+        {STOCKS.map((s, i) => (
+          <div key={i} className="hairline rounded-md px-2 py-1.5" style={{ background: "rgba(255,255,255,0.03)" }}>
+            <div className="font-mono uppercase" style={{ fontSize: "10px", letterSpacing: "0.05em" }}>{s.sym}</div>
+            <div className="flex items-baseline justify-between mt-0.5">
+              <div className="font-mono tabnum" style={{ fontSize: "11px" }}>{s.val}</div>
+              <div className="font-mono tabnum" style={{ fontSize: "10px", color: s.color }}>{s.chg}</div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -426,31 +411,6 @@ export function NowPlaying(): JSX.Element {
 }
 
 // ---------------------------------------------------------------------------
-// ShoppingModule
-// ---------------------------------------------------------------------------
-
-export function ShoppingModule(): JSX.Element {
-  return (
-    <div className="module p-4 module-enter" style={{ animationDelay: "240ms" }}>
-      <div className="flex items-center gap-2 mb-3">
-        <Icon name="shopping" size={14} />
-        <div className="font-mono uppercase" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>
-          Cart · wishlist
-        </div>
-      </div>
-      <div className="space-y-2">
-        {SHOP.map((s, i) => (
-          <div key={i} style={{ fontSize: "12.5px" }}>
-            <div className="font-serif">{s.what}</div>
-            <div className="font-mono text-muted" style={{ fontSize: "10.5px" }}>{s.at} · {s.state}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
 // QuoteModule
 // ---------------------------------------------------------------------------
 
@@ -459,12 +419,12 @@ interface QuoteModuleProps {
 }
 
 export function QuoteModule({ idx = 0 }: QuoteModuleProps): JSX.Element {
-  const q = QUOTES[idx];
+  const q = QUOTES[idx % QUOTES.length];
   return (
     <div className="module-enter" style={{ animationDelay: "300ms" }}>
       <div className="font-serif italic leading-snug" style={{ maxWidth: 320, opacity: 0.78, fontSize: "16px" }}>
-        &ldquo;{q.q}&rdquo;{" "}
-        <span className="font-mono not-italic text-muted" style={{ fontSize: "10.5px" }}>{q.w}</span>
+        &ldquo;{q.text}&rdquo;{" "}
+        <span className="font-mono not-italic text-muted" style={{ fontSize: "10.5px" }}>{q.author}</span>
       </div>
     </div>
   );

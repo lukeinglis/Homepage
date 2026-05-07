@@ -1,4 +1,4 @@
-export const TODAY = new Date(2026, 4, 3);
+export const TODAY = new Date(2026, 4, 7);
 
 export interface Meeting {
   t: string;
@@ -9,17 +9,17 @@ export interface Meeting {
 }
 
 export const MEETINGS: Meeting[] = [
-  { t: "08:30", end: "09:00", title: "Daily standup — Inference Platform", type: "team", join: true },
-  { t: "09:00", end: "10:00", title: "Focus block — RHEL AI roadmap doc", type: "focus" },
-  { t: "10:00", end: "10:30", title: "1:1 with Priya (EM, Inference)", type: "1on1", join: true },
-  { t: "10:30", end: "11:00", title: "Customer Council prep w/ Solutions", type: "team", join: true },
-  { t: "11:00", end: "12:00", title: "External — Banco Itaú design partner", type: "ext", join: true },
+  { t: "08:30", end: "09:00", title: "Daily standup — AI Innovation", type: "team", join: true },
+  { t: "09:00", end: "10:00", title: "Focus block — ITS Hub design doc", type: "focus" },
+  { t: "10:00", end: "10:30", title: "1:1 with manager", type: "1on1", join: true },
+  { t: "10:30", end: "11:00", title: "Training Hub sprint review", type: "team", join: true },
+  { t: "11:00", end: "12:00", title: "External — partner design session", type: "ext", join: true },
   { t: "12:00", end: "13:00", title: "Lunch / break", type: "break" },
-  { t: "13:00", end: "14:00", title: "RHEL AI 1.5 GA review (cross-team)", type: "team", join: true },
+  { t: "13:00", end: "14:00", title: "SDG Hub architecture review", type: "team", join: true },
   { t: "14:00", end: "15:00", title: "Focus block — Q3 OKR draft", type: "focus" },
-  { t: "15:00", end: "15:30", title: "Hiring loop — Sr. PM, Model Serving", type: "team", join: true },
+  { t: "15:00", end: "15:30", title: "Hiring loop — Sr. PM, AI Platform", type: "team", join: true },
   { t: "15:30", end: "16:00", title: "Open", type: "open" },
-  { t: "16:00", end: "17:00", title: "Exec readout — Inference platform GA", type: "ext", join: true },
+  { t: "16:00", end: "17:00", title: "Exec readout — AI Innovation platform", type: "ext", join: true },
 ];
 
 export interface Project {
@@ -31,10 +31,10 @@ export interface Project {
 }
 
 export const PROJECTS: Project[] = [
-  { name: "RHEL AI 1.5 — GA", status: "On track", pct: 78, last: "12m ago", tag: "Inference" },
-  { name: "Inference Server multi-tenant", status: "At risk", pct: 41, last: "3h ago", tag: "Platform" },
+  { name: "Training Hub — GA readiness", status: "On track", pct: 82, last: "2h ago", tag: "AI Innovation" },
+  { name: "SDG Hub — multi-model support", status: "On track", pct: 65, last: "yesterday", tag: "AI Innovation" },
+  { name: "ITS Hub — inference-time scaling", status: "At risk", pct: 38, last: "3h ago", tag: "AI Innovation" },
   { name: "Customer Council — May cohort", status: "On track", pct: 62, last: "yesterday", tag: "GTM" },
-  { name: "Granite vLLM optimizer benchmark", status: "Discovery", pct: 18, last: "2d ago", tag: "Research" },
 ];
 
 export interface Note {
@@ -43,18 +43,18 @@ export interface Note {
 }
 
 export const NOTES: Note[] = [
-  { title: "2026-05-05 — daily", ago: "today" },
-  { title: "RHEL AI launch — narrative v3", ago: "yest" },
-  { title: "Council Q&A prep — Itaú", ago: "2d" },
-  { title: "Reading — speculative decoding", ago: "4d" },
+  { title: "2026-05-07 — daily", ago: "today" },
+  { title: "ITS Hub — scaling architecture v2", ago: "yest" },
+  { title: "Training Hub launch checklist", ago: "2d" },
+  { title: "Reading — inference-time compute", ago: "4d" },
 ];
 
 export const INBOX = {
-  unread: 23,
-  flagged: 4,
+  unread: 18,
+  flagged: 3,
   top: [
-    { from: "Priya Anand", subj: "Re: 1.5 GA — exec readout deck", when: "07:42" },
-    { from: "Marcus (Itaú)", subj: "Council agenda — questions", when: "07:11" },
+    { from: "AI Innovation Lead", subj: "Re: ITS Hub — exec readout deck", when: "07:42" },
+    { from: "Partner PM", subj: "Design session agenda — questions", when: "07:11" },
     { from: "Eng All-Hands", subj: "Friday demo signups close today", when: "06:58" },
   ],
 };
@@ -111,8 +111,8 @@ export interface FantasyLeague {
 }
 
 export const FANTASY: FantasyLeague[] = [
-  { league: "Sleeper — The League", name: "Maple Bar Mafia", rec: "6-1", pts: 142.8, rank: "1st" },
-  { league: "ESPN — Fantasy Baseball", name: "Bird-Watchers", rec: "—", pts: "8th of 12", rank: "ROY: Holliday +14" },
+  { league: "Yahoo — Fantasy Football", name: "War Eagle Express", rec: "5-2", pts: 128.4, rank: "3rd" },
+  { league: "ESPN — Fantasy Baseball", name: "Bird-Watchers", rec: "—", pts: "6th of 12", rank: "Henderson hot" },
 ];
 
 export interface FantasyDeep {
@@ -127,11 +127,8 @@ export interface FantasyDeep {
 }
 
 export const FANTASY_DEEP: FantasyDeep[] = [
-  { platform: "Sleeper", sport: "NFL", league: "The League (work)", team: "Maple Bar Mafia", rec: "6-1 · 1st", status: "W", statusLabel: "Won wk 7 · 142.8", note: "Jefferson 31.4 · Hall 22.1 · Mahomes flat. Waiver: Tank Bigsby." },
-  { platform: "Sleeper", sport: "NFL", league: "Dynasty — College Friends", team: "War Damn Dynasty", rec: "4-3 · 5th", status: "L", statusLabel: "Lost wk 7 · 98.2", note: "Down to 3rd RB. Trade target: Tee Higgins for 2026 1st." },
-  { platform: "ESPN", sport: "NFL", league: "Family $ league", team: "Boston Punters", rec: "5-2 · 3rd", status: "P", statusLabel: "Pending MNF · -3.4", note: "Need Pacheco to clear 14.0. Brother starting Tucker — petty." },
-  { platform: "ESPN", sport: "MLB", league: "H2H Categories", team: "Bird-Watchers", rec: "4-3-1 · 8th of 12", status: "P", statusLabel: "Streaming 2 SP", note: "Henderson hot. ROY race: Holliday +14, Langford +9." },
-  { platform: "Yahoo", sport: "MLB", league: "Roto · 12 team", team: "Camden Hardballs", rec: "6th · 67.5 pts", status: "W", statusLabel: "Up 2 in saves", note: "Rotation thin — DL Strider till All-Star. Stash Crochet." },
+  { platform: "Yahoo", sport: "NFL", league: "Fantasy Football", team: "War Eagle Express", rec: "5-2 · 3rd", status: "W", statusLabel: "Won wk 7 · 128.4", note: "Jefferson 28.2 · Barkley 22.1. Waiver: target a TE." },
+  { platform: "ESPN", sport: "MLB", league: "H2H Categories", team: "Bird-Watchers", rec: "4-3-1 · 6th of 12", status: "P", statusLabel: "Streaming 2 SP", note: "Henderson hot. ROY race tightening." },
 ];
 
 export const TONIGHT = {
@@ -190,15 +187,34 @@ export interface MarketData {
   sym: string;
   val: string;
   chg: string;
-  up: boolean;
-  spark: number[];
+  color: string;
+  data: number[];
 }
 
 export const MARKETS: MarketData[] = [
-  { sym: "S&P 500", val: "5,284.42", chg: "+0.42%", up: true, spark: [10,12,11,14,13,16,15,18,17,20,19,22] },
-  { sym: "NASDAQ", val: "16,842.10", chg: "+0.71%", up: true, spark: [8,9,11,10,13,12,15,14,17,16,19,21] },
-  { sym: "DOW", val: "38,912.05", chg: "-0.08%", up: false, spark: [14,13,15,12,14,11,13,12,10,11,9,10] },
-  { sym: "10Y", val: "4.42%", chg: "+3 bps", up: true, spark: [4,5,6,5,7,6,8,7,9,8,10,9] },
+  { sym: "S&P 500", val: "5,284.42", chg: "+0.42%", color: "#4ade80", data: [62,64,63,65,66,64,67,68,66,69,70,68] },
+  { sym: "NASDAQ", val: "16,842.10", chg: "+0.71%", color: "#4ade80", data: [58,60,59,62,63,61,64,65,63,66,68,67] },
+  { sym: "DOW", val: "38,912.05", chg: "-0.08%", color: "#f87171", data: [70,69,71,70,68,69,67,68,70,69,68,67] },
+  { sym: "10Y", val: "4.42%", chg: "+3 bps", color: "#4ade80", data: [44,43,44,45,44,43,44,45,44,43,44,44] },
+];
+
+export interface StockData {
+  sym: string;
+  val: string;
+  chg: string;
+  color: string;
+}
+
+export const STOCKS: StockData[] = [
+  { sym: "MGM", val: "38.11", chg: "-0.26%", color: "#f87171" },
+  { sym: "PENN", val: "16.83", chg: "+0.48%", color: "#4ade80" },
+  { sym: "DAL", val: "73.24", chg: "-0.14%", color: "#f87171" },
+  { sym: "GE", val: "303.92", chg: "-0.63%", color: "#f87171" },
+  { sym: "GEV", val: "1,068.00", chg: "-4.55%", color: "#f87171" },
+  { sym: "JD", val: "30.26", chg: "-1.40%", color: "#f87171" },
+  { sym: "GEHC", val: "61.41", chg: "-0.51%", color: "#f87171" },
+  { sym: "HIVE", val: "2.84", chg: "-3.35%", color: "#f87171" },
+  { sym: "SNDL", val: "1.43", chg: "-0.69%", color: "#f87171" },
 ];
 
 
@@ -231,15 +247,31 @@ export const NEWS: Record<string, string[]> = {
 };
 
 export interface Quote {
-  q: string;
-  w: string;
+  text: string;
+  author: string;
 }
 
 export const QUOTES: Quote[] = [
-  { q: "Slow is smooth, smooth is fast.", w: "—" },
-  { q: "Begin again, lightly.", w: "Anne Lamott" },
-  { q: "The day is long; the year is short.", w: "Gretchen Rubin" },
-  { q: "First, do the hard thing.", w: "—" },
+  { text: "The obstacle is the way.", author: "Marcus Aurelius" },
+  { text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.", author: "Aristotle" },
+  { text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb" },
+  { text: "Simplicity is the ultimate sophistication.", author: "Leonardo da Vinci" },
+  { text: "Stay hungry, stay foolish.", author: "Steve Jobs" },
+  { text: "It is not the critic who counts.", author: "Theodore Roosevelt" },
+  { text: "Hard choices, easy life. Easy choices, hard life.", author: "Jerzy Gregorek" },
+  { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+  { text: "In the middle of difficulty lies opportunity.", author: "Albert Einstein" },
+  { text: "You miss 100% of the shots you do not take.", author: "Wayne Gretzky" },
+  { text: "War Eagle.", author: "Auburn Creed" },
+  { text: "Do not judge each day by the harvest you reap but by the seeds that you plant.", author: "Robert Louis Stevenson" },
+  { text: "The man who moves a mountain begins by carrying away small stones.", author: "Confucius" },
+  { text: "Fortune favors the bold.", author: "Virgil" },
+  { text: "What gets measured gets managed.", author: "Peter Drucker" },
+  { text: "Pressure is a privilege.", author: "Billie Jean King" },
+  { text: "The more I practice, the luckier I get.", author: "Gary Player" },
+  { text: "Be yourself; everyone else is already taken.", author: "Oscar Wilde" },
+  { text: "Not all those who wander are lost.", author: "J.R.R. Tolkien" },
+  { text: "First, solve the problem. Then, write the code.", author: "John Johnson" },
 ];
 
 export interface Bookmark {
@@ -345,23 +377,37 @@ export interface WatchlistItem {
 
 export const WATCHLIST: WatchlistItem[] = [
   { title: "Severance — S3E2", svc: "Apple TV+", left: "47m", new: true },
-  { title: "Ripley", svc: "Netflix", left: "3 ep" },
-  { title: "Slow Horses — S5", svc: "Apple TV+", left: "S5E1 new", new: true },
-  { title: "Industry — S4", svc: "HBO Max", left: "Sunday" },
+  { title: "Reacher — S3E5", svc: "Prime Video", left: "new", new: true },
+  { title: "The Bear — S4E1", svc: "Hulu", left: "premiere", new: true },
+  { title: "Yellowstone — S5E8", svc: "Peacock", left: "2 ep" },
 ];
 
-export const NETWORTH = { total: "$487,210", delta: "+$1,840 today", up: true };
-
-export interface ShopItem {
-  what: string;
-  at: string;
-  state: string;
+export interface StreamingShow {
+  title: string;
+  service: string;
+  badge: string | null;
+  note: string;
 }
 
-export const SHOP: ShopItem[] = [
-  { what: "Le Creuset 7¼ qt Dutch oven", at: "Williams-Sonoma", state: "in cart" },
-  { what: "Nike Pegasus 41", at: "Nike", state: "wishlist" },
-  { what: "Topo Designs daypack — 21L", at: "Topo Designs", state: "viewed Tue" },
+export const STREAMING: Record<string, StreamingShow[]> = {
+  wkdy_pm: [
+    { title: "Severance — S3E2", service: "Apple TV+", badge: "NEW", note: "47m left" },
+    { title: "Reacher — S3E5", service: "Prime Video", badge: "NEW", note: "new" },
+    { title: "The Bear — S4E1", service: "Hulu", badge: null, note: "S4 premiere" },
+    { title: "Yellowstone — S5E8", service: "Peacock", badge: null, note: "2 episodes" },
+  ],
+  wknd_pm: [
+    { title: "Severance — S3E2", service: "Apple TV+", badge: "NEW", note: "47m left" },
+    { title: "Lioness — S2E4", service: "Paramount+", badge: null, note: "S2E4" },
+    { title: "Reacher — S3E5", service: "Prime Video", badge: "NEW", note: "new" },
+    { title: "Dark Matter — S2E1", service: "Apple TV+", badge: null, note: "premiere" },
+  ],
+};
+
+export const RED_HAT_NEWS = [
+  "Training Hub GA freeze · Friday EOD",
+  "Q3 OKR draft circulated for review",
+  "Summit: AI Innovation demo allocations released",
 ];
 
 export interface TeamDetail {
