@@ -1,7 +1,7 @@
 import { MY_TEAMS_DETAIL } from '../../data/scene-data';
 import type { ComponentChildren } from 'preact';
 import { BgWeekdayAM, BgWeekdayPM, BgWeekendAM, BgWeekendPM, BgAuburn, BgChelsea, BgCamden } from './Backgrounds';
-import { Greeting, WeatherModule, MarketsModule, NetWorthModule, NewsModule, NowPlaying, QuoteModule, PinnedRow, ShoppingModule } from '../modules/LifeModules';
+import { Greeting, WeatherModule, MarketsModule, NewsModule, NowPlaying, QuoteModule, PinnedRow } from '../modules/LifeModules';
 import { MeetingTimeline, ProjectsModule, InboxModule, NotesModule, DevQuicklaunch, WorkShortcuts, RedHatNews } from '../modules/WorkModules';
 import { SportsBoard, MyTeamsRail, FantasyModule, EventTakeover, ScoreRecap, TeamDeepDive } from '../modules/SportsModules';
 import { TonightHero, GroceriesModule, WeekendMealPlan, SeasonalNote } from '../modules/CookingModules';
@@ -70,11 +70,10 @@ export function SceneWeekdayAM({ teamNight, userName }: { teamNight: string | nu
         </div>
       </div>
       <div className="mt-5 grid grid-cols-12 gap-5">
-        <div className="col-span-7"><NewsModule feeds={["bloomberg", "hn"]} hero="Fed minutes split the room: only one cut on the table for 2026." /></div>
-        <div className="col-span-3"><NetWorthModule /></div>
-        <div className="col-span-2 flex flex-col justify-between">
+        <div className="col-span-8"><NewsModule feeds={["bloomberg", "hn"]} hero="Fed minutes split the room: only one cut on the table for 2026." /></div>
+        <div className="col-span-4 flex flex-col justify-between">
           <QuoteModule idx={2} />
-          <div className="font-mono text-muted" style={{ fontSize: "10.5px" }}>Spring · Tuesday · day 124</div>
+          <div className="font-mono text-muted" style={{ fontSize: "10.5px" }}>Spring · Wednesday · day 127</div>
         </div>
       </div>
     </SceneShell>
@@ -146,8 +145,7 @@ export function SceneWeekendAM({ teamNight, userName }: { teamNight: string | nu
       <div className="mt-5 grid grid-cols-12 gap-5">
         <div className="col-span-5"><WeekendMealPlan /></div>
         <div className="col-span-4"><PersonalCalendar scene="wknd_am" /></div>
-        <div className="col-span-3 space-y-4">
-          <ShoppingModule />
+        <div className="col-span-3">
           <QuoteModule idx={1} />
         </div>
       </div>
