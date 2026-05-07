@@ -10,6 +10,7 @@
     "tsconfig.json",
     "astro.config.mjs",
     "middleware.ts",
+    ".gitignore",
     "README.md",
     ".github/**"
   ],
