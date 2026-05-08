@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'preact/hooks';
 import type { ComponentChildren } from 'preact';
 import { Icon } from '../scenes/Icons';
-import { GAMES, FANTASY_DEEP, MY_TEAMS_DETAIL } from '../../data/scene-data';
+import { EmptyState } from './EmptyState';
+import { GAMES, MY_TEAMS_DETAIL } from '../../data/scene-data';
 import type { Game, TeamDetail } from '../../data/scene-data';
 import { fetchScores } from '../../lib/sports-api.js';
 import type { GameInfo } from '../../lib/sports-api.js';
@@ -274,42 +275,7 @@ export function TeamDeepDive({ team }: { team?: TeamDetail }) {
 }
 
 export function FantasyModule() {
-  return (
-    <div className="module p-4 module-enter" style={{ animationDelay: "180ms" }}>
-      <div className="flex items-baseline justify-between mb-3">
-        <div className="font-mono uppercase text-muted" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>
-          Fantasy · all leagues
-        </div>
-        <div className="font-mono text-muted" style={{ fontSize: "10.5px" }}>5 active</div>
-      </div>
-      <div className="space-y-2">
-        {FANTASY_DEEP.map((f, i) => (
-          <div key={i} className="hairline rounded-md p-2.5" style={{ background: "rgba(255,255,255,0.03)" }}>
-            <div className="flex items-baseline justify-between">
-              <div className="font-mono uppercase text-muted" style={{ fontSize: "10px", letterSpacing: "0.05em" }}>
-                {f.platform} · {f.sport} · {f.league}
-              </div>
-              <span
-                className="chip"
-                style={{
-                  background: f.status === "W" ? "rgba(154,213,156,0.15)" : f.status === "L" ? "rgba(240,151,140,0.15)" : "rgba(247,184,107,0.15)",
-                  borderColor: f.status === "W" ? "rgba(154,213,156,0.3)" : f.status === "L" ? "rgba(240,151,140,0.3)" : "rgba(247,184,107,0.3)",
-                  color: f.status === "W" ? "#9ad59c" : f.status === "L" ? "#f0978c" : "#f7b86b",
-                }}
-              >
-                {f.statusLabel}
-              </span>
-            </div>
-            <div className="flex items-baseline justify-between mt-1">
-              <div className="font-medium font-serif italic" style={{ fontSize: "13px" }}>{f.team}</div>
-              <div className="font-mono tabnum" style={{ fontSize: "11.5px" }}>{f.rec}</div>
-            </div>
-            <div className="text-muted mt-0.5" style={{ fontSize: "11px" }}>{f.note}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  return <EmptyState icon="trophy" message="Connect fantasy leagues" delay="180ms" />;
 }
 
 export function EventTakeover() {
