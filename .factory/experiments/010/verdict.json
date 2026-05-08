@@ -1,0 +1,15 @@
+{
+  "id": 10,
+  "timestamp": "2026-05-08 11:00:10.701036",
+  "hypothesis": "Integrate Google Calendar API, RSS news feeds, and live ESPN sports scores",
+  "change_summary": "3 live integrations: Google Calendar via OAuth token, RSS proxy for 5 news feeds, ESPN sports proxy for 6 leagues. All auth-gated with CORS restrictions and client caching.",
+  "issue_number": 58,
+  "pr_number": 59,
+  "score_before": null,
+  "score_after": null,
+  "delta": null,
+  "verdict": "keep",
+  "cost_usd": null,
+  "notes": "ceo:keep score_delta=+0.0000 precheck=passed hypothesis_type=code e2e=pass backlog_cleared=yes",
+  "research_citations": []
+}

@@ -1,21 +1,18 @@
 # Builder Agent Output
 
-- **timestamp:** 2026-05-07T17:22:08Z
+- **timestamp:** 2026-05-08T14:59:15Z
 - **exit_code:** 0
 
 ---
 
-All done. PR #57 is open at https://github.com/lukeinglis/Homepage/pull/57.
+All done. PR opened at https://github.com/lukeinglis/Homepage/pull/59
 
-**Changes across 6 files (157 insertions, 156 deletions):**
-- Removed NetWorthModule and ShoppingModule from all scenes, adjusted grid layouts
-- Removed Instacart button from GroceriesModule
-- Updated all work context to AI Innovation team
-- Updated shortcuts to 4-tile DevQuicklaunch (2x2) and 7-tile Workspace
-- Added 9-stock watchlist section to MarketsModule
-- Replaced streaming data with real services (no more HBO Max)
-- Reduced fantasy from 5 to 2 leagues
-- Expanded quotes from 4 to 20
-- Updated RedHatNews to use data from scene-data.ts
+**What was built:**
 
-Build passes, all 6 tests pass, eval score stays at 0.6 (above 0.45 threshold).
+1. **Google Calendar** (Part 1): Updated OAuth scope to include `calendar.readonly`, created `api/calendar-google.ts` endpoint that fetches today's events across all user calendars, `src/lib/calendar-api.ts` client hook with 5-min cache, and wired WorkCalendar/PersonalCalendar to show real events (falling back to static data when not authenticated).
+
+2. **RSS News** (Part 2): Created `api/rss-proxy.ts` with server-side XML parsing for Bloomberg, HN, NYT, CNN, ESPN feeds, `src/lib/news-api.ts` client hook with 30-min cache, and wired NewsModule to render clickable live headlines (falling back to static data).
+
+3. **Live Sports** (Part 3): Created `api/sports-proxy.ts` proxying ESPN's public scoreboard API for MLB/NFL/NBA/EPL/CFB/CBB, `src/lib/sports-api.ts` client hook with 2-min cache, and wired SportsBoard/ScoreRecap to show real scores with team highlighting (falling back to static data).
+
+All endpoints require session auth and restrict CORS. Build passes, all 6 tests pass, eval meets threshold.
