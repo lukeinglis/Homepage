@@ -1,7 +1,10 @@
+import { useState, useEffect } from 'preact/hooks';
 import type { ComponentChildren } from 'preact';
 import { Icon } from '../scenes/Icons';
 import { GAMES, FANTASY_DEEP, MY_TEAMS_DETAIL } from '../../data/scene-data';
 import type { Game, TeamDetail } from '../../data/scene-data';
+import { fetchScores } from '../../lib/sports-api.js';
+import type { GameInfo } from '../../lib/sports-api.js';
 
 const LG_LABEL: Record<string, string> = {
   mlb: "MLB", nfl: "NFL", nba: "NBA", cfb: "CFB", cbb: "CBB",
@@ -63,6 +66,42 @@ export function GameRow({ g, dense = false }: { g: Game; dense?: boolean }) {
   );
 }
 
+function LiveGameRow({ g }: { g: GameInfo }) {
+  const showScore = g.awayScore !== null;
+  const teamish = g.home ? g.away + " @ " + g.home : g.away;
+  return (
+    <div
+      className="flex items-center gap-3 py-2 px-2 rounded-md tile"
+      style={{ background: g.mine ? "rgba(255,180,80,0.06)" : "transparent" }}
+    >
+      <LeaguePip lg={g.league} />
+      <div className="flex-1 min-w-0">
+        <div className="flex items-baseline gap-2">
+          <div className="font-medium leading-tight truncate" style={{ fontSize: "13px" }}>{teamish}</div>
+          {g.mine && (
+            <span className="font-mono uppercase" style={{ fontSize: "9px", letterSpacing: "0.05em", color: "#ffba6e" }}>
+              ★ mine
+            </span>
+          )}
+        </div>
+        <div className="text-muted truncate" style={{ fontSize: "11px" }}>{g.network}</div>
+      </div>
+      {showScore && (
+        <div
+          className="font-mono tabnum font-medium leading-none px-2.5 py-1 rounded hairline"
+          style={{ fontSize: "14px", background: "rgba(255,255,255,0.04)" }}
+        >
+          {g.awayScore}&ndash;{g.homeScore}
+        </div>
+      )}
+      <div className="flex items-center gap-1.5 justify-end" style={{ width: 78 }}>
+        {g.live && <><span className="live-dot" /><span className="sr-only">Live</span></>}
+        <span className="font-mono tabnum" style={{ fontSize: "11px" }}>{g.state}</span>
+      </div>
+    </div>
+  );
+}
+
 export function SportsBoard({
   slate = "weekday_evening",
   title = "What's on",
@@ -74,25 +113,51 @@ export function SportsBoard({
   subtitle?: string;
   hero?: ComponentChildren;
 }) {
-  const games = GAMES[slate];
+  const [liveGames, setLiveGames] = useState<GameInfo[] | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchScores()
+      .then((games) => {
+        if (!cancelled) {
+          setLiveGames(games);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, []);
+
+  const staticGames = GAMES[slate];
+  const hasLive = liveGames && liveGames.length > 0;
+  const liveCount = liveGames?.filter((g) => g.live).length || 0;
+
   return (
     <div className="module p-5 module-enter" style={{ animationDelay: "60ms" }}>
       <div className="flex items-baseline justify-between mb-3">
         <div>
           <div className="font-mono uppercase text-muted" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>
-            Sports · {title}
+            Sports · {hasLive ? "live scores" : title}
           </div>
-          <div className="font-serif leading-tight mt-0.5" style={{ fontSize: "22px" }}>{subtitle}</div>
+          <div className="font-serif leading-tight mt-0.5" style={{ fontSize: "22px" }}>
+            {hasLive && liveCount > 0
+              ? liveCount + " game" + (liveCount !== 1 ? "s" : "") + " in progress"
+              : subtitle}
+          </div>
         </div>
         <div className="flex items-center gap-1.5 font-mono text-muted" style={{ fontSize: "10.5px" }}>
-          <Icon name="tv" size={13} /> on TV now
+          {loading ? "Loading..." : <><Icon name="tv" size={13} /> on TV now</>}
         </div>
       </div>
       {hero}
       <div className="space-y-1">
-        {(games || []).map((g, i) => (
-          <GameRow key={i} g={g} />
-        ))}
+        {hasLive
+          ? liveGames.slice(0, 8).map((g, i) => <LiveGameRow key={i} g={g} />)
+          : (staticGames || []).map((g, i) => <GameRow key={i} g={g} />)
+        }
       </div>
       <div className="divider my-3" />
       <div className="flex items-center justify-between font-mono text-muted" style={{ fontSize: "10.5px" }}>
@@ -305,39 +370,79 @@ export function EventTakeover() {
 }
 
 export function ScoreRecap() {
-  const finals: { lg: string; line: string; sub: string; mine?: boolean }[] = [
+  const [liveGames, setLiveGames] = useState<GameInfo[] | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchScores()
+      .then((games) => { if (!cancelled) setLiveGames(games); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
+  const staticFinals: { lg: string; line: string; sub: string; mine?: boolean }[] = [
     { lg: "epl", line: "Chelsea 2 — Man City 1", sub: "Palmer brace · Stamford Bridge", mine: true },
     { lg: "mlb", line: "Orioles 6 — Red Sox 4", sub: "4-game sweep · Henderson 2 HR", mine: true },
     { lg: "cfb", line: "Auburn 24 — Georgia 17", sub: "OT · Iron Bowl tune-up", mine: true },
     { lg: "pga", line: "Masters R3 — Scheffler -14", sub: "Leads McIlroy by 2 entering Sun." },
     { lg: "f1", line: "Miami GP Q · Verstappen P1", sub: "Norris P2, Leclerc P3" },
   ];
+
+  const liveFinals = liveGames
+    ?.filter((g) => !g.live && g.awayScore !== null)
+    .slice(0, 5) || [];
+
+  const hasLive = liveFinals.length > 0;
+
   return (
     <div className="module p-5 module-enter" style={{ animationDelay: "60ms" }}>
       <div className="flex items-baseline justify-between mb-3">
         <div>
           <div className="font-mono uppercase text-muted" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>Today's finals</div>
-          <div className="font-serif leading-tight mt-0.5" style={{ fontSize: "22px" }}>A good Saturday.</div>
+          <div className="font-serif leading-tight mt-0.5" style={{ fontSize: "22px" }}>
+            {hasLive ? liveFinals.length + " final" + (liveFinals.length !== 1 ? "s" : "") : "A good Saturday."}
+          </div>
         </div>
       </div>
       <div className="space-y-1">
-        {finals.map((f, i) => (
-          <div
-            key={i}
-            className="flex items-center gap-3 py-2 px-2 rounded-md tile"
-            style={{ background: f.mine ? "rgba(255,180,80,0.06)" : "transparent" }}
-          >
-            <LeaguePip lg={f.lg} />
-            <div className="flex-1">
-              <div className="font-medium leading-tight" style={{ fontSize: "13.5px" }}>{f.line}</div>
-              <div className="text-muted" style={{ fontSize: "11px" }}>{f.sub}</div>
+        {hasLive
+          ? liveFinals.map((g, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-3 py-2 px-2 rounded-md tile"
+              style={{ background: g.mine ? "rgba(255,180,80,0.06)" : "transparent" }}
+            >
+              <LeaguePip lg={g.league} />
+              <div className="flex-1">
+                <div className="font-medium leading-tight" style={{ fontSize: "13.5px" }}>
+                  {g.away} {g.awayScore} — {g.home} {g.homeScore}
+                </div>
+                <div className="text-muted" style={{ fontSize: "11px" }}>{g.state} · {g.network}</div>
+              </div>
+              {g.mine && (
+                <span className="font-mono uppercase" style={{ fontSize: "9.5px", letterSpacing: "0.05em", color: "#ffba6e" }}>★</span>
+              )}
+              <span className="font-mono text-muted" style={{ fontSize: "11px" }}>FINAL</span>
             </div>
-            {f.mine && (
-              <span className="font-mono uppercase" style={{ fontSize: "9.5px", letterSpacing: "0.05em", color: "#ffba6e" }}>★</span>
-            )}
-            <span className="font-mono text-muted" style={{ fontSize: "11px" }}>FINAL</span>
-          </div>
-        ))}
+          ))
+          : staticFinals.map((f, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-3 py-2 px-2 rounded-md tile"
+              style={{ background: f.mine ? "rgba(255,180,80,0.06)" : "transparent" }}
+            >
+              <LeaguePip lg={f.lg} />
+              <div className="flex-1">
+                <div className="font-medium leading-tight" style={{ fontSize: "13.5px" }}>{f.line}</div>
+                <div className="text-muted" style={{ fontSize: "11px" }}>{f.sub}</div>
+              </div>
+              {f.mine && (
+                <span className="font-mono uppercase" style={{ fontSize: "9.5px", letterSpacing: "0.05em", color: "#ffba6e" }}>★</span>
+              )}
+              <span className="font-mono text-muted" style={{ fontSize: "11px" }}>FINAL</span>
+            </div>
+          ))
+        }
       </div>
     </div>
   );

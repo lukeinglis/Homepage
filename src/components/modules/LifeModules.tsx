@@ -4,6 +4,8 @@ import { Icon } from '../scenes/Icons';
 import { MARKETS, STOCKS, NEWS, NOW_PLAYING, QUOTES } from '../../data/scene-data.js';
 import { fetchWeather, getCachedLocation, requestLocation } from '../../lib/weather-api.js';
 import type { WeatherData } from '../../lib/weather-api.js';
+import { fetchNews } from '../../lib/news-api.js';
+import type { NewsItem } from '../../lib/news-api.js';
 
 // ---------------------------------------------------------------------------
 // useDetectedCity
@@ -331,11 +333,36 @@ const FEED_LABELS: Record<string, string> = {
 };
 
 export function NewsModule({ feeds = ["bloomberg", "hn"], hero = null }: NewsModuleProps): JSX.Element {
+  const [liveNews, setLiveNews] = useState<Record<string, NewsItem[]>>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all(
+      feeds.map((f) =>
+        fetchNews(f)
+          .then((items) => ({ feed: f, items }))
+          .catch(() => ({ feed: f, items: [] as NewsItem[] }))
+      )
+    ).then((results) => {
+      if (cancelled) return;
+      const map: Record<string, NewsItem[]> = {};
+      for (const r of results) {
+        if (r.items.length > 0) map[r.feed] = r.items;
+      }
+      setLiveNews(map);
+      setLoading(false);
+    });
+    return () => { cancelled = true; };
+  }, [feeds.join(",")]);
+
+  const hasLive = Object.keys(liveNews).length > 0;
+
   return (
     <div className="module p-4 module-enter" style={{ animationDelay: "160ms" }}>
       <div className="flex items-center justify-between mb-3">
         <div className="font-mono uppercase" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>
-          News · curated
+          News · {hasLive ? "live" : "curated"}
         </div>
         <div className="flex gap-1">
           {feeds.map((f) => (
@@ -347,18 +374,31 @@ export function NewsModule({ feeds = ["bloomberg", "hn"], hero = null }: NewsMod
         <div className="font-serif leading-tight mb-3" style={{ fontSize: "18px" }}>{hero}</div>
       )}
       <div className="space-y-3">
-        {feeds.map((f) => (
-          <div key={f}>
-            <div className="font-mono uppercase text-muted mb-1.5" style={{ fontSize: "10px", letterSpacing: "0.05em" }}>
-              {FEED_LABELS[f]}
+        {feeds.map((f) => {
+          const live = liveNews[f];
+          return (
+            <div key={f}>
+              <div className="font-mono uppercase text-muted mb-1.5" style={{ fontSize: "10px", letterSpacing: "0.05em" }}>
+                {FEED_LABELS[f]}
+              </div>
+              <ul className="space-y-1.5">
+                {live ? (
+                  live.map((item, i) => (
+                    <li key={i} className="leading-snug" style={{ fontSize: "12.5px" }}>
+                      {item.link ? (
+                        <a href={item.link} target="_blank" rel="noopener noreferrer" className="hover-link">{item.title}</a>
+                      ) : item.title}
+                    </li>
+                  ))
+                ) : (
+                  (NEWS[f] || []).map((h, i) => (
+                    <li key={i} className="leading-snug" style={{ fontSize: "12.5px" }}>{h}</li>
+                  ))
+                )}
+              </ul>
             </div>
-            <ul className="space-y-1.5">
-              {(NEWS[f] || []).map((h, i) => (
-                <li key={i} className="leading-snug" style={{ fontSize: "12.5px" }}>{h}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
