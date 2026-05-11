@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getSession } from "./auth/session-util.js";
+import { getSession, getWorkSession } from "./auth/session-util.js";
 
 export default async function handler(
   req: VercelRequest,
@@ -101,6 +101,52 @@ export default async function handler(
       } catch {
         /* skip failed calendars */
       }
+    }
+
+    const workSession = getWorkSession(req);
+    if (workSession?.accessToken) {
+      try {
+        const wCalListRes = await fetch(
+          "https://www.googleapis.com/calendar/v3/users/me/calendarList",
+          { headers: { Authorization: "Bearer " + workSession.accessToken } },
+        );
+        if (wCalListRes.ok) {
+          const wCalList = await wCalListRes.json();
+          for (const cal of wCalList.items || []) {
+            try {
+              const params = new URLSearchParams({
+                timeMin: startOfDay.toISOString(),
+                timeMax: endOfDay.toISOString(),
+                singleEvents: "true",
+                orderBy: "startTime",
+                maxResults: "20",
+              });
+              const eventsRes = await fetch(
+                "https://www.googleapis.com/calendar/v3/calendars/" +
+                  encodeURIComponent(cal.id) +
+                  "/events?" +
+                  params,
+                { headers: { Authorization: "Bearer " + workSession.accessToken } },
+              );
+              if (eventsRes.ok) {
+                const eventsData = await eventsRes.json();
+                for (const event of eventsData.items || []) {
+                  allEvents.push({
+                    title: event.summary || "(No title)",
+                    start: event.start?.dateTime || event.start?.date || "",
+                    end: event.end?.dateTime || event.end?.date || "",
+                    location: event.location || "",
+                    meetLink: event.hangoutLink || "",
+                    calendarName: cal.summary || "",
+                    calendarColor: cal.backgroundColor || "",
+                    allDay: !!event.start?.date,
+                  });
+                }
+              }
+            } catch { /* skip */ }
+          }
+        }
+      } catch { /* work session failed, continue with personal only */ }
     }
 
     allEvents.sort(

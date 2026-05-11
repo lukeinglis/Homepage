@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getSession, setSession } from "./session-util.js";
+import { getSession, setSession, getWorkSession } from "./session-util.js";
 import { refreshAccessToken } from "./refresh.js";
 
 export default async function handler(
@@ -37,6 +37,8 @@ export default async function handler(
     }
   }
 
+  const workSession = getWorkSession(req);
+
   res.json({
     authenticated: true,
     user: {
@@ -44,5 +46,7 @@ export default async function handler(
       email: session.email,
       picture: session.picture,
     },
+    workConnected: !!(workSession?.accessToken),
+    workEmail: workSession?.email || null,
   });
 }

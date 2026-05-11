@@ -114,5 +114,44 @@ export function setSession(res: VercelResponse, data: SessionData): void {
 export function clearSession(res: VercelResponse): void {
   const sessionClear = `${COOKIE_NAME}=; Path=/; HttpOnly; Max-Age=0`;
   const sigClear = `${SIG_COOKIE_NAME}=; Path=/; Max-Age=0`;
-  res.setHeader("Set-Cookie", [sessionClear, sigClear]);
+  const workClear = `${WORK_COOKIE_NAME}=; Path=/; HttpOnly; Max-Age=0`;
+  res.setHeader("Set-Cookie", [sessionClear, sigClear, workClear]);
+}
+
+const WORK_COOKIE_NAME = "homepage_work_session";
+
+export function getWorkSession(req: VercelRequest): SessionData | null {
+  const cookies = parseCookies(req.headers.cookie);
+  const raw = cookies[WORK_COOKIE_NAME];
+  if (!raw) return null;
+  try {
+    const json = decrypt(raw);
+    return JSON.parse(json) as SessionData;
+  } catch {
+    return null;
+  }
+}
+
+export function setWorkSession(res: VercelResponse, data: SessionData): void {
+  const json = JSON.stringify(data);
+  const encrypted = encrypt(json);
+  const isProduction = process.env.NODE_ENV === "production";
+  const workCookie = [
+    `${WORK_COOKIE_NAME}=${encodeURIComponent(encrypted)}`,
+    "Path=/",
+    "HttpOnly",
+    "SameSite=Strict",
+    `Max-Age=${THIRTY_DAYS}`,
+    isProduction ? "Secure" : "",
+  ]
+    .filter(Boolean)
+    .join("; ");
+
+  const existing = res.getHeader("Set-Cookie");
+  const cookies = existing
+    ? Array.isArray(existing)
+      ? [...existing, workCookie]
+      : [String(existing), workCookie]
+    : [workCookie];
+  res.setHeader("Set-Cookie", cookies);
 }
