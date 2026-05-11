@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'preact/hooks';
 import type { JSX } from 'preact';
 import { Icon } from '../scenes/Icons';
-import { MARKETS, STOCKS, NEWS, NOW_PLAYING, QUOTES } from '../../data/scene-data.js';
+import { EmptyState } from './EmptyState';
+import { MARKETS, STOCKS, NEWS, QUOTES } from '../../data/scene-data.js';
 import { fetchWeather, getCachedLocation, requestLocation } from '../../lib/weather-api.js';
 import type { WeatherData } from '../../lib/weather-api.js';
 import { fetchNews } from '../../lib/news-api.js';
@@ -409,45 +410,7 @@ export function NewsModule({ feeds = ["bloomberg", "hn"], hero = null }: NewsMod
 // ---------------------------------------------------------------------------
 
 export function NowPlaying(): JSX.Element {
-  const np = NOW_PLAYING;
-  return (
-    <div className="module p-3 module-enter" style={{ animationDelay: "200ms" }}>
-      <div className="flex items-center gap-3">
-        <div
-          className="rounded flex-none relative overflow-hidden"
-          style={{ width: 48, height: 48, background: np.cover }}
-        >
-          <div className="absolute inset-0" style={{ boxShadow: "inset 0 0 18px rgba(0,0,0,0.4)" }} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="font-mono uppercase text-muted flex items-center gap-1.5" style={{ fontSize: "10px", letterSpacing: "0.05em" }}>
-            <span className="live-dot" style={{ background: "#7adfff" }} /><span className="sr-only">Live</span>
-            Now playing · {np.source}
-          </div>
-          <div className="font-medium font-serif italic leading-tight mt-0.5 truncate" style={{ fontSize: "13px" }}>
-            {np.title}
-          </div>
-          <div className="font-mono text-muted truncate" style={{ fontSize: "10.5px" }}>{np.artist}</div>
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            aria-label="Pause"
-            className="hairline rounded-full flex items-center justify-center"
-            style={{ width: 28, height: 28 }}
-          >
-            <Icon name="pause" size={12} />
-          </button>
-          <button
-            aria-label="Skip to next track"
-            className="hairline rounded-full flex items-center justify-center"
-            style={{ width: 28, height: 28 }}
-          >
-            <Icon name="skip" size={12} />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+  return <EmptyState icon="headphones" message="Connect music service" delay="200ms" />;
 }
 
 // ---------------------------------------------------------------------------

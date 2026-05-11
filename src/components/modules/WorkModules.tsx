@@ -1,6 +1,10 @@
+import { useState, useEffect } from 'preact/hooks';
 import { Icon } from '../scenes/Icons';
-import { MEETINGS, PROJECTS, INBOX, NOTES, RED_HAT_NEWS } from '../../data/scene-data';
+import { EmptyState } from './EmptyState';
+import { MEETINGS, INBOX } from '../../data/scene-data';
 import type { Meeting } from '../../data/scene-data';
+import { fetchInbox, formatEmailDate } from '../../lib/gmail-api.js';
+import type { GmailInbox } from '../../lib/gmail-api.js';
 
 const TYPE_COLORS: Record<string, string> = {
   team: "rgba(160,180,255,0.85)",
@@ -98,56 +102,89 @@ export function MeetingTimeline({ now = "10:18", phase = "day" }: { now?: string
 }
 
 export function ProjectsModule() {
-  const colors: Record<string, string> = { "On track": "#9ad59c", "At risk": "#f7b86b", "Discovery": "#9bb8ff" };
-  return (
-    <div className="module work-accent p-5 module-enter" style={{ animationDelay: "120ms" }}>
-      <div className="flex items-baseline justify-between mb-3">
-        <div className="font-mono uppercase text-muted" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>Active workstreams</div>
-        <div className="font-mono text-muted" style={{ fontSize: "10.5px" }}>4 of 11</div>
-      </div>
-      <div className="space-y-3">
-        {PROJECTS.map((p, i) => (
-          <div key={i} className="hairline rounded-md p-3" style={{ background: "rgba(255,255,255,0.03)" }}>
-            <div className="flex items-baseline justify-between mb-1.5">
-              <div className="font-medium leading-tight" style={{ fontSize: "13.5px" }}>{p.name}</div>
-              <div className="font-mono text-muted" style={{ fontSize: "10.5px" }}>{p.last}</div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="flex-1 rounded-full" style={{ height: 3, background: "rgba(255,255,255,0.10)" }}>
-                <div className="rounded-full" style={{ height: "100%", width: p.pct + "%", background: colors[p.status] }} />
-              </div>
-              <div className="font-mono tabnum text-right" style={{ fontSize: "10.5px", width: 36 }}>{p.pct}%</div>
-              <div className="chip" style={{ background: `color-mix(in oklch, ${colors[p.status]} 18%, transparent)`, borderColor: `color-mix(in oklch, ${colors[p.status]} 30%, transparent)` }}>{p.status}</div>
-            </div>
-            <div className="font-mono text-muted mt-1.5" style={{ fontSize: "10.5px" }}>{p.tag}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  return <EmptyState icon="briefcase" message="Connect Jira to track projects" delay="120ms" />;
 }
 
 export function InboxModule({ compact = false }: { compact?: boolean }) {
-  const I = INBOX;
+  const [gmail, setGmail] = useState<GmailInbox | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchInbox()
+      .then((data) => { if (!cancelled) { setGmail(data); setLoading(false); } })
+      .catch(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
+
+  if (loading) {
+    return (
+      <div className={`module ${compact ? "" : "work-accent"} p-4 module-enter`} style={{ animationDelay: "80ms" }}>
+        <div className="flex items-center gap-2 mb-3">
+          <Icon name="mail" size={14} />
+          <div className="font-mono uppercase" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>Inbox</div>
+        </div>
+        <div className="space-y-2">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="rounded" style={{ height: 16, background: "rgba(128,128,128,0.1)" }} />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (!gmail) {
+    const I = INBOX;
+    return (
+      <div className={`module ${compact ? "" : "work-accent"} p-4 module-enter`} style={{ animationDelay: "80ms" }}>
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Icon name="mail" size={14} />
+            <div className="font-mono uppercase" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>Inbox</div>
+          </div>
+          <div className="flex items-center gap-2 font-mono" style={{ fontSize: "10.5px" }}>
+            <span className="chip">{I.unread} unread</span>
+          </div>
+        </div>
+        <div className="space-y-2">
+          {I.top.map((m, i) => (
+            <div key={i} className="flex items-baseline gap-3">
+              <div className="font-mono text-muted tabnum" style={{ fontSize: "10.5px", width: 40 }}>{m.when}</div>
+              <div className="font-medium truncate" style={{ fontSize: "12.5px", width: 120 }}>{m.from}</div>
+              <div className="text-muted truncate flex-1" style={{ fontSize: "12.5px" }}>{m.subj}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`module ${compact ? "" : "work-accent"} p-4 module-enter`} style={{ animationDelay: "80ms" }}>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Icon name="mail" size={14} />
-          <div className="font-mono uppercase" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>Work inbox</div>
+          <div className="font-mono uppercase" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>Inbox</div>
         </div>
         <div className="flex items-center gap-2 font-mono" style={{ fontSize: "10.5px" }}>
-          <span className="chip">{I.unread} unread</span>
-          <span className="chip" style={{ background: "rgba(255,80,80,0.14)", borderColor: "rgba(255,80,80,0.3)", color: "#ffb0a8" }}>{I.flagged} urgent</span>
+          <span className="chip">{gmail.unread} unread</span>
+          <span className="chip">{gmail.starred} starred</span>
         </div>
       </div>
       <div className="space-y-2">
-        {I.top.map((m, i) => (
-          <div key={i} className="flex items-baseline gap-3">
-            <div className="font-mono text-muted tabnum" style={{ fontSize: "10.5px", width: 40 }}>{m.when}</div>
+        {gmail.messages.map((m, i) => (
+          <a
+            key={i}
+            href={"https://mail.google.com/mail/u/0/#inbox/" + m.id}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-baseline gap-3 hover-link"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <div className="font-mono text-muted tabnum" style={{ fontSize: "10.5px", width: 40 }}>{formatEmailDate(m.date)}</div>
             <div className="font-medium truncate" style={{ fontSize: "12.5px", width: 120 }}>{m.from}</div>
-            <div className="text-muted truncate flex-1" style={{ fontSize: "12.5px" }}>{m.subj}</div>
-          </div>
+            <div className="text-muted truncate flex-1" style={{ fontSize: "12.5px" }}>{m.subject}</div>
+          </a>
         ))}
       </div>
     </div>
@@ -155,22 +192,7 @@ export function InboxModule({ compact = false }: { compact?: boolean }) {
 }
 
 export function NotesModule() {
-  return (
-    <div className="module p-4 module-enter" style={{ animationDelay: "160ms" }}>
-      <div className="flex items-center gap-2 mb-3">
-        <Icon name="obsidian" size={14} />
-        <div className="font-mono uppercase" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>Obsidian · recent</div>
-      </div>
-      <div className="space-y-2">
-        {NOTES.map((n, i) => (
-          <div key={i} className="flex items-center justify-between" style={{ fontSize: "12.5px" }}>
-            <div className="truncate">{n.title}</div>
-            <div className="font-mono text-muted" style={{ fontSize: "10.5px" }}>{n.ago}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  return <EmptyState icon="file-text" message="Connect Obsidian to see notes" delay="160ms" />;
 }
 
 export function DevQuicklaunch() {
@@ -224,17 +246,5 @@ export function WorkShortcuts() {
 }
 
 export function RedHatNews() {
-  return (
-    <div className="module p-4 module-enter" style={{ animationDelay: "280ms" }}>
-      <div className="flex items-center gap-2 mb-2.5">
-        <span className="rounded-full" style={{ width: 8, height: 8, background: "var(--rh)" }} />
-        <div className="font-mono uppercase" style={{ fontSize: "10.5px", letterSpacing: "0.16em" }}>Red Hat · internal</div>
-      </div>
-      <ul className="space-y-1.5" style={{ fontSize: "12.5px" }}>
-        {RED_HAT_NEWS.map((item, i) => (
-          <li key={i}>{item}</li>
-        ))}
-      </ul>
-    </div>
-  );
+  return <EmptyState icon="newspaper" message="No internal news configured" delay="280ms" />;
 }

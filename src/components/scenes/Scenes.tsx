@@ -88,12 +88,7 @@ export function SceneWeekdayPM({ teamNight, userName }: { teamNight: string | nu
       <Greeting scene="wkdy_pm" name={userName} />
       <div className="mt-8 grid grid-cols-12 gap-5">
         <div className="col-span-7"><TonightHero size="large" /></div>
-        <div className="col-span-5"><YouTubeFrame sub="Watch while cooking" video={{
-          title: "Kenji — Why a hard sear changes everything (12 min)",
-          channel: "J. Kenji López-Alt", ch_handle: "@JKenjiLopezAlt",
-          durTotal: "12:04", durElapsed: "3:18", viewers: "1.2M views",
-          thumb: "linear-gradient(135deg, #4a2a18 0%, #1a0904 50%, #b35c2a 100%)",
-        }} /></div>
+        <div className="col-span-5"><YouTubeFrame /></div>
       </div>
       <div className="mt-5 grid grid-cols-12 gap-5">
         <div className="col-span-5 space-y-5">
@@ -101,12 +96,12 @@ export function SceneWeekdayPM({ teamNight, userName }: { teamNight: string | nu
           <FantasyModule />
         </div>
         <div className="col-span-4 space-y-5">
-          <StreamingShelf scene="wkdy_pm" />
+          <StreamingShelf />
           <NowPlaying />
         </div>
         <div className="col-span-3 space-y-5">
           <GroceriesModule />
-          <YouTubeQueue scene="wkdy_pm" />
+          <YouTubeQueue />
         </div>
       </div>
       <div className="mt-5 grid grid-cols-12 gap-5">
@@ -166,29 +161,19 @@ export function SceneWeekendPM({ teamNight, userName }: { teamNight: string | nu
       <div className="mt-8 grid grid-cols-12 gap-5">
         <div className="col-span-7"><TonightHero size="large" /></div>
         <div className="col-span-5 space-y-5">
-          <YouTubeFrame sub="On the TV" video={{
-            title: teamNight === "chelsea" ? "Stamford Bridge — Chelsea v Man City · matchday vlog" :
-              teamNight === "camden" ? "Camden Yards — Henderson, in real time"
-              : "NFL RedZone · Sunday cuts you missed",
-            channel: teamNight === "chelsea" ? "Chelsea FC" : teamNight === "camden" ? "Jomboy Media" : "NFL",
-            ch_handle: teamNight === "chelsea" ? "@ChelseaFC" : teamNight === "camden" ? "@JomboyMedia" : "@NFL",
-            durTotal: "24:11", durElapsed: "6:42", viewers: "841K views",
-            thumb: teamNight === "chelsea" ? "linear-gradient(135deg,#0a2a66,#02153b 60%,#5fa9e3)" :
-              teamNight === "camden" ? "linear-gradient(135deg,#3a1808,#0e0402 60%,#df4601)"
-              : "linear-gradient(135deg,#1a3a2a,#06120a 60%,#4a8a5a)",
-          }} />
+          <YouTubeFrame />
           <ScoreRecap />
         </div>
       </div>
       <div className="mt-5 grid grid-cols-12 gap-5">
-        <div className="col-span-7"><StreamingShelf scene="wknd_pm" /></div>
+        <div className="col-span-7"><StreamingShelf /></div>
         <div className="col-span-5 space-y-5">
           <TeamDeepDive team={featured} />
         </div>
       </div>
       <div className="mt-5 grid grid-cols-12 gap-5">
         <div className="col-span-4"><SportsBoard slate="weekend_evening" title="primetime · late" subtitle="Wolves-Nuggets G4. UFC 322. Masters R4 prep." /></div>
-        <div className="col-span-4"><YouTubeQueue scene="wknd_pm" /></div>
+        <div className="col-span-4"><YouTubeQueue /></div>
         <div className="col-span-4 space-y-5">
           <FantasyModule />
           <NowPlaying />
