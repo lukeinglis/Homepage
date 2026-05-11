@@ -43,9 +43,15 @@ export function detectScene(): number {
 export function App() {
   const [sceneIdx, setSceneIdx] = useState(() => {
     try {
-      const v = localStorage.getItem("homepage_scene");
-      return v ? Number(v) : detectScene();
-    } catch { return detectScene(); }
+      const overrideTs = Number(localStorage.getItem("homepage_scene_override") || "0");
+      const todayMidnight = new Date();
+      todayMidnight.setHours(0, 0, 0, 0);
+      if (overrideTs > todayMidnight.getTime()) {
+        const v = localStorage.getItem("homepage_scene");
+        if (v) return Number(v);
+      }
+    } catch { /* empty */ }
+    return detectScene();
   });
   const [teamNight, setTeamNight] = useState<string | null>(() => {
     try { return localStorage.getItem("homepage_team") || null; } catch { return null; }
