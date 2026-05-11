@@ -23,20 +23,31 @@ export async function fetchCalendarEvents(): Promise<CalendarEvent[]> {
     /* ignore */
   }
 
-  const res = await fetch("/api/calendar-google");
-  if (!res.ok) throw new Error("Calendar fetch failed");
-  const data = await res.json();
+  const [googleEvents, appleEvents] = await Promise.all([
+    fetch("/api/calendar-google")
+      .then((r) => (r.ok ? r.json() : { events: [] }))
+      .then((d) => d.events as CalendarEvent[])
+      .catch(() => [] as CalendarEvent[]),
+    fetch("/api/calendar-apple")
+      .then((r) => (r.ok ? r.json() : { events: [] }))
+      .then((d) => d.events as CalendarEvent[])
+      .catch(() => [] as CalendarEvent[]),
+  ]);
+
+  const allEvents = [...googleEvents, ...appleEvents].sort(
+    (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime(),
+  );
 
   try {
     localStorage.setItem(
       CACHE_KEY,
-      JSON.stringify({ events: data.events, timestamp: Date.now() }),
+      JSON.stringify({ events: allEvents, timestamp: Date.now() }),
     );
   } catch {
     /* quota */
   }
 
-  return data.events;
+  return allEvents;
 }
 
 export function formatEventTime(iso: string): string {
